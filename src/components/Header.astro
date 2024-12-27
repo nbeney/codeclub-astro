@@ -1,24 +1,11 @@
 ---
+import { pagesReady } from '@scripts/pages';
+
 const { active } = Astro.props;
 
-const routes = [
-    { name: 'Home', route: '/' },
-    { name: 'Guizero', route: '/activities/guizero-based/' },
-    { name: 'Pygame Zero', route: '/activities/pygame-zero-based/' },
-    { name: 'Adventurelib', route: '/activities/adventurelib-based/index.html' },
-    { name: 'P5', route: '/activities/p5-based/' },
-    // { name: 'Scratch', route: '/activities/scratch-based/' },
-    // { name: 'Web design', route: '/activities/web-based/' },
-    // { name: 'BBC Microbit', route: '/activities/microbit-based/' },
-    // { name: 'Makecode Arcade', route: '/activities/arcade-based/' },
-    // { name: 'AI', route: '/activities/ai-based/' },
-    // { name: 'Music', route: '/activities/music-based/' },
-    { name: 'Python libraries', route: '/activities/python-libraries/index.html' },
-];
-
-const activeRoute = routes.find(route => 
-    route.name.toLowerCase().startsWith(active?.toLowerCase())
-) || routes[0];
+const activePage = pagesReady.find(page => 
+    page.name.toLowerCase().startsWith(active?.toLowerCase())
+) || pagesReady[0];
 ---
 
 <header>
@@ -33,15 +20,15 @@ const activeRoute = routes.find(route =>
                     data-bs-toggle="dropdown" 
                     aria-expanded="false"
                 >
-                    {activeRoute.name}
+                    {activePage.name}
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                    {routes.map(({name, route}) => (
+                    {pagesReady.map(({name, route}) => (
                         <li>
                             <a 
                                 class:list={[
                                     "dropdown-item",
-                                    { active: name === activeRoute.name }
+                                    { active: name === activePage.name }
                                 ]} 
                                 href={import.meta.env.BASE_URL + route}
                             >
