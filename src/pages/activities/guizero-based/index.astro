@@ -1,9 +1,13 @@
 ---
 import path from 'node:path';
 
+import { Image } from 'astro:assets';
+
 import CodeBlock from '@components/CodeBlock.astro';
 
 import PageLayout from '@layouts/PageLayout.astro';
+
+import screenshot from './screenshot.png';
 
 const pageTitle = "Build an app with Guizero";
 
@@ -22,7 +26,7 @@ const filePath = path.resolve('public/guizero-sample.py');
 
         <p>If all is well, you will see a window like this:</p>
 
-        <p><img src="./screenshot.png" alt="Screenshot"></p>
+        <p><Image src={screenshot} alt="Screenshot" /></p>
         
         <p>Try clicking the button, moving the slider or choosing a different color and see what happens.</p>
 
