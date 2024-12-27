@@ -1,17 +1,13 @@
 ---
-import { fileURLToPath } from 'node:url';
+import path from 'node:path';
 
 import CodeBlock from '@components/CodeBlock.astro';
-import TestUrl from '@components/TestUrl.astro';
 
 import PageLayout from '@layouts/PageLayout.astro';
 
 const pageTitle = "Build an app with Guizero";
 
-const sampleUrl = new URL('./sample.py', import.meta.url);
-console.log('sampleUrl', sampleUrl);
-const samplePath = fileURLToPath(sampleUrl);
-console.log('samplePath', samplePath);
+const filePath = path.resolve('public/guizero-sample.py');
 ---
 
 <PageLayout pageTitle={pageTitle} active="guizero">
@@ -22,7 +18,7 @@ console.log('samplePath', samplePath);
 
         <p>First check that <code>guizero</code> is installed on your PC by running this program. Don't worry if you don't understand how it works yet. You will soon learn what all these instructions mean.</p>
 
-        <CodeBlock src={samplePath} />
+        <CodeBlock src={filePath} />
 
         <p>If all is well, you will see a window like this:</p>
 
