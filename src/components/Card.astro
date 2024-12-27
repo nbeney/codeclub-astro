@@ -1,5 +1,6 @@
 ---
 import { Image } from 'astro:assets';
+import ConditionalLink from '@components/ConditionalLink.astro'
 
 const { route, language, status, description } = Astro.props;
 
@@ -12,32 +13,26 @@ if (!logos[path]) throw new Error(`"${path}" does not exist in glob: "/src/pages
 const logo = logos[path]();
 ---
 
-{(status === 'not-ready') 
-?
-    <div class:list={["card", language, status]} style="display: inline-block; width: 15rem; margin: 3px;">
+<ConditionalLink href={route} condition={status !== 'not-ready'}>
+    <div class:list={["card", language, status]}>
+        <ConditionalLink href={href} condition={status !== 'not-ready'}>
             <Image src={logo} alt={alt} width="238" height="238" class="card-img-top"/>
             <div class="card-body">
                 <h5 class="card-title">
                     <Fragment set:html={description} />
                 </h5>
             </div>
+        </ConditionalLink>
     </div>
-:
-    <a href={route}>
-        <div class:list={["card", language, status]} style="display: inline-block; width: 15rem; margin: 3px;">
-            <a href={href}>
-                <Image src={logo} alt={alt} width="238" height="238" class="card-img-top"/>
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <Fragment set:html={description} />
-                    </h5>
-                </div>
-            </a>
-        </div>
-    </a>
-}
+</ConditionalLink>
 
 <style>
+    .card {
+        display: inline-block;
+        width: 15rem;
+        margin: 3px;
+    }
+
     .card-title {
         height: 4.5rem;
         overflow: hidden;

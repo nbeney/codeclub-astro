@@ -1,0 +1,12 @@
+---
+const { href, condition } = Astro.props;
+---
+
+{condition ? <a href={href}><slot /></a> : <slot />}
+
+<style>
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+</style>
