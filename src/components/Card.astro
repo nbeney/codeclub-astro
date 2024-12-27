@@ -1,0 +1,94 @@
+---
+import { Image } from 'astro:assets';
+
+const { route, language, status, description } = Astro.props;
+
+const href = (status === 'not-ready') ? '#' : route;
+const alt = route;
+
+const path = `/src/pages${route}logo.jpg`;
+const logos = import.meta.glob('/src/pages/**/logo.jpg');
+if (!logos[path]) throw new Error(`"${path}" does not exist in glob: "/src/pages/**/logo.jpg"`);
+const logo = logos[path]();
+---
+
+{(status === 'not-ready') 
+?
+    <div class:list={["card", language, status]} style="display: inline-block; width: 15rem; margin: 3px;">
+            <Image src={logo} alt={alt} width="238" height="238" class="card-img-top"/>
+            <div class="card-body">
+                <h5 class="card-title">
+                    <Fragment set:html={description} />
+                </h5>
+            </div>
+    </div>
+:
+    <a href={route}>
+        <div class:list={["card", language, status]} style="display: inline-block; width: 15rem; margin: 3px;">
+            <a href={href}>
+                <Image src={logo} alt={alt} width="238" height="238" class="card-img-top"/>
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <Fragment set:html={description} />
+                    </h5>
+                </div>
+            </a>
+        </div>
+    </a>
+}
+
+<style>
+    .card-title {
+        height: 4.5rem;
+        overflow: hidden;
+    }
+
+    .not-ready * {
+        color: lightgrey;
+    }
+
+    /* Python logo overlay */
+
+    .card.python {
+        position: relative;
+    }
+
+    .card.python::after {
+        content: '';
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        width: 35px;
+        height: 35px;
+        background-image: url('https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg');
+        background-size: contain;
+        background-repeat: no-repeat;
+        z-index: 10;
+        pointer-events: none;
+    }
+
+
+    /* Target cards with index 5 and greater */
+
+    .card.not-ready img {
+        /* filter: grayscale(100%); */
+        filter: opacity(40%);
+    }
+
+    .card.not-ready a {
+        color: lightgrey;
+    }
+
+    .card a {
+        text-decoration: none;
+        color: black;
+    }
+
+    .card:hover {
+        box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.5);
+    }
+
+    .card.not-ready:hover {
+        box-shadow: none;
+    }
+</style>

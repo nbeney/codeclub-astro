@@ -1,0 +1,18 @@
+---
+---
+
+<footer>
+    <p>&copy; 2023-<span id="currentYear">2025</span> Nicolas Beney. All rights reserved.</p>
+</footer>
+
+<script is:inline>
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+</script>
+
+<style>
+    footer p {
+        margin-top: 1em;
+        font-style: italic;
+        color: grey;
+    }
+</style>

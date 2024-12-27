@@ -1,16 +1,24 @@
 ---
-const pageTitle = "Codeclub with Astro";
+import Card from '@components/Card.astro';
+import PageLayout from '@layouts/PageLayout.astro';
+
+const pageTitle = "Codeclub";
+
+const cards = [
+    { route: "/activities/guizero-based/", language: "python", description: "Desktop applications with <em>Guizero</em>." },
+    { route: "/activities/pygame-zero-based/", language: "python", description: "Video games with <em>Pygame Zero</em>." },
+    { route: "/activities/adventurelib-based/", language: "python", description: "Text-based adventure games with <em>Adventurelib</em>." },
+    { route: "/activities/p5-based/", language: "python", description: "Animations or digital art with <em>p5py</em>." },
+    { route: "/activities/scratch-based/", status: "not-ready", description: "Games, animations, stories, etc with <em>Scratch</em>." },
+    { route: "/activities/web-based/", status: "not-ready", description: "Web design with <em>HTML, CSS, and Javascript</em>." },
+    { route: "/activities/microbit-based/", status: "not-ready", description: "Discover physical computing with the <em>BBC Microbit</em>." },
+    { route: "/activities/arcade-based/", status: "not-ready", description: "Retro video games with <em>MakeCode Arcade</em>." },
+    { route: "/activities/ai-based/", status: "not-ready", description: "Artificial intelligence and machine learning." },
+    { route: "/activities/music-based/", status: "not-ready", description: "Music with <em>Sonic Pi</em> and others." },
+];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{pageTitle}</title>
-	</head>
-	<body>
-		<h1>{pageTitle}</h1>
-	</body>
-</html>
+<PageLayout pageTitle={pageTitle} active="home">
+    <p>What do you want to create today?</p>
+    {cards.map((card) => <Card {...card} />)}
+</PageLayout>

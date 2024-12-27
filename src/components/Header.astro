@@ -1,0 +1,67 @@
+---
+const { active } = Astro.props;
+
+const routes = [
+    { name: 'Home', route: '/' },
+    { name: 'Guizero', route: '/activities/guizero-based/' },
+    { name: 'Pygame Zero', route: '/activities/pygame-zero-based/' },
+    { name: 'Adventurelib', route: '/activities/adventurelib-based/index.html' },
+    { name: 'P5', route: '/activities/p5-based/' },
+    // { name: 'Scratch', route: '/activities/scratch-based/' },
+    // { name: 'Web design', route: '/activities/web-based/' },
+    // { name: 'BBC Microbit', route: '/activities/microbit-based/' },
+    // { name: 'Makecode Arcade', route: '/activities/arcade-based/' },
+    // { name: 'AI', route: '/activities/ai-based/' },
+    // { name: 'Music', route: '/activities/music-based/' },
+    { name: 'Python libraries', route: '/activities/python-libraries/index.html' },
+];
+
+const activeRoute = routes.find(route => 
+    route.name.toLowerCase().startsWith(active?.toLowerCase())
+) || routes[0];
+---
+
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Code Club</a>
+            <div class="dropdown">
+                <button 
+                    class="btn btn-primary dropdown-toggle" 
+                    type="button" 
+                    id="dropdownMenuButton" 
+                    data-bs-toggle="dropdown" 
+                    aria-expanded="false"
+                >
+                    {activeRoute.name}
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                    {routes.map(({name, route}) => (
+                        <li>
+                            <a 
+                                class:list={[
+                                    "dropdown-item",
+                                    { active: name === activeRoute.name }
+                                ]} 
+                                href={route}
+                            >
+                                {name}
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<style>
+    .dropdown-item.active {
+        background-color: var(--bs-primary);
+        color: white;
+    }
+    
+    .dropdown-toggle::after {
+        margin-left: 0.5em;
+    }
+</style>
