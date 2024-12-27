@@ -1,4 +1,6 @@
 import { defineConfig } from 'astro/config';
 
-// https://astro.build/config
-export default defineConfig({});
+export default defineConfig({
+  site: 'https://icantech.org',  // Replace with your GitHub Pages URL
+  base: '/codeclub-astro',  // Replace with your repository name
+});
