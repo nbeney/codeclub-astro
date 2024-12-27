@@ -1,8 +1,88 @@
 ---
+import { fileURLToPath } from 'node:url';
+
+import CodeBlock from '@components/CodeBlock.astro';
+import TestUrl from '@components/TestUrl.astro';
+
 import PageLayout from '@layouts/PageLayout.astro';
 
 const pageTitle = "Build an app with Guizero";
+
+const sampleUrl = new URL('./sample.py', import.meta.url);
+console.log('sampleUrl', sampleUrl);
+const samplePath = fileURLToPath(sampleUrl);
+console.log('samplePath', samplePath);
 ---
 
 <PageLayout pageTitle={pageTitle} active="guizero">
+    <section>
+        <h2>Read this first</h2>
+
+        <p><code>Guizero</code> is a <a href="../python-libraries">Python library</a> for creating simple graphical user interfaces (GUIs).</p>
+
+        <p>First check that <code>guizero</code> is installed on your PC by running this program. Don't worry if you don't understand how it works yet. You will soon learn what all these instructions mean.</p>
+
+        <CodeBlock src={samplePath} />
+
+        <p>If all is well, you will see a window like this:</p>
+
+        <p><img src="./screenshot.png" alt="Screenshot"></p>
+        
+        <p>Try clicking the button, moving the slider or choosing a different color and see what happens.</p>
+
+        <p>You can also try running this program on <a href="https://replit.com/@nicoben/guizero-demo?v=1">repl.it</a>.</p>
+
+        <p>Then you should follow the <a href="https://projects.raspberrypi.org/en/projects/getting-started-with-guis">Getting started with GUIs</a> tutorial or the <a href="/offline/guizero-workshop.pdf">Guizero Workshop</a> tutorial to learn the basics.</p>
+
+        <p>The <a href="/offline/000_guizero_DIGITAL.pdf">Create Graphical User Interfaces with Python (PDF)</a> book contains a good introduction and has several projects like Wanted Poster,  Spy Name Chooser, Meme Generator, Tic-tac-toe, Destroy the Dots, Flood It, Emoji Match, Paint, and more.</p>
+    </section>
+
+    <section>
+        <h2>Documentation</h2>
+        <ul>
+            <li><a href="/offline/lawsie.github.io/guizero/start/index.html">Getting Started</a></li>
+            <li><a href="/offline/lawsie.github.io/guizero/usingwidgets/index.html">Using Widgets</a></li>
+            <li><a href="/offline/lawsie.github.io/guizero/widgetoverview/index.html">Widgets</a></li>
+            <li><a href="/offline/lawsie.github.io/guizero/recipes/index.html">Recipes</a></li>
+            <li>
+                Advanced topics:
+                <ul>
+                    <li><a href="/offline/lawsie.github.io/guizero/commands/index.html">Commands</a></li>
+                    <li><a href="/offline/lawsie.github.io/guizero/multiple_windows/index.html">Multiple windows</a></li>
+                    <li><a href="/offline/lawsie.github.io/guizero/layout/index.html">Layouts</a></li>
+                    <li><a href="/offline/lawsie.github.io/guizero/alerts/index.html">Pop-ups</a></li>
+                    <li><a href="/offline/lawsie.github.io/guizero/size/index.html">Sizes</a></li>
+                    <li><a href="/offline/lawsie.github.io/guizero/colors/index.html">Colors</a></li>
+                    <li><a href="/offline/lawsie.github.io/guizero/images/index.html">Images</a></li>
+                    <li><a href="/offline/lawsie.github.io/guizero/blocking/index.html">Loops and sleeping</a></li>
+                    <li><a href="/offline/lawsie.github.io/guizero/events/index.html">Events</a></li>
+                    <li><a href="/offline/lawsie.github.io/guizero/usingtk/index.html">Using tkinter</a></li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Project ideas</h2>
+
+        <cc-project-filters />
+
+        <div class="grid">
+            <cc-project-card title="ASCII Art Maker" difficulty="easy" path="ascii-art-maker"></cc-project-card>
+            <cc-project-card title="Color Maker" difficulty="easy" path="color-maker"></cc-project-card>
+            <cc-project-card title="Temperature Converter" difficulty="easy" path="temperature-converter"></cc-project-card>
+            <cc-project-card title="Times Tables" difficulty="easy" path="times-tables"></cc-project-card>
+            <cc-project-card title="Binary Clock" difficulty="medium" path="binary-clock"></cc-project-card>
+            <cc-project-card title="Caesar Cipher" difficulty="medium" path="caesar-cipher"></cc-project-card>
+            <cc-project-card title="French Verbs" difficulty="medium" path="french-verbs"></cc-project-card>
+            <cc-project-card title="Memory" difficulty="medium" path="memory-game"></cc-project-card>
+            <cc-project-card title="Morse Code" difficulty="medium" path="morse-code"></cc-project-card>
+            <cc-project-card title="Paint Tool" difficulty="medium" path="paint-tool"></cc-project-card>
+            <cc-project-card title="Spell the Number" difficulty="medium" path="spell-the-number"></cc-project-card>
+            <cc-project-card title="Connect Four" difficulty="hard" path="connect4"></cc-project-card>
+            <cc-project-card title="Hangman" difficulty="hard" path="hangman-game"></cc-project-card>
+            <cc-project-card title="Simon" difficulty="hard" path="simon-game"></cc-project-card>
+            <cc-project-card title="Wordle" difficulty="hard" path="wordle-game"></cc-project-card>
+        </div>
+    </section>
 </PageLayout>
