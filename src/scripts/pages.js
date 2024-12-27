@@ -4,7 +4,7 @@ const pages = [
         route: '/', 
         language: '', 
         description: 'Home page.', 
-        status: '', 
+        isReady: true, 
         logo: null 
     },
     { 
@@ -12,7 +12,7 @@ const pages = [
         route: '/activities/guizero-based/', 
         language: 'python', 
         description: 'Desktop applications with <em>Guizero</em>.', 
-        status: '', 
+        isReady: true, 
         logo: 'logo.jpg' 
     },
     { 
@@ -20,7 +20,7 @@ const pages = [
         route: '/activities/pygame-zero-based/', 
         language: 'python', 
         description: 'Video games with <em>Pygame Zero</em>.', 
-        status: '', 
+        isReady: true, 
         logo: 'logo.jpg' 
     },
     { 
@@ -28,7 +28,7 @@ const pages = [
         route: '/activities/adventurelib-based/', 
         language: 'python', 
         description: 'Text-based adventure games with <em>Adventurelib</em>.', 
-        status: '', 
+        isReady: true, 
         logo: 'logo.jpg' 
     },
     { 
@@ -36,7 +36,7 @@ const pages = [
         route: '/activities/p5-based/', 
         language: 'python', 
         description: 'Animations or digital art with <em>p5py</em>.', 
-        status: '', 
+        isReady: true, 
         logo: 'logo.jpg' 
     },
     {
@@ -44,7 +44,7 @@ const pages = [
         route: '/activities/scratch-based/',
         language: '',
         description: 'Games, animations, stories, etc with <em>Scratch</em>.',
-        status: 'not-ready',
+        isReady: false,
         logo: 'logo.jpg'
     },
     {
@@ -52,7 +52,7 @@ const pages = [
         route: '/activities/web-based/',
         language: '',
         description: 'Web design with <em>HTML</em>, <em>CSS</em>, and <em>Javascript</em>.',
-        status: 'not-ready',
+        isReady: false,
         logo: 'logo.jpg'
     },
     {
@@ -60,7 +60,7 @@ const pages = [
         route: '/activities/microbit-based/',
         language: '',
         description: 'Discover physical computing with the <em>BBC Microbit</em>.',
-        status: 'not-ready',
+        isReady: false,
         logo: 'logo.jpg'
     },
     {
@@ -68,7 +68,7 @@ const pages = [
         route: '/activities/arcade-based/',
         language: '',
         description: 'Retro video games with <em>MakeCode Arcade</em>.',
-        status: 'not-ready',
+        isReady: false,
         logo: 'logo.jpg'
     },
     {
@@ -76,7 +76,7 @@ const pages = [
         route: '/activities/ai-based/',
         language: '',
         description: 'Artificial intelligence and machine learning.',
-        status: 'not-ready',
+        isReady: false,
         logo: 'logo.jpg'
     },
     {
@@ -84,7 +84,7 @@ const pages = [
         route: '/activities/music-based/',
         language: '',
         description: 'Music with <em>Sonic Pi</em> and others.',
-        status: 'not-ready',
+        isReady: false,
         logo: 'logo.jpg'
     },
     {
@@ -92,13 +92,13 @@ const pages = [
         route: '/activities/python-libraries/index.html',
         language: '',
         description: 'Python libraries.',
-        status: '',
+        isReady: true,
         logo: null
     }
 ]
 
 const pagesWithLogo = pages.filter(page => page.logo !== null);
 
-const pagesReady = pages.filter(page => page.status !== 'not-ready');
+const pagesReady = pages.filter(page => page.isReady);
 
 export { pages, pagesWithLogo, pagesReady };

@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets';
 import ConditionalLink from '@components/ConditionalLink.astro'
 
-const { route, language, status, description, logo } = Astro.props;
+const { route, language, isReady, description, logo } = Astro.props;
 
 const href = import.meta.env.BASE_URL + route;
 const alt = route;
@@ -13,9 +13,9 @@ if (!logoImages[logoPath]) throw new Error(`"${logoPath}" does not exist in glob
 const logoImage = logoImages[logoPath]();
 ---
 
-<ConditionalLink href={href} condition={status !== 'not-ready'}>
-    <div class:list={["card", language, status]}>
-        <ConditionalLink href={href} condition={status !== 'not-ready'}>
+<ConditionalLink href={href} condition={isReady}>
+    <div class:list={["card", language, isReady || "not-ready"]}>
+        <ConditionalLink href={href} condition={isReady}>
             <Image src={logoImage} alt={alt} width="238" height="238" class="card-img-top"/>
             <div class="card-body">
                 <h5 class="card-title">
