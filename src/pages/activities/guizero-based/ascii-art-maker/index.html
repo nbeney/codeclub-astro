@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ASCII Art Maker</title>
+    <script src="/custom-elements/custom-navbar.js"></script>
+    <script src="/custom-elements/custom-badges.js"></script>
+    <script src="/custom-elements/custom-guizero.js"></script>
+    <script type="module" src="/custom-elements/custom-code-block.js"></script>
+    <script src="/custom-elements/custom-copyright.js"></script>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body class="container">
+
+    <cc-navbar active="guizero" level="3" />
+
+    <h1>ASCII Art Maker
+        <cc-badge-easy/>
+    </h1>
+
+    <section>
+        <h2>What will I make?</h2>
+        <p>An application to convert text into <a href="https://en.wikipedia.org/wiki/ASCII_art">ASCII art</a>.</p>
+        <p>The GUI is comprised of a single window (<cc-gz-app/>) with these widgets:</p>
+        <ul>
+            <li>an image (<cc-gz-picture />) for the header</li>
+            <li>a text field (<cc-gz-textbox />) to input the text to be converted (<code>input_text</code>)</li>
+            <li>a drop down list (<cc-gz-combo />) to select the desired font (<code>font_combo</code>)</li>
+            <li>a "color" button (<cc-gz-pushbutton />) to select the desired color</li>
+            <li>a "surprise" button (<cc-gz-pushbutton />) to select a random font</li>
+            <li>a multiline text field (<cc-gz-textbox />) to output the result (<code>output_text</code>)</li>
+        </ul>
+        <img src="screenshot.png" alt="Screenshot">
+    </section>
+
+    <section>
+        <br />
+        <h2>Instructions</h2>
+        <ol>
+            <li>Download and uncompress the <a href="starter-kit.zip">starter kit</a> ZIP archive which contains all the resources (eg images) you need and some code to get you started..</li>
+            <li>Open the <code>main.py</code> file in your favourite editor (eg IDLE)..</li>
+            <li>Run the program. A window should pop up but nothing will happen when you enter some text or click the buttons. This is because the code is incomplete but you will fix this next..</li>
+            <li>Modify <code>main.py</code>, adding the missing code in the places marked with <code># TODO</code>. In particular:
+                <ul>
+                    <li>
+                        Implement the <code>on_change</code> callback function for when the text or the font changes:
+                        <ol>
+                            <li>Get the text and store it in a variable with <code>text = input_text.value</code>.</li>
+                            <li>Get the font and store it in a variable with <code>font = font_combo.value</code>.</li>
+                            <li>Generate the ASCII art and store it in a variable with <code>art = pf.figlet_format(text, font)</code>.</li>
+                            <li>Display the result with <code>output_text.value = art</code>.</li>
+                        </ol>
+                        <details class="show-me">
+                            <summary>Show me</summary>
+                            <cc-code-block>
+# Callback function for when the text or font changes.
+def on_change():
+    text = input_text.value
+    font = font_combo.value
+    art = pf.figlet_format(text, font)
+    output_text.value = art
+                            </cc-code-block>
+                        </details>
+                    </li>
+                    <li>
+                        Implement the <code>on_color</code> callback function for when the color button is clicked:
+                        <ol>
+                            <li>Get the new color and store it in a variable with <code>color = <a href="/offline/lawsie.github.io/guizero/app/index.html">app.select_color</a>(color=output_text.text_color)</code>.</li>
+                            <li>Check if a color was selected with <code>if color:</code>.</li>
+                            <li>If yes, set the output text color with <code>output_text.text_color = color</code>.</li>
+                        </ol>
+                        <details class="show-me">
+                            <summary>Show me</summary>
+                            <cc-code-block>
+# Callback function for when the color button is clicked.
+def on_color():
+    color = app.select_color(color=output_text.text_color)
+    if color:
+        output_text.text_color = color
+                            </cc-code-block>
+                        </details>
+                    </li>
+                    <li>
+                        Implement the <code>on_surprise</code> callback function for when the surprise button is clicked:
+                        <ol>
+                            <li>Choose a random font and store it in a variable with <code>font = random.choice(font_combo.options)</code>.</li>
+                            <li>Display the font on the drop-down list with <code>font_combo.value = font</code>.</li>
+                            <li>Generate the ASCII art and display the result with <code>on_change()</code>.</li>
+                        </ol>
+                        <details class="show-me">
+                            <summary>Show me</summary>
+                            <cc-code-block>
+# Callback function for when the surprise button is clicked.
+def on_surprise():
+    font = random.choice(font_combo.options)
+    font_combo.value = font
+    on_change()
+                            </cc-code-block>
+                        </details>
+                    </li>
+                </ul>
+            </li>
+        </ol>
+        <p>If you would prefer writing all the Python code by yourself, download and uncompress the <a href="./resources.zip">resources</a> ZIP archive. It contains all the resources (eg images) but no Python code.</p>
+        <p>If you would like to see the finished app, download and uncompress the <a href="./solution.zip">solution</a> ZIP archive. It contains all the resources (eg images) and the full Python code.</p>
+    </section>
+
+    <section>
+        <h2>What can I try next?</h2>
+        <p>Here are some things you can try to make the app better. They are independent from each other so you can pick just a couple or do them in a different order. If you get stuck, use the <em>Hints</em> button or read the Guizero documentation (see <a href="../index.html">Build an app with Guizero</a>).</p>
+        <p>And of course you can also use your imagination and change the app as you like!</p>
+        <ul>
+            <li>Add a button to <strong>change the background color</strong>.
+                <ol>
+                    <li>Create a new <cc-gz-pushbutton/> with <code>text="Background"</code> (or an image) and linked to the <code>on_background</code> callback function.</li>
+                    <li>Create a new <code>on_background</code> callback function to change the background color of <code>output_text</code>.</li>
+                    <details class="hints">
+                        <summary>Hints</summary>
+                        <ul>
+                            <li>Check the existing <code>on_color</code> callback function. It does almost what you need but it changes the foreground color instead of the background color.</li>
+                            <li>Check the documentation for <cc-gz-textbox/> and find the property you need to change.</li>
+                        </ul>
+                    </details>
+                </ol>
+            </li>
+            <li>Add a button to <strong>save the ASCII art to a file</strong>.
+                <ol>
+                    <li>Create a new <cc-gz-pushbutton/> with <code>text="Save"</code> (or an image) and linked to the <code>on_save</code> callback function.</li>
+                    <li>Create a new <code>on_save</code> callback function that prompts the user for the file name and writes the content of <code>output_text</code> to it.</li>
+                    <details class="hints">
+                        <summary>Hints</summary>
+                        <ul>
+                            <li>Use <code>app.select_file(save=True)</code> to prompt the user for the file name. This function is documented in <cc-gz-app/>.</li>
+                            <li>You can get the ASCII art with <code>output_text.value</code>.</li>
+                            <li>Read the <a href="https://www.w3schools.com/python/python_file_handling.asp">File Handling</a> section from W3Schools to find how to create a text file.</li>
+                        </ul>
+                    </details>
+                </ol>
+            </li>
+            <li>Add a check-box to <strong>select a random font every 5 seconds</strong>.
+                <ol>
+                    <li>Add a new <cc-gz-checkbox/> with <code>text="Automatic"</code>.</li>
+                    <li>Create a new <code>on_timer</code> callback function that checks if the check-box is checked or not. If yes, select a random font and regenerate the ASCII art.</li>
+                    <li>Create a periodic timer to execute <code>on_timer</code> every 5 seconds with <code>app.schedule(5000, on_timer).</code></li>
+                    <details class="hints">
+                        <summary>Hints</summary>
+                        <ul>
+                            <li>To test if the check-box is checked, use <code>automatic_checkbox.value</code> where <code>automatic_checkbox</code> is the variable that contains the <cc-gz-checkbox/>.</li>
+                            <li>No need to reinvent the wheel to select a random font and regenerate the ASCII art! The <code>on_surprise</code> callback function already does this. So you can simply call it from <code>on_timer</code>.</li>
+                            <li>Read <a href="/offline/lawsie.github.io/guizero/blocking/index.html">Loops and sleeping</a> to learn more about timers in Guizero and why you cannot use <code>time.sleep</code>.</li>
+                        </ul>
+                    </details>
+                </ol>
+            </li>
+            <li>Add a text field to <strong>filter the fonts in <code>font_combo</code></strong> (for improved usability).
+                <ol>
+                    <li>Create a new <cc-gz-textbox/> with <code>text="Filter"</code> and linked to the <code>on_filter</code> callback function. Position it to the left of <code>font_combo</code>.</li>
+                    <li>Create a new <code>on_filter</code> callback function that filters the fonts in the drop down list. If the filter is empty, <code>font_combo</code> should contain all the font names. If the filter is not empty (eg "ro"), <code>font_combo</code> should contain only the fonts that contain this string (eg "Roboto", "New Roman"). The comparison should be case insensitive.</li>
+                    <details class="hints">
+                        <summary>Hints</summary>
+                        <ul>
+                            <li>The list of all the possible fonts is stored in <code>FONT_NAMES</code>.</li>
+                            <li>Use the <code>in</code> operator to check if a string contains a substring. For example <code>"bc" in "abcdef" --&gt; True</code>.</li>
+                            <li>Use <code><a href="https://www.w3schools.com/python/ref_string_lower.asp">lower()</a></code> or <code><a href="https://www.w3schools.com/python/ref_string_upper.asp">upper()</a></code> to achieve a case insensitive comparison.</li>
+                            <li>The <code>options</code> property of <cc-gz-combo/> is read-only. You cannot do something like <code>font_combo.options = ...</code>. Instead you need to <code>clear()</code> the <cc-gz-combo/> then <code>add(...)</code> the new fonts one by one.</li>
+                        </ul>
+                    </details>
+                </ol>
+            </li>
+        </ul>
+    </section>
+
+    <cc-copyright></cc-copyright>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+</html>

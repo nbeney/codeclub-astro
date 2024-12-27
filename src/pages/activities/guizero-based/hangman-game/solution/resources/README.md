@@ -1,0 +1,1 @@
+The hangman images are from https://www.oligalma.com/en/downloads/images/hangman (CC BY 4.0). 

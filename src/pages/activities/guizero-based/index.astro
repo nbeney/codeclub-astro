@@ -4,6 +4,8 @@ import path from 'node:path';
 import { Image } from 'astro:assets';
 
 import CodeBlock from '@components/CodeBlock.astro';
+import ProjectCard from '@components/ProjectCard.astro';
+import ProjectList from '@components/ProjectList.astro';
 
 import PageLayout from '@layouts/PageLayout.astro';
 
@@ -39,6 +41,7 @@ const filePath = path.resolve('public/guizero-sample.py');
 
     <section>
         <h2>Documentation</h2>
+        
         <ul>
             <li><a href="https://lawsie.github.io/guizero/start/index.html">Getting Started</a></li>
             <li><a href="https://lawsie.github.io/guizero/usingwidgets/index.html">Using Widgets</a></li>
@@ -65,24 +68,22 @@ const filePath = path.resolve('public/guizero-sample.py');
     <section>
         <h2>Project ideas</h2>
 
-        <cc-project-filters />
-
-        <div class="grid">
-            <cc-project-card title="ASCII Art Maker" difficulty="easy" path="ascii-art-maker"></cc-project-card>
-            <cc-project-card title="Color Maker" difficulty="easy" path="color-maker"></cc-project-card>
-            <cc-project-card title="Temperature Converter" difficulty="easy" path="temperature-converter"></cc-project-card>
-            <cc-project-card title="Times Tables" difficulty="easy" path="times-tables"></cc-project-card>
-            <cc-project-card title="Binary Clock" difficulty="medium" path="binary-clock"></cc-project-card>
-            <cc-project-card title="Caesar Cipher" difficulty="medium" path="caesar-cipher"></cc-project-card>
-            <cc-project-card title="French Verbs" difficulty="medium" path="french-verbs"></cc-project-card>
-            <cc-project-card title="Memory" difficulty="medium" path="memory-game"></cc-project-card>
-            <cc-project-card title="Morse Code" difficulty="medium" path="morse-code"></cc-project-card>
-            <cc-project-card title="Paint Tool" difficulty="medium" path="paint-tool"></cc-project-card>
-            <cc-project-card title="Spell the Number" difficulty="medium" path="spell-the-number"></cc-project-card>
-            <cc-project-card title="Connect Four" difficulty="hard" path="connect4"></cc-project-card>
-            <cc-project-card title="Hangman" difficulty="hard" path="hangman-game"></cc-project-card>
-            <cc-project-card title="Simon" difficulty="hard" path="simon-game"></cc-project-card>
-            <cc-project-card title="Wordle" difficulty="hard" path="wordle-game"></cc-project-card>
-        </div>
+        <ProjectList>
+            <ProjectCard title="ASCII Art Maker" difficulty="easy" route="/activities/guizero-based/ascii-art-maker/" />
+            <ProjectCard title="Color Maker" difficulty="easy" route="/activities/guizero-based/color-maker/" />
+            <ProjectCard title="Temperature Converter" difficulty="easy" route="/activities/guizero-based/temperature-converter/" />
+            <ProjectCard title="Times Tables" difficulty="easy" route="/activities/guizero-based/times-tables/" />
+            <ProjectCard title="Binary Clock" difficulty="medium" route="/activities/guizero-based/binary-clock/" />
+            <ProjectCard title="Caesar Cipher" difficulty="medium" route="/activities/guizero-based/caesar-cipher/" />
+            <ProjectCard title="French Verbs" difficulty="medium" route="/activities/guizero-based/french-verbs/" />
+            <ProjectCard title="Memory" difficulty="medium" route="/activities/guizero-based/memory-game/" />
+            <ProjectCard title="Morse Code" difficulty="medium" route="/activities/guizero-based/morse-code/" />
+            <ProjectCard title="Paint Tool" difficulty="medium" route="/activities/guizero-based/paint-tool/" />
+            <ProjectCard title="Spell the Number" difficulty="medium" route="/activities/guizero-based/spell-the-number/" />
+            <ProjectCard title="Connect Four" difficulty="hard" route="/activities/guizero-based/connect4/" />
+            <ProjectCard title="Hangman" difficulty="hard" route="/activities/guizero-based/hangman-game/" />
+            <ProjectCard title="Simon" difficulty="hard" route="/activities/guizero-based/simon-game/" />
+            <ProjectCard title="Wordle" difficulty="hard" route="/activities/guizero-based/wordle-game/" />
+        </ProjectList>
     </section>
 </PageLayout>

@@ -1,0 +1,11 @@
+---
+const { difficulty } = Astro.props;
+
+const level = {
+    easy: 'success',
+    medium: 'warning',
+    hard: 'danger'
+}[difficulty];
+---
+
+<span class:list={["badge", `bg-${level}`]}>{difficulty.toUpperCase()}</span>

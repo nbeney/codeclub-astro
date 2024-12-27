@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Temperature Converter</title>
+    <script src="/custom-elements/custom-navbar.js"></script>
+    <script src="/custom-elements/custom-badges.js"></script>
+    <script src="/custom-elements/custom-guizero.js"></script>
+    <script type="module" src="/custom-elements/custom-code-block.js"></script>
+    <script src="/custom-elements/custom-copyright.js"></script>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body class="container">
+
+    <cc-navbar active="guizero" level="3" />
+
+    <h1>Temperature Converter
+        <cc-badge-easy/>
+    </h1>
+
+    <section>
+        <h2>What will I make?</h2>
+        <p>An application to convert temperatures between Celsius and Farenheit degrees.</p>
+        <p>Please read the <a href="http://127.0.0.1:5500/offline/lawsie.github.io/guizero/layout/index.html">Guizero documentation about layouts</a> before continuing. This will teach you how to position the widgets on the screen.</p>
+        <p>The GUI is comprised of a single window (<cc-gz-app/>) with these widgets:</p>
+        <ul>
+            <li>a container (<cc-gz-box/>) with:
+                <ul>
+                    <li>a label (<cc-gz-text/>) for "Celsius"</li>
+                    <li>a text field (<cc-gz-textbox/>) to input/output the temperature in Celsius degrees (<code>textbox_celsius</code>)</li>
+                    <li>a label (<cc-gz-text/>) for "Farenheit"</li>
+                    <li>a text field (<cc-gz-textbox/>) to input/output the temperature in Farenheit degrees (<code>textbox_farenheit</code>)</li>
+                </ul>
+            </li>
+            <li>an image (<cc-gz-picture />) for the logo</li>
+        </ul>
+        <img src="screenshot.png" alt="Screenshot">
+    </section>
+
+    <section>
+        <br />
+        <h2>Instructions</h2>
+        <ol>
+            <li>Download and uncompress the <a href="starter-kit.zip">starter kit</a> ZIP archive which contains all the resources (eg images) you need and some code to get you started..</li>
+            <li>Open the <code>main.py</code> file in your favourite editor (eg IDLE)..</li>
+            <li>Run the program. A window should pop up but nothing will happen when you enter some text or click the buttons. This is because the code is incomplete but you will fix this next..</li>
+            <li>Modify <code>main.py</code>, adding the missing code in the places marked with <code># TODO</code>. In particular:
+                <ul>
+                    <li>
+                        Implement the <code>on_change_celsius</code> callback function for when the Celsius text field changes:
+                        <ol>
+                            <li>Get the text, convert it to a <code>float</code> and store it in a variable with <code>celsius = float(textbox_celsius.value)</code>.</li>
+                            <li>Convert the Celsius to Farenheit and update the Farenheit text with <code>textbox_farenheit.value = celsius_to_farenheit(celsius)</code>.</li>
+                            <li>If no error occurs (ie if a valid Celsius temperature has been entered), set the background color of both text fields to white.</li>
+                            <li>If an error occurs (ie if an invalid Celsius temperature has been entered), set the background color of both text fields to pink and blank out the Farenheit text field.</li>
+                        </ol>
+                        <details class="show-me">
+                            <summary>Show me</summary>
+                            <cc-code-block>
+# Callback function for when the Celsius text changes.
+def on_change_celsius():
+    try:
+        celsius = float(textbox_celsius.value)
+        textbox_farenheit.value = celsius_to_farenheit(celsius)
+        textbox_celsius.bg = "white"
+        textbox_farenheit.bg = "white"
+    except ValueError:
+        textbox_farenheit.value = ""
+        textbox_celsius.bg = "pink"
+        textbox_farenheit.bg = "pink"
+                            </cc-code-block>
+                        </details>
+                    </li>
+                    <li>
+                        Implement the <code>on_change_farenheit</code> callback function for when the Farenheit text field changes:
+                        <ol>
+                            <li>Get the text, convert it to a <code>float</code> and store it in a variable with <code>farenheit = float(textbox_farenheit.value)</code>.</li>
+                            <li>Convert the Farenheit to Celsius and update the Celsius text with <code>textbox_celsius.value = farenheit_to_celsius(farenheit)</code>.</li>
+                            <li>If no error occurs (ie if a valid Farenheit temperature has been entered), set the background color of both text fields to white.</li>
+                            <li>If an error occurs (ie if an invalid Farenheit temperature has been entered), set the background color of both text fields to pink and blank out the Celsius text field.</li>
+                        </ol>
+                        <details class="show-me">
+                            <summary>Show me</summary>
+                            <cc-code-block>
+# Callback function for when the Farenheit text changes.
+def on_change_farenheit():
+    try:
+        farenheit = float(textbox_farenheit.value)
+        textbox_celsius.value = farenheit_to_celsius(farenheit)
+        textbox_celsius.bg = "white"
+        textbox_farenheit.bg = "white"
+    except ValueError:
+        textbox_celsius.value = ""
+        textbox_celsius.bg = "pink"
+        textbox_farenheit.bg = "pink"
+                            </cc-code-block>
+                        </details>
+                    </li>
+                    <li>
+                        Implement the <code>celsius_to_farenheit</code> function to convert from Celsius to Farenheit:
+                        <ol>
+                            <li>The formula is <code>&deg;F = (&deg;C x 9/5) + 32</code>.</li>
+                        </ol>
+                        <details class="show-me">
+                            <summary>Show me</summary>
+                            <cc-code-block>
+# Function to convert from Celsius to Farenheit.
+def celsius_to_farenheit(celsius):
+    return (celsius * 9 / 5) + 32
+                            </cc-code-block>
+                        </details>
+                    </li>
+                    <li>
+                        Implement the <code>farenheit_to_celsius</code> function to convert from Farenheit to Celsius:
+                        <ol>
+                            <li>The formula is <code>&deg;C = (&deg;F - 32) x 5/9</code>.</li>
+                        </ol>
+                        <details class="show-me">
+                            <summary>Show me</summary>
+                            <cc-code-block>
+# Function to convert from Farenheit to Celsius.
+def farenheit_to_celsius(farenheit):
+    return (farenheit - 32) * 5 / 9
+                            </cc-code-block>
+                        </details>
+                    </li>
+                </ul>
+            </li>
+        </ol>
+        <p>If you would prefer writing all the Python code by yourself, download and uncompress the <a href="./resources.zip">resources</a> ZIP archive. It contains all the resources (eg images) but no Python code.</p>
+        <p>If you would like to see the finished app, download and uncompress the <a href="./solution.zip">solution</a> ZIP archive. It contains all the resources (eg images) and the full Python code.</p>
+    </section>
+
+    <section>
+        <h2>What can I try next?</h2>
+        <p>Here are some things you can try to make the app better. They are independent from each other so you can pick just a couple or do them in a different order. If you get stuck, use the <em>Hints</em> button or read the Guizero documentation (see <a href="../index.html">Build an app with Guizero</a>).</p>
+        <p>And of course you can also use your imagination and change the app as you like!</p>
+        <ul>
+            <li>Learn how to <strong>handle errors to make your programs more robust</strong> by reading W3School's <a href="https://www.w3schools.com/python/python_try_except.asp">Python Try Except</a> and <a href="https://www.w3schools.com/python/python_ref_exceptions.asp">Python Built-in Exceptions</a>.</li>
+            <li>Use <strong>different units</strong> than Celsius and Farenheit. For example you could convert between kilometers and miles.
+                <ol>
+                    <li>The structure of the code will probably not change.</li>
+                    <li>Replace all the references to <em>temperature/Celsius/Farenheit/etc</em> by the appropriate words (eg <em>distance/kilometers/miles/etc</em>) in:
+                        <ul>
+                            <li>the widgets: look for things like <code>title</code>, <code>text</code>, etc.</li>
+                            <li>the code: look for things like variable names, function names, etc.</li>
+                        </ul>
+                    </li>
+                    <li>Change the formulas in the conversion functions.</li>
+                </ol>
+            </li>
+            <li>Add <strong>Kelvin degrees</strong> which are a temperature scale used by scientists.
+                <ol>
+                    <li>The formulas to convert between Celsius and Kelvin are <code>&deg;K = &deg;C + 273.15</code> and <code>&deg;C = &deg;K - 273.15</code>.</li>
+                    <li>To convert between Farenheit and Kelvin, you can convert to Celsius as an intermediate step.</li>
+                    <li>Create a new <cc-gz-textbox/> (with an associated <cc-gz-text/> for the label) linked to the <code>on_change_kelvin</code> callback function.</li>
+                    <li>Create a new <code>on_change_kelvin</code> callback function to update the Celsius and Farenheit text fields.</li>
+                    <li>Modify the <code>on_change_celsius</code> and <code>on_change_farenheit</code> callback functions to also update the Kelvin text field.</li>
+                </ol>
+            </li>
+        </ul>
+    </section>
+
+    <cc-copyright></cc-copyright>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+</html>

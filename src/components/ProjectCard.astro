@@ -1,0 +1,26 @@
+---
+import { Image } from 'astro:assets';
+
+import Badge from '@components/Badge.astro';
+
+import { findPngPath } from '@scripts/utils.js';
+
+const { title, difficulty, route } = Astro.props;
+
+const src = findPngPath(`${route}screenshot.png`);
+const href = route;
+---
+
+<div class:list={["card", "grid-item", difficulty]}>
+    <a href={import.meta.env.BASE_URL + href}><Image src={src} class="card-img-top" alt={route}></a>
+    <h5 class="card-body">{title}
+        <Badge difficulty={difficulty} />
+    </h5>
+</div>
+
+<style>
+    .card {
+        width: 20em; 
+        margin: 0 1em 1em 0;
+    }
+</style>

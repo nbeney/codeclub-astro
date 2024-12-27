@@ -1,22 +1,21 @@
 ---
 import { Image } from 'astro:assets';
-import ConditionalLink from '@components/ConditionalLink.astro'
+
+import ConditionalLink from '@components/ConditionalLink.astro';
+
+import { findJpgPath } from '@scripts/utils.js';
 
 const { route, language, isReady, description, logo } = Astro.props;
 
 const href = import.meta.env.BASE_URL + route;
 const alt = route;
-
-const logoPath = `/src/pages${route}${logo}`;
-const logoImages = import.meta.glob('/src/pages/**/*.{jpg,jpeg,png,gif}');
-if (!logoImages[logoPath]) throw new Error(`"${logoPath}" does not exist in glob: "/src/pages/**/*.{jpg,jpeg,png,gif}"`);
-const logoImage = logoImages[logoPath]();
+const src = findJpgPath(`/src/pages${route}${logo}`);
 ---
 
 <ConditionalLink href={href} condition={isReady}>
     <div class:list={["card", language, isReady || "not-ready"]}>
         <ConditionalLink href={href} condition={isReady}>
-            <Image src={logoImage} alt={alt} width="238" height="238" class="card-img-top"/>
+            <Image src={src} alt={alt} width="238" height="238" class="card-img-top"/>
             <div class="card-body">
                 <h5 class="card-title">
                     <Fragment set:html={description} />
