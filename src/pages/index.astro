@@ -5,10 +5,11 @@ import ActivityCard from '@components/ActivityCard.astro';
 
 import PageLayout from '@layouts/PageLayout.astro';
 
-const pageTitle = "Codeclub";
+const title = "Codeclub";
+const heading = "Codeclub";
 ---
 
-<PageLayout pageTitle={pageTitle} active="home">
+<PageLayout title={title} heading={heading} active="home">
     <p>What do you want to create today?</p>
     {pagesWithLogo.map((page) => <ActivityCard {...page} />)}
 </PageLayout>

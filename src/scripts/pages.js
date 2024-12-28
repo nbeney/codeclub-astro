@@ -94,8 +94,16 @@ const pages = [
         description: 'Python libraries',
         isReady: true,
         logo: null
-    }
-]
+    },
+    { 
+        name: 'Tests', 
+        route: '/tests', 
+        language: '', 
+        description: 'Interna tests', 
+        isReady: true, 
+        logo: null 
+    },
+];
 
 const pagesWithLogo = pages.filter(page => page.logo !== null);
 

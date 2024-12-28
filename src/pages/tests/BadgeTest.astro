@@ -1,0 +1,22 @@
+---
+import Badge from '@components/Badge.astro';
+
+import PageLayout from "@layouts/PageLayout.astro";
+
+const title = "Test - Badge";
+const heading = "Badge Test";
+const active = "page1";
+
+const pages = [
+    { name: "Page1", route: "/dummy/page1/" },
+    { name: "Page2", route: "/dummy/page2/" },
+];
+---
+
+<PageLayout title={title} heading={heading} active={active} pages={pages}>
+    <ul>
+        <li><Badge difficulty="easy" /></li>
+        <li><Badge difficulty="medium" /></li>
+        <li><Badge difficulty="hard" /></li>
+    </ul>
+</PageLayout>

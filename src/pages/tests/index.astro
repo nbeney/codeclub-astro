@@ -1,0 +1,26 @@
+---
+import PageLayout from "@layouts/PageLayout.astro";
+
+const testPages = import.meta.glob("/src/pages/tests/**/*.astro");
+const links = Object.keys(testPages).map((path) => {
+    const route = path.replace("/src/pages", "").replace(".astro", "");
+    return {
+        path: route,
+        title: route.split("/").pop(),
+    };
+});
+---
+
+<PageLayout title="Internal Tests" heading="Internal Tests" active="tests">
+    <ul>
+        {
+            links.map((link) => (
+                <li>
+                    <a href={import.meta.env.BASE_URL + link.path}>
+                        {link.title}
+                    </a>
+                </li>
+            ))
+        }
+    </ul>
+</PageLayout>

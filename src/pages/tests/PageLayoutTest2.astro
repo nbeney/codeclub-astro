@@ -1,0 +1,18 @@
+---
+import PageLayout from '@layouts/PageLayout.astro';
+
+const title = "Test - PageLayout #2";
+const heading = "PageLayout Test #2";
+const active = "page2";
+const otherHref = import.meta.env.BASE_URL + '/tests/PageLayoutTest1';
+
+const pages = [
+    { name: "Page1", route: "/tests/PageLayoutTest1" },
+    { name: "Page2", route: "/tests/PageLayoutTest2" },
+];
+---
+
+<PageLayout title={title} heading={heading} active={active} pages={pages}>
+    <p>Some content here...</p>
+    <p><a href={otherHref}>Go to page #1</a></p>
+</PageLayout>

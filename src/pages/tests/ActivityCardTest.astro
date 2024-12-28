@@ -1,0 +1,43 @@
+---
+import ActivityCard from "@components/ActivityCard.astro";
+
+import PageLayout from "@layouts/PageLayout.astro";
+
+const title = "Test - ActivityCard";
+const heading = "ActivityCard Test";
+const active = "home";
+
+const pages = [
+    {
+        name: "Home",
+        route: "/tests/ActivityCardTest",
+        language: "",
+        description: "Home page",
+        isReady: true,
+        logo: null,
+    },
+    {
+        name: "Page1",
+        route: "/dummy/page1/",
+        language: "python",
+        description: "Page is <em>ready</em>",
+        isReady: true,
+        logo: "logo.jpg",
+    },
+    {
+        name: "Page2",
+        route: "/dummy/page2/",
+        language: "",
+        description: "Page is <em>not ready</em>",
+        isReady: false,
+        logo: "logo.jpg",
+    },
+];
+
+const pagesReady = pages.filter((page) => page.isReady);
+const pagesWithLogo = pages.filter((page) => page.logo !== null);
+---
+
+<PageLayout title={title} heading={heading} active={active} pages={pagesReady}>
+    {pagesWithLogo.map((page) => <ActivityCard {...page} />)}
+</PageLayout>
