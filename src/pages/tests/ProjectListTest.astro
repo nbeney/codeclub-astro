@@ -1,0 +1,23 @@
+---
+import ProjectCard from "@components/ProjectCard.astro";
+import ProjectList from "@components/ProjectList.astro";
+
+import PageLayout from "@layouts/PageLayout.astro";
+
+const title = "Test - ProjectList";
+const heading = "ProjectList Test";
+const active = "page1";
+
+const pages = [
+    { name: "Page1", route: "/dummy/page1/" },
+    { name: "Page2", route: "/dummy/page2/" },
+];
+---
+
+<PageLayout title={title} heading={heading} active={active} pages={pages}>
+    <ProjectList>
+        <ProjectCard title="ASCII Art Maker" difficulty="easy" route="/activities/guizero-based/ascii-art-maker/" />
+        <ProjectCard title="Binary Clock" difficulty="medium" route="/activities/guizero-based/binary-clock/" />
+        <ProjectCard title="Connect Four" difficulty="hard" route="/activities/guizero-based/connect4/" />
+    </ProjectList>
+</PageLayout>
