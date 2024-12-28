@@ -9,7 +9,7 @@ const { route, language, isReady, description, logo } = Astro.props;
 
 const href = import.meta.env.BASE_URL + route;
 const alt = route;
-const src = findJpgPath(`/src/pages${route}${logo}`);
+const src = findJpgPath(`/src/assets/images${route}${logo}`);
 ---
 
 <ConditionalLink href={href} condition={isReady}>

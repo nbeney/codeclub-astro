@@ -20,3 +20,7 @@ pnpm-debug.log*
 
 # Misc.
 _TEMP/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
