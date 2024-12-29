@@ -1,9 +1,92 @@
 ---
+import path from 'node:path';
+
+import { Image } from 'astro:assets';
+
+import CodeBlock from '@components/CodeBlock.astro';
+import ProjectCard from '@components/ProjectCard.astro';
+import ProjectList from '@components/ProjectList.astro';
+
 import PageLayout from '@layouts/PageLayout.astro';
+
+import screenshot from '@images/activities/adventurelib-based/screenshot.png';
 
 const title = "Build an adventure game with Adventurelib";
 const heading = "Build an adventure game with Adventurelib";
+
+const filePath = path.resolve('public/activities/adventurelib-based/sample.py');
 ---
 
 <PageLayout title={title} heading={heading} active="adventurelib">
+    <section>
+        <h2>Read this first</h2>
+
+        <p><code>Adventurelib</code> is a <a href="../python-libraries/index.html">Python library</a> for creating text-based adventure games.</p>
+
+        <p>First check that <code>adventurelib</code> is installed on your PC by running this program. If all is ok, the program will print OK, otherwise you will see an error message.</p>
+
+        <CodeBlock src={filePath} />
+
+        <p>An interaction with the program could look like this:</p>
+
+        <pre>
+> look around
+I don't understand 'look around'.
+
+> help
+Here is a list of the commands you can give:
+?
+check
+help
+pick THING
+quit
+throw THING
+
+> check
+Your bag is empty!
+
+> pick apple
+You have 1 items in your bag now.
+
+> pick banana
+You have 2 items in your bag now.
+
+> check
+You have banana, apple
+
+> throw apple
+You have 1 items left in your bag.
+
+> throw tomato
+Sorry, you have no tomato in your bag!
+
+> check
+You have banana
+
+> quit
+        </pre>
+
+        <p>You can also try running this program on <a href="https://replit.com/@nicoben/adventurelib-demo?v=1">repl.it</a>.</p>
+
+        <p>Then you should read this <a href="https://adventurelib.readthedocs.io/en/stable/intro.html">introduction</a> to learn the basics.</p>
+    </section>
+
+    <section>
+        <h2>Documentation</h2>
+        <ul>
+            <li><a href="https://adventurelib.readthedocs.io/en/stable/">Main page</a></li>
+            <li><a href="https://adventurelib.readthedocs.io/en/stable/intro.html">Introduction</a></li>
+            <li><a href="https://adventurelib.readthedocs.io/en/stable/commands.html">Binding commands</a></li>
+            <li><a href="https://adventurelib.readthedocs.io/en/stable/rooms.html">Rooms</a></li>
+            <li><a href="https://adventurelib.readthedocs.io/en/stable/items.html">Items</a></li>
+            <li><a href="https://adventurelib.readthedocs.io/en/stable/customising.html">Customisations</a></li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Project ideas</h2>
+
+        <ProjectList>
+        </ProjectList>
+    </section>
 </PageLayout>
