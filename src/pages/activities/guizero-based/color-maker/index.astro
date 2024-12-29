@@ -1,0 +1,185 @@
+---
+import path from 'node:path';
+
+import { Image } from 'astro:assets';
+
+import CodeBlock from '@components/CodeBlock.astro';
+
+import PageLayout from '@layouts/PageLayout.astro';
+
+import screenshot from '@images/activities/guizero-based/color-maker/screenshot.png';
+
+const title = "Color Maker";
+const heading = "Color Maker";
+
+const filePath = path.resolve('public/activities/guizero-based/sample.py');
+---
+
+<PageLayout title={title} heading={heading} active="guizero" difficulty="easy">
+    <section>
+        <h2>What will I make?</h2>
+        <p>An application to create new colors by mixing red, green, and blue.</p>
+        <p>Please read the <a href="/offline/lawsie.github.io/guizero/colors/index.html">Guizero documentation about colors</a> before continuing. This will teach you different ways to specify colors in Guizero.</p>
+        <p>The GUI is comprised of a single window (<cc-gz-app/>) with these widgets:</p>
+        <ul>
+            <li>three images (<cc-gz-picture/>) for the header</li>
+            <li>a slider (<cc-gz-slider />) to enter the amount of red (<code>red_slider</code>)</li>
+            <li>a slider (<cc-gz-slider />) to enter the amount of green (<code>green_slider</code>)</li>
+            <li>a slider (<cc-gz-slider />) to enter the amount of blue (<code>blue_slider</code>)</li>
+            <li>a color patch (<cc-gz-text/>) to show the resulting color (<code>patch_text</code>)</li>
+        </ul>
+        <p><Image src={screenshot} alt="Screenshot" /></p>
+    </section>
+
+    <section>
+        <br />
+        <h2>Instructions</h2>
+        <ol>
+            <li>Download and uncompress the <a href="starter-kit.zip">starter kit</a> ZIP archive which contains all the resources (eg images) you need and some code to get you started..</li>
+            <li>Open the <code>main.py</code> file in your favourite editor (eg IDLE)..</li>
+            <li>Run the program. A window should pop up but nothing will happen when you move the sliders. This is because the code is incomplete but you will fix this next..</li>
+            <li>Modify <code>main.py</code>, adding the missing code in the places marked with <code># TODO</code>. In particular:
+                <ul>
+                    <li>
+                        Implement the <code>on_change_red</code> callback function for when the red slider is moved:
+                        <ol>
+                            <li>The new amount of red is passed to the function as a string parameter (<code>slider_value</code>).</li>
+                            <li>Convert <code>slider_value</code> to an integer and store it into a variable (<code>r</code>).</li>
+                            <li>Set the background color of <code>slider_red</code> to <code>(r, 0, 0)</code>.</li>
+                            <li>Set the foreground color of <code>slider_red</code> to <code>white</code> if <code>r &lt; 180</code> or to <code>black</code> else.</li>
+                            <li>Call the <code>mix_colors()</code> function which will mix the 3 colors and update <code>patch_text</code>.</li>
+                        </ol>
+                        <details class="show-me">
+                            <summary>Show me</summary>
+                            <CodeBlock>
+def on_change_red(slider_value):
+    r = int(slider_value)
+    red_slider.bg = (r, 0, 0)
+    red_slider.text_color = "white" if r &lt; 180 else "black"
+    mix_colors()
+                            </CodeBlock>
+                        </details>
+                    </li>
+                    <li>
+                        Implement the <code>on_change_green</code> callback function for when the green slider is moved:
+                        <ol>
+                            <li>The new amount of green is passed to the function as a string parameter (<code>slider_value</code>).</li>
+                            <li>Convert <code>slider_value</code> to an integer and store it into a variable (<code>g</code>).</li>
+                            <li>Set the background color of <code>slider_green</code> to <code>(0, g, 0)</code>.</li>
+                            <li>Set the foreground color of <code>slider_green</code> to <code>white</code> if <code>g &lt; 180</code> or to <code>black</code> else.</li>
+                            <li>Call the <code>mix_colors()</code> function which will mix the 3 colors and update <code>patch_text</code>.</li>
+                        </ol>
+                        <details class="show-me">
+                            <summary>Show me</summary>
+                            <CodeBlock>
+def on_change_green(slider_value):
+    g = int(slider_value)
+    green_slider.bg = (0, g, 0)
+    green_slider.text_color = "white" if g &lt; 180 else "black"
+    mix_colors()
+                            </CodeBlock>
+                        </details>
+                    </li>                
+                    <li>
+                        Implement the <code>on_change_blue</code> callback function for when the blue slider is moved:
+                        <ol>
+                            <li>The new amount of blue is passed to the function as a string parameter (<code>slider_value</code>).</li>
+                            <li>Convert <code>slider_value</code> to an integer and store it into a variable (<code>b</code>).</li>
+                            <li>Set the background color of <code>slider_blue</code> to <code>(0, 0, b)</code>.</li>
+                            <li>Set the foreground color of <code>slider_blue</code> to <code>white</code>.</li>
+                            <li>Call the <code>mix_colors()</code> function which will mix the 3 colors and update <code>patch_text</code>.</li>
+                        </ol>
+                        <details class="show-me">
+                            <summary>Show me</summary>
+                            <CodeBlock>
+def on_change_blue(slider_value):
+    b = int(slider_value)
+    blue_slider.bg = (0, 0, b)
+    blue_slider.text_color = "white"
+    mix_colors()
+                            </CodeBlock>
+                        </details>
+                    </li>                
+                </ul>
+            </li>
+        </ol>
+        <p>If you would prefer writing all the Python code by yourself, download and uncompress the <a href="./resources.zip">resources</a> ZIP archive. It contains all the resources (eg images) but no Python code.</p>
+        <p>If you would like to see the finished app, download and uncompress the <a href="./solution.zip">solution</a> ZIP archive. It contains all the resources (eg images) and the full Python code.</p>
+    </section>
+
+    <section>
+        <h2>What can I try next?</h2>
+        <p>Here are some things you can try to make the app better. They are independent from each other so you can pick just a couple or do them in a different order. If you get stuck, use the <em>Hints</em> button or read the Guizero documentation (see <a href="../index.html">Build an app with Guizero</a>).</p>
+        <p>And of course you can also use your imagination and change the app as you like!</p>
+        <ul>
+            <li>Learn more about colors with the <strong><a href="https://www.w3schools.com/colors/">W3Schools Colors Tutorial</a></strong>.</li>
+            <li>Add a button to <strong>pick a random color</strong>.
+                <ol>
+                    <li>Create a new <cc-gz-pushbutton/> with <code>text="Random"</code> (or an image) and linked to the <code>on_random</code> callback function.</li>
+                    <li>Create a new <code>on_random</code> callback function to pick random values between 0-255 for red/green/blue and update the display.</li>
+                    <details class="hints">
+                        <summary>Hints</summary>
+                        <ul>
+                            <li>You can generate a random number between 0-255 with <code>random.randint(0, 255)</code>.</li>
+                            <li>Setting the value of a slider, eg <code>red_slider.value = ...</code> will cause it's callback function to execute automatically.</li>
+                            <li>Adding the new button will use up some vertical space and you will need to increase the <code>height</code> of the <cc-gz-app/> accordingly.</li>
+                        </ul>
+                    </details>
+                </ol>
+            </li>
+            <li>Add a drop-down list with <strong>predefined colors</strong>.
+                <ol>
+                    <li>
+                        Create a new <a href="https://www.w3schools.com/python/python_dictionaries.asp">dictionary</a> stored in the variable <code>colors</code>. 
+                        This dictionary contains key-value pairs where the key is the color name and the value is a <a href="https://www.w3schools.com/python/python_tuples.asp">tuple</a> with the R/G/B values.
+                        The dictionary can be hard-coded (ie defined in the code) or loaded from a text file (eg see <code>colors.csv</code> in the <code>resources</code> folder).
+                    </li>
+                    <details class="hints">
+                        <summary>Hints</summary>
+                        <ul>
+                            <li>Here is an example of a hard-coded dictionary:
+                                <CodeBlock>
+colors = {{
+    "White": (255, 255, 255),
+    "Black": (0, 0, 0),
+    "Gray": (128, 128, 128),
+    "Red": (255, 0, 0),
+    "Green": (0, 255, 0),
+    "Blue": (0, 0, 255),
+    "Yellow": (255, 255, 0),
+    "Cyan": (0, 255, 255),
+    "Magenta": (255, 0, 255)
+}}
+                                </CodeBlock>
+                            </li>
+                            <li>The <code>resources/colors.csv</code> file is in comma-separated-values (CSV) format. Its content looks like this:
+                                <CodeBlock>
+COLOR_NAME,RED,GREEN,BLUE
+Black,0,0,0
+White,255,255,255
+Red,255,0,0
+Green,0,255,0
+Blue,0,0,255
+...
+                                </CodeBlock>
+                            </li>
+                            <li>Read the <a href="https://www.w3schools.com/python/python_file_handling.asp">File Handling</a> section from W3Schools to find how to read a text file.</li>
+                            <li>The color name and R/G/B values can be extracted from a line of text using the <a href="https://www.w3schools.com/python/ref_string_split.asp">str.split()</a> function, eg with something like <code>name, r, g, b = line.split(",")</code>.</li>
+                        </ul>
+                    </details>
+                    <li>Create a new <cc-gz-combo/> with <code>options=list(colors.keys())</code> and linked to the <code>on_predefined</code> callback function.</li>
+                    <li>Create a new <code>on_predefined</code> callback function to change the color.</li>
+                    <details class="hints">
+                        <summary>Hints</summary>
+                        <ul>
+                            <li>The callback function needs to take <code>color_name</code> as a parameter.</li>
+                            <li>The RGB tuple can be retrieved from <code>color_name</code> with something like <code>color_rgb = colors[color_name]</code>.</li>
+                            <li>The amouunt of R/G/B can be retrieved from <code>color_rgb</code> with something like <code>r, g, b = color_rgb</code>.</li>
+                            <li>Finally you need to change the value of each slider, eg <code>red_slider.value = r</code>.</li>
+                        </ul>
+                    </details>
+                </ol>
+            </li>
+        </ul>
+    </section>
+</PageLayout>
