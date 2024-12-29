@@ -1,9 +1,72 @@
 ---
+import path from 'node:path';
+
+import { Image } from 'astro:assets';
+
+import CodeBlock from '@components/CodeBlock.astro';
+import ProjectCard from '@components/ProjectCard.astro';
+import ProjectList from '@components/ProjectList.astro';
+
 import PageLayout from '@layouts/PageLayout.astro';
+
+import screenshot from '@images/activities/pygame-zero-based/screenshot.png';
 
 const title = "Build a video game with Pygame Zero";
 const heading = "Build a video game with Pygame Zero";
+
+const filePath = path.resolve('public/activities/pygame-zero-based/sample.py');
 ---
 
 <PageLayout title={title} heading={heading} active="pygame">
+    <section>
+        <h2>Read this first</h2>
+
+        <p><code>Pygame Zero</code> is a <a href="../python-libraries/index.html">Python library</a> for creating simple video games.</p>
+
+        <p>First check that <code>pgzero</code> is installed on your PC by running this program. Don't worry if you don't understand how it works yet. You will soon learn what all these instructions mean.</p>
+
+        <CodeBlock src={filePath} />
+
+        <p>If all is well, you will see a window like this:</p>
+
+        <p><Image src={screenshot} alt="Screenshot" /></p>
+        
+        <p>Try clicking the mouse or pressing the space bar and see what happens.</p>
+
+        <p>You can also try running this program on <a href="https://replit.com/@nicoben/pgzero-demo?v=1">repl.it</a>.</p>
+
+        <p>Then read these 2 pages to learn the basics.</p>
+        <ul>
+            <li><a href="https://pygame-zero.readthedocs.io/en/stable/introduction.html">Introduction to Pygame Zero</a></li>
+            <li><a href="https://pygame-zero.readthedocs.io/en/stable/from-scratch.html">Migrating from Scratch</a></li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Documentation</h2>
+        <ul>
+            <li><a href="https://pygame-zero.readthedocs.io/en/stable/index.html">Main page</a></li>
+            <li><a href="https://pygame-zero.readthedocs.io/en/stable/hooks.html">Event Hooks</a></li>
+            <li><a href="https://pygame-zero.readthedocs.io/en/stable/builtins.html">Built-in Objects</a></li>
+            <li><a href="https://pygame-zero.readthedocs.io/en/stable/resources.html">Tutorials and Resources</a></li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Project ideas</h2>
+
+        <ProjectList>
+            <ProjectCard title="Asteroids" difficulty="medium" route="/activities/pygame-zero-based/asteroids/" href="https://berbasoft.com/simplegametutorials/pygamezero/asteroids/" />
+            <ProjectCard title="Bird" difficulty="medium" route="/activities/pygame-zero-based/bird/" href="https://berbasoft.com/simplegametutorials/pygamezero/bird/" />
+            <ProjectCard title="Blackjack" difficulty="medium" route="/activities/pygame-zero-based/blackjack/" href="https://berbasoft.com/simplegametutorials/pygamezero/blackjack/" />
+            <ProjectCard title="Blocks" difficulty="medium" route="/activities/pygame-zero-based/blocks/" href="https://berbasoft.com/simplegametutorials/pygamezero/blocks/" />
+            <ProjectCard title="Eyes" difficulty="medium" route="/activities/pygame-zero-based/eyes/" href="https://berbasoft.com/simplegametutorials/pygamezero/eyes/" />
+            <ProjectCard title="Fifteen" difficulty="medium" route="/activities/pygame-zero-based/fifteen/" href="https://berbasoft.com/simplegametutorials/pygamezero/fifteen/" />
+            <ProjectCard title="Flowers" difficulty="hard" route="/activities/pygame-zero-based/flowers/" href="https://berbasoft.com/simplegametutorials/pygamezero/flowers/" />
+            <ProjectCard title="Life" difficulty="medium" route="/activities/pygame-zero-based/life/" href="https://berbasoft.com/simplegametutorials/pygamezero/life/" />
+            <ProjectCard title="Repeat" difficulty="medium" route="/activities/pygame-zero-based/repeat/" href="https://berbasoft.com/simplegametutorials/pygamezero/repeat/" />
+            <ProjectCard title="Snake" difficulty="medium" route="/activities/pygame-zero-based/snake/" href="https://berbasoft.com/simplegametutorials/pygamezero/snake/" />
+            <ProjectCard title="Sokoban" difficulty="hard" route="/activities/pygame-zero-based/sokoban/" href="https://berbasoft.com/simplegametutorials/pygamezero/sokoban/" />
+        </ProjectList>
+    </section>
 </PageLayout>
