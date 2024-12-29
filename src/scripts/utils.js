@@ -12,4 +12,11 @@ function findPngPath(pattern) {
     return paths[key]();
 }
 
-export { findJpgPath, findPngPath };
+function nextId(seqName) {
+    if (!nextId.map) nextId.map = new Map();
+    if (!nextId.map.has(seqName)) nextId.map.set(seqName, 0);
+    nextId.map.set(seqName, nextId.map.get(seqName) + 1);
+    return nextId.map.get(seqName);
+}
+
+export { findJpgPath, findPngPath, nextId };
