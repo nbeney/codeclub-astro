@@ -1,0 +1,39 @@
+
+---
+import path from 'node:path';
+
+import { Image } from 'astro:assets';
+
+import CodeBlock from '@components/CodeBlock.astro';
+
+import PageLayout from '@layouts/PageLayout.astro';
+
+import screenshot from '@images/activities/guizero-based/memory-game/screenshot.png';
+
+const title = "Memory Game";
+const heading = "Memory Game";
+---
+
+<PageLayout title={title} heading={heading} active="guizero" difficulty="medium">
+    <section>
+        <h2>What will I make?</h2>
+        <p>...</p>
+        <p><Image src={screenshot} alt="Screenshot" /></p>
+    </section>
+
+    <section>
+        <br />
+        <h2>Instructions</h2>
+        <p>...</p>
+        <ul>
+            <li><a href="./resources.zip">Resources archive</a></li>
+            <li><a href="./starter-kit.zip">Starter kit archive</a></li>
+            <li><a href="./solution.zip">Solution archive</a></li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>What can I try next?</h2>
+        <p>...</p>
+    </section>
+</PageLayout>
