@@ -1,26 +1,21 @@
-<!doctype html>
-<html lang="en">
+---
+import path from 'node:path';
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ASCII Art Maker</title>
-    <script src="/custom-elements/custom-navbar.js"></script>
-    <script src="/custom-elements/custom-badges.js"></script>
-    <script src="/custom-elements/custom-guizero.js"></script>
-    <script type="module" src="/custom-elements/custom-code-block.js"></script>
-    <script src="/custom-elements/custom-copyright.js"></script>
-    <link rel="stylesheet" href="/style.css">
-</head>
+import { Image } from 'astro:assets';
 
-<body class="container">
+import CodeBlock from '@components/CodeBlock.astro';
 
-    <cc-navbar active="guizero" level="3" />
+import PageLayout from '@layouts/PageLayout.astro';
 
-    <h1>ASCII Art Maker
-        <cc-badge-easy/>
-    </h1>
+import screenshot from '@images/activities/guizero-based/ascii-art-maker/screenshot.png';
 
+const title = "ASCII Art Maker";
+const heading = "ASCII Art Maker";
+
+const filePath = path.resolve('public/activities/guizero-based/sample.py');
+---
+
+<PageLayout title={title} heading={heading} active="guizero" difficulty="easy">
     <section>
         <h2>What will I make?</h2>
         <p>An application to convert text into <a href="https://en.wikipedia.org/wiki/ASCII_art">ASCII art</a>.</p>
@@ -33,7 +28,7 @@
             <li>a "surprise" button (<cc-gz-pushbutton />) to select a random font</li>
             <li>a multiline text field (<cc-gz-textbox />) to output the result (<code>output_text</code>)</li>
         </ul>
-        <img src="screenshot.png" alt="Screenshot">
+        <p><Image src={screenshot} alt="Screenshot" /></p>
     </section>
 
     <section>
@@ -55,14 +50,14 @@
                         </ol>
                         <details class="show-me">
                             <summary>Show me</summary>
-                            <cc-code-block>
+                            <CodeBlock>
 # Callback function for when the text or font changes.
 def on_change():
     text = input_text.value
     font = font_combo.value
     art = pf.figlet_format(text, font)
     output_text.value = art
-                            </cc-code-block>
+                            </CodeBlock>
                         </details>
                     </li>
                     <li>
@@ -74,13 +69,13 @@ def on_change():
                         </ol>
                         <details class="show-me">
                             <summary>Show me</summary>
-                            <cc-code-block>
+                            <CodeBlock>
 # Callback function for when the color button is clicked.
 def on_color():
     color = app.select_color(color=output_text.text_color)
     if color:
         output_text.text_color = color
-                            </cc-code-block>
+                            </CodeBlock>
                         </details>
                     </li>
                     <li>
@@ -92,13 +87,13 @@ def on_color():
                         </ol>
                         <details class="show-me">
                             <summary>Show me</summary>
-                            <cc-code-block>
+                            <CodeBlock>
 # Callback function for when the surprise button is clicked.
 def on_surprise():
     font = random.choice(font_combo.options)
     font_combo.value = font
     on_change()
-                            </cc-code-block>
+                            </CodeBlock>
                         </details>
                     </li>
                 </ul>
@@ -172,10 +167,4 @@ def on_surprise():
             </li>
         </ul>
     </section>
-
-    <cc-copyright></cc-copyright>
-</body>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-
-</html>
+</PageLayout>
