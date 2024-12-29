@@ -26,7 +26,12 @@ __pycache__/
 *.pyd
 
 # Playwright
+/test-debug/
+/test-debug-dev/
+/test-debug-prod/
 /test-results/
+/test-results-dev/
+/test-results-prod/
 /playwright-report/
 /blob-report/
 /playwright/.cache/

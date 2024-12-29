@@ -1,46 +1,32 @@
 import { test, expect } from '@playwright/test';
 
+const badges = [
+  { index: 0, text: 'EASY', class: 'bg-success' },
+  { index: 1, text: 'MEDIUM', class: 'bg-warning' },
+  { index: 2, text: 'HARD', class: 'bg-danger' },
+];
+
 test.beforeEach(async ({ page }) => {
   await page.goto('/codeclub-astro/tests/BadgeTest');
 });
 
-test('should have 3 badges', async ({ page }) => {
-  const badges = page.locator('span.badge');
-  await expect(badges).toHaveCount(3);
+// Basic badge count test
+test('should have correct number of badges', async ({ page }) => {
+  const badgeElements = page.locator('span.badge');
+  await expect(badgeElements).toHaveCount(badges.length);
 });
 
-test('first badge should have class bg-success', async ({ page }) => {
-  const badges = page.locator('span.badge');
-  const badge = badges.nth(0);
-  await expect(badge).toHaveClass(/bg-success/);
-});
+// Parameterized tests for badge properties
+test.describe('Badge properties', () => {
+  for (const badge of badges) {
+    test(`badge ${badge.index} should have correct class and text`, async ({ page }) => {
+      const badgeElement = page.locator('span.badge').nth(badge.index);
 
-test('first badge should say EASY', async ({ page }) => {
-  const badges = page.locator('span.badge');
-  const badge = badges.nth(0);
-  await expect(badge).toHaveText('EASY');
-});
+      // Test class
+      await expect(badgeElement).toHaveClass(new RegExp(badge.class));
 
-test('second badge should have class bg-warning', async ({ page }) => {
-  const badges = page.locator('span.badge');
-  const badge = badges.nth(1);
-  await expect(badge).toHaveClass(/bg-warning/);
-});
-
-test('second badge should say MEDIUM', async ({ page }) => {
-  const badges = page.locator('span.badge');
-  const badge = badges.nth(1);
-  await expect(badge).toHaveText('MEDIUM');
-});
-
-test('third badge should have class bg-danger', async ({ page }) => {
-  const badges = page.locator('span.badge');
-  const badge = badges.nth(2);
-  await expect(badge).toHaveClass(/bg-danger/);
-});
-
-test('third badge should say HARD', async ({ page }) => {
-  const badges = page.locator('span.badge');
-  const badge = badges.nth(2);
-  await expect(badge).toHaveText('HARD');
+      // Test text
+      await expect(badgeElement).toHaveText(badge.text);
+    });
+  }
 });
