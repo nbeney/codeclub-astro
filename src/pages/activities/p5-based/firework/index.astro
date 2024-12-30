@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Firework</title>
+    <script src="/custom-elements/custom-navbar.js"></script>
+    <script src="/custom-elements/custom-badges.js"></script>
+    <script src="/custom-elements/custom-guizero.js"></script>
+    <script type="module" src="/custom-elements/custom-code-block.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.9.1/lib/p5.min.js"></script>
+    <script src="/custom-elements/custom-copyright.js"></script>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body class="container">
+
+    <cc-navbar active="p5" level="3" />
+
+    <h1>Firework
+        <cc-badge-hard/>
+    </h1>
+
+    <h2 style="color: red;">UNDER CONSTRUCTION - UNDER CONSTRUCTION - UNDER CONSTRUCTION</h2>
+
+    <section>
+        <h2>What will I make?</h2>
+
+        <p>An animation with a firework.</p>
+
+        <!-- 
+from p5 import *
+from firework import Firework
+from random import randint, uniform, gauss
+from vector import Vector
+
+fireworks = []
+NUM = 15
+RADIUS = 50
+
+acc = Vector(0, 0.02)
+
+def color_generator():
+    N = 12
+    count = 0
+    while True:
+        yield count * 360 / N
+        count = (count + 1) % N
+
+gen_color = color_generator()
+
+def setup():
+    size(400, 400)
+    background(0)
+
+def draw():
+    background(0, 60)
+    
+    for f in fireworks:
+        f.update()
+        f.display()
+
+    for i in range(len(fireworks) - 1, -1, -1):
+        f = fireworks[i]
+        if not f.alive():
+            fireworks.pop(i)
+
+    for _ in range(NUM - len(fireworks)):
+        r = 3
+        fireworks.append(Firework(
+            pos=Vector(randint(10, width - 10), height + r), 
+            vel=Vector(gauss(-0.1, 0.1), -4 * uniform(0.6, 1)), 
+            acc=acc,
+            hue=next(gen_color),
+            radius=r))
+
+    count = sum(len(_.particles) for _ in fireworks)
+    fill(255)
+    text(count, 10, 20)
+
+from p5 import *
+from particle import Particle
+from vector import Vector
+from math import cos, sin
+from random import uniform
+
+class Firework:
+    def __init__(self, pos, vel, acc, hue=0, radius=25):
+        self.has_exploded = False
+        self.particles = [Particle(pos, vel, acc, hue, radius)]
+
+    def update(self):
+        if not self.has_exploded:
+            p = self.particles[0]
+            if p.vel.y > 0:
+                self.has_exploded = True
+                self.particles.pop(0)
+                N = 50
+                for _ in range(N):
+                    pos = p.pos.copy()
+                    s = uniform(0.6, 1)
+                    vel = Vector(
+                        s * cos(_ * TWO_PI / N),
+                        s * sin(_ * TWO_PI / N)
+                    )
+                    self.particles.append(Particle(
+                        pos=pos,
+                        vel=vel,
+                        acc=p.acc,
+                        hue=p.hue,
+                        radius=p.radius
+                    ))
+
+        for p in self.particles:
+            p.update()
+            
+        for i in range(len(self.particles) - 1, -1, -1):
+            p = self.particles[i]
+            if not p.alive():
+                self.particles.pop(i)
+
+    def display(self):
+        if not self.particles:
+            return
+            
+        push_style()
+        color_mode(HSB)
+        fill(self.particles[0].hue, 100, 100, 0.5)
+        for p in self.particles:
+            p.display()
+        pop_style()
+
+    def alive(self):
+        return self.particles and all(_.alive() for _ in self.particles)
+
+from p5 import *
+from vector import Vector
+
+def id_generator():
+    id = 0
+    while True:
+        id += 1
+        yield id
+
+id_gen = id_generator()
+
+class Particle:
+    def __init__(self, pos, vel, acc, hue=0, radius=25):
+        global counter
+        self.pos = pos
+        self.vel = vel
+        self.acc = acc
+        self.hue = hue
+        self.radius = radius
+        self.diam = 2 * radius
+        self.id = next(id_gen)
+
+    def __repr__(self):
+        return f"#{self.id} {self.pos}"
+
+    def update(self):
+        self.pos.add(self.vel)
+        self.vel.add(self.acc)
+
+    def display(self):
+        circle(self.pos.x, self.pos.y, self.diam)
+
+    def alive(self):
+        return (
+            self.pos.x >= -self.radius and 
+            self.pos.x <= width + self.radius and 
+            self.pos.y <= height + self.radius + 10
+        )
+
+from p5 import *
+from math import sqrt, cos, sin
+from random import uniform
+
+class Vector:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __str__(self):
+        return f"V({self.x}, {self.y})"
+
+    def copy(self):
+        return Vector(self.x, self.y)
+
+    def add(self, other):
+        self.x += other.x
+        self.y += other.y
+
+    def subtract(self, other):
+        self.x -= other.x
+        self.y -= other.y
+
+    def mult(self, number):
+        self.x *= number
+        self.y *= number
+
+    def mag(self):
+        return sqrt(self.x ** 2 + self.y ** 2)
+
+    @staticmethod
+    def random():
+        a = uniform(0, TWO_PI)
+        return Vector(cos(a), sin(a))
+        
+if __name__ == "__main__":
+    v1 = Vector(3, 4)
+    print(v1, v1.mag())
+    
+    v2 = v1.copy()
+    v2.mult(2)
+    print(v2, v2.mag())
+    
+    v3 = v1.copy()
+    v3.add(Vector(2, 1))
+    print(v3, v3.mag())
+    
+    v4 = v1.copy()
+    v4.subtract(Vector(4, 3))
+    print(v4, v4.mag())
+    
+    for _ in range(5):
+        v5 = Vector.random()
+        print(v5, v5.mag())
+
+run()
+        -->
+
+        <div id="p5-firework"></div>
+
+        <script>
+            new p5(p => {
+                const NUM = 15;
+                const RADIUS = 50;
+                const acc = p.createVector(0, 0.02);
+
+                let fireworks = [];
+
+                function colorGenerator() {
+                    const N = 12;
+                    let count = 0;
+                    return () => {
+                        const hue = count * 360 / N;
+                        count = (count + 1) % N;
+                        return hue;
+                    };
+                }
+
+                const genColor = colorGenerator();
+
+                p.setup = function() {
+                    p.createCanvas(400, 400);
+                    p.background(0);
+                };
+
+                p.draw = function() {
+                    p.background(0, 60);
+
+                    for (let f of fireworks) {
+                        f.update();
+                        f.display();
+                    }
+
+                    for (let i = fireworks.length - 1; i >= 0; i--) {
+                        if (!fireworks[i].alive()) {
+                            fireworks.splice(i, 1);
+                        }
+                    }
+
+                    for (let _ = 0; _ < NUM - fireworks.length; _++) {
+                        const r = 3;
+                        fireworks.push(new Firework(
+                            p.createVector(p.random(10, p.width - 10), p.height + r),
+                            p.createVector(p.randomGaussian(-0.1, 0.1), -4 * p.random(0.6, 1)),
+                            acc,
+                            genColor(),
+                            r
+                        ));
+                    }
+
+                    const count = fireworks.reduce((acc, f) => acc + f.particles.length, 0);
+                    p.fill(255);
+                    p.text(count, 10, 20);
+                };
+
+                class Firework {
+                    constructor(pos, vel, acc, hue = 0, radius = 25) {
+                        this.hasExploded = false;
+                        this.particles = [new Particle(pos, vel, acc, hue, radius)];
+                    }
+
+                    update() {
+                        if (!this.hasExploded) {
+                            const part = this.particles[0];
+                            if (part.vel.y > 0) {
+                                this.hasExploded = true;
+                                this.particles.shift();
+                                const N = 50;
+                                for (let _ = 0; _ < N; _++) {
+                                    // const pos = part.pos.copy();
+                                    const pos = p.createVector(part.pos.x, part.pos.y);
+                                    const s = p.random(0.4, 0.6);
+                                    const vel = p.createVector(
+                                        s * p.cos(_ * p.TWO_PI / N),
+                                        s * p.sin(_ * p.TWO_PI / N)
+                                    );
+                                    this.particles.push(new Particle(
+                                        pos,
+                                        vel,
+                                        part.acc,
+                                        part.hue,
+                                        part.radius
+                                    ));
+                                }
+                            }
+                        }
+
+                        for (let part of this.particles) {
+                            part.update();
+                        }
+
+                        for (let i = this.particles.length - 1; i >= 0; i--) {
+                            if (!this.particles[i].alive()) {
+                                this.particles.splice(i, 1);
+                            }
+                        }
+                    }
+
+                    display() {
+                        if (!this.particles.length) {
+                            return;
+                        }
+
+                        p.push();
+                        p.colorMode(p.HSB);
+                        p.fill(this.particles[0].hue, 100, 100, 0.5);
+                        for (let part of this.particles) {
+                            part.display();
+                        }
+                        p.pop();
+                    }
+
+                    alive() {
+                        return this.particles.length && this.particles.every(p => p.alive());
+                    }
+                }
+
+                class Particle {
+                    constructor(pos, vel, acc, hue = 0, radius = 25) {
+                        this.pos = pos.copy();
+                        this.vel = vel.copy();
+                        this.acc = acc.copy();
+                        this.hue = hue;
+                        this.radius = radius;
+                        this.diam = 2 * radius;
+                    }
+
+                    update() {
+                        this.pos.add(this.vel);
+                        this.vel.add(this.acc);
+                    }
+
+                    display() {
+                        p.circle(this.pos.x, this.pos.y, this.diam);
+                    }
+
+                    alive() {
+                        return (
+                            this.pos.x >= -this.radius &&
+                            this.pos.x <= p.width + this.radius &&
+                            this.pos.y <= p.height + this.radius + 10
+                        );
+                    }
+                }
+            }, "p5-firework");
+        </script>
+    </section>
+
+    <section>
+        <h2>Instructions</h2>
+        <ol>
+            <li>Open the <a href="https://editor.raspberrypi.org/en/projects/ajar-plank-most" target="_blank">starter project</a> and click the <strong>Run</strong> button.</li>
+            <li>Login to be able to save your work.</li>
+            <li>...</li>
+        </ol>
+    </section>
+
+    <section>
+        <h2>What can I try next?</h2>
+        <p>...</p>
+        <!--
+        <p>Here are some things you can try to make the app better. They are independent from each other so you can pick just a couple or do them in a different order. If you get stuck, use the <em>Hints</em> button or read the Guizero documentation (see <a href="../index.html">Build an app with Guizero</a>).</p>
+        <p>And of course you can also use your imagination and change the app as you like!</p>
+        <ul>
+            <li>Add a button to <strong>change the background color</strong>.
+                <ol>
+                    <li>Create a new <cc-gz-pushbutton/> with <code>text="Background"</code> (or an image) and linked to the <code>on_background</code> callback function.</li>
+                    <li>Create a new <code>on_background</code> callback function to change the background color of <code>output_text</code>.</li>
+                    <details class="hints">
+                        <summary>Hints</summary>
+                        <ul>
+                            <li>Check the existing <code>on_color</code> callback function. It does almost what you need but it changes the foreground color instead of the background color.</li>
+                            <li>Check the documentation for <cc-gz-textbox/> and find the property you need to change.</li>
+                        </ul>
+                    </details>
+                </ol>
+            </li>
+        </ul>
+        -->
+    </section>
+
+    <cc-copyright></cc-copyright>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+</html>
