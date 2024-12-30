@@ -3,13 +3,13 @@ import { nextId } from '@scripts/utils.js';
 
 const { name, description } = Astro.props;
 
-const entryCounter = nextId('AccordionEntry');
+const entryCounter = nextId('AccordionItem');
 ---
 
 <div class="accordion-item">
     <h3 class="accordion-header" id={"panelsStayOpen-heading" + entryCounter}>
         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target={"#panelsStayOpen-collapse" + entryCounter} aria-expanded="false" aria-controls={"panelsStayOpen-collapse" + entryCounter}>
-            <strong class="text-primary">{name}</strong>&nbsp;- {description}
+            <strong class="text-primary">{name}</strong>&nbsp;- <Fragment set:html={description} />
         </button>
     </h3>
     <div id={"panelsStayOpen-collapse" + entryCounter} class="accordion-collapse collapse" aria-labelledby={"panelsStayOpen-heading" + entryCounter}>

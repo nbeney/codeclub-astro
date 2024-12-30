@@ -1,6 +1,6 @@
 ---
 import Accordion from "@components/Accordion.astro";
-import AccordionEntry from "@components/AccordionEntry.astro";
+import AccordionItem from "@components/AccordionItem.astro";
 
 import PageLayout from "@layouts/PageLayout.astro";
 
@@ -15,33 +15,24 @@ const pages = [
 ---
 
 <PageLayout title={title} heading={heading} active={active} pages={pages}>
-    <h2>First list</h2>
+    <h2>First accordion</h2>
 
-    <Accordion id="list1">
-        <AccordionEntry name="adventurelib" description="AccordionEntry #1">
-            <p><strong>Documentation</strong>: <a href="https://adventurelib.readthedocs.io/">https://adventurelib.readthedocs.io/</a></p>
-            <p><strong>Code samples</strong>: See <a href="../adventurelib-based/index.html">Build an adventure game with Adventurelib</a> for details.</p>
-            <p><strong>Installation</strong>: <code>pip install adventurelib</code></p>
-        </AccordionEntry>
-        <AccordionEntry name="guizero" description="AccordionEntry #2">
-            <p><strong>Documentation</strong>: <a href="/offline/lawsie.github.io/guizero/start/index.html">https://lawsie.github.io/guizero/start/</a></p>
-            <p><strong>Code samples</strong>: See <a href="../guizero-based/index.html">Build an app with Guizero</a> for details.</p>
-            <p><strong>Installation</strong>: <code>pip install guizero[images]</code></p>
-        </AccordionEntry>
+    <Accordion id="acc1">
+        <AccordionItem name="Item #1" description="First item">
+            <p>First content</p>
+        </AccordionItem>
+        <AccordionItem name="Item #2" description="Second item">
+            <p>Second content</p>
+        </AccordionItem>
     </Accordion>
 
-    <h2>Second list</h2>
+    <h2>Second accordion</h2>
 
-    <Accordion id="list2">
-        <AccordionEntry name="p5" description="AccordionEntry #3">
-            <p><strong>Documentation</strong>: <a href="p5-index.html">p5-index.html</a></p>
-            <p><strong>Code samples</strong>: See <a href="../p5-based/index.html">Create an animation or digital art with P5</a> for details.</p>
-            <p><strong>Installation</strong>: No setup required! Use the online <a href="https://editor.raspberrypi.org/en/">code editor</a> from the <a href="https://www.raspberrypi.org/">Raspberry Pi Foundation.</a></p>
-        </AccordionEntry>
-        <AccordionEntry name="pgzero" description="AccordionEntry #4">
-            <p><strong>Documentation</strong>: <a href="https://pygame-zero.readthedocs.io/">https://pygame-zero.readthedocs.io/</a></p>
-            <p><strong>Code samples</strong>: See <a href="../pygame-zero-based/index.html">Build a video game with Pygame Zero</a> for details.</p>
-            <p><strong>Installation</strong>: <code>pip install pgzero</code></p>
-        </AccordionEntry>
-    </Accordion>
+    <Accordion id="acc2">
+        <AccordionItem name="Item #3" description="Third item">
+            <p>Third content</p>
+        </AccordionItem>
+        <AccordionItem name="Item #4" description="Fourth item">
+            <p>Fourth content</p>
+        </AccordionItem>
 </PageLayout>

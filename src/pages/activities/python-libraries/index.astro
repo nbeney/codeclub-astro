@@ -4,7 +4,7 @@ import path from 'node:path';
 import { Image } from 'astro:assets';
 
 import Accordion from '@components/Accordion.astro';
-import AccordionEntry from '@components/AccordionEntry.astro';
+import AccordionItem from '@components/AccordionItem.astro';
 import CodeBlock from '@components/CodeBlock.astro';
 
 import PageLayout from '@layouts/PageLayout.astro';
@@ -28,19 +28,19 @@ const heading = "Python libraries";
     <p>Here are all the libraries that we use at Code Club:</p>
 
     <Accordion id="list-of-libraries">
-        <AccordionEntry name="adventurelib" description="to create text-based adventure games">
+        <AccordionItem name="adventurelib" description="to create text-based adventure games">
             <p><strong>Documentation</strong>: <a href="https://adventurelib.readthedocs.io/">https://adventurelib.readthedocs.io/</a></p>
             <p><strong>Code samples</strong>: See <a href="../adventurelib-based/index.html">Build an adventure game with Adventurelib</a> for details.</p>
             <p><strong>Installation</strong>: <code>pip install adventurelib</code></p>
-        </AccordionEntry>
+        </AccordionItem>
 
-        <AccordionEntry name="guizero" description="to build GUIs">
+        <AccordionItem name="guizero" description="to build GUIs">
             <p><strong>Documentation</strong>: <a href="/offline/lawsie.github.io/guizero/start/index.html">https://lawsie.github.io/guizero/start/</a></p>
             <p><strong>Code samples</strong>: See <a href="../guizero-based/index.html">Build an app with Guizero</a> for details.</p>
             <p><strong>Installation</strong>: <code>pip install guizero[images]</code></p>
-        </AccordionEntry>
+        </AccordionItem>
 
-        <AccordionEntry name="inflect" description="to convert numbers to words">
+        <AccordionItem name="inflect" description="to convert numbers to words">
             <p><strong>Documentation</strong>: <a href="https://inflect.readthedocs.io/">https://inflect.readthedocs.io/</a></p>
             <p><strong>Code samples</strong>:</p>
             <CodeBlock>
@@ -55,21 +55,21 @@ print(number, 'is', words)
 #     123 is one hundred and twenty-three
             </CodeBlock>
             <p><strong>Installation</strong>: <code>pip install inflect</code></p>
-        </AccordionEntry>
+        </AccordionItem>
 
-        <AccordionEntry name="p5" description="to build animations or digital art">
+        <AccordionItem name="p5" description="to build animations or digital art">
             <p><strong>Documentation</strong>: <a href="p5-index.html">p5-index.html</a></p>
             <p><strong>Code samples</strong>: See <a href="../p5-based/index.html">Create an animation or digital art with P5</a> for details.</p>
             <p><strong>Installation</strong>: No setup required! Use the online <a href="https://editor.raspberrypi.org/en/">code editor</a> from the <a href="https://www.raspberrypi.org/">Raspberry Pi Foundation.</a></p>
-        </AccordionEntry>
+        </AccordionItem>
 
-        <AccordionEntry name="pgzero" description="to build video games">
+        <AccordionItem name="pgzero" description="to build video games">
             <p><strong>Documentation</strong>: <a href="https://pygame-zero.readthedocs.io/">https://pygame-zero.readthedocs.io/</a></p>
             <p><strong>Code samples</strong>: See <a href="../pygame-zero-based/index.html">Build a video game with Pygame Zero</a> for details.</p>
             <p><strong>Installation</strong>: <code>pip install pgzero</code></p>
-        </AccordionEntry>
+        </AccordionItem>
 
-        <AccordionEntry name="pyfiglet" description="to create ASCII art from text">
+        <AccordionItem name="pyfiglet" description="to create ASCII art from text">
             <p><strong>Documentation</strong>: <a href="https://pypi.org/project/pyfiglet/">https://pypi.org/project/pyfiglet/</a> or <a href="https://www.tutorialspoint.com/ascii-art-using-python-pyfiglet-module">https://www.tutorialspoint.com/ascii-art-using-python-pyfiglet-module</a></p>
             <p><strong>Code samples</strong>:</p>
             <p>List all the possible font names:</p>
@@ -101,18 +101,18 @@ print(ascii_art)
 #     \____/  \____/\__,_/  \___/      \____/  /_/  \__,_/ /_.___/(_)   
             </CodeBlock>
             <p><strong>Installation</strong>: <code>pip install pyfiglet</code></p>
-        </AccordionEntry>
+        </AccordionItem>
 
-        <AccordionEntry name="pytest" description="to write automated tests">
+        <AccordionItem name="pytest" description="to write automated tests">
             <p><strong>Documentation</strong>: <a href="https://docs.pytest.org/">https://docs.pytest.org/</a></p>
             <p><strong>Code samples</strong>:</p>
             <CodeBlock>
 # Under construction...
             </CodeBlock>
             <p><strong>Installation</strong>: <code>pip install pytest</code></p>
-        </AccordionEntry>
+        </AccordionItem>
 
-        <AccordionEntry name="pyttsx3" description="to read text aloud">
+        <AccordionItem name="pyttsx3" description="to read text aloud">
             <p><strong>Documentation</strong>: <a href="https://pyttsx3.readthedocs.io/">https://pyttsx3.readthedocs.io/</a></p>
             <p><strong>Code samples</strong>:</p>
             <CodeBlock>
@@ -122,9 +122,9 @@ text = "Hello you! What's up?"
 pyttsx3.speak(text)
             </CodeBlock>
             <p><strong>Installation</strong>: <code>pip install pyttsx3</code></p>
-        </AccordionEntry>
+        </AccordionItem>
 
-        <AccordionEntry name="random*" description="to add some randomness to your programs">
+        <AccordionItem name="random*" description="to add some randomness to your programs">
             <p><strong>Documentation</strong>: <a href="https://docs.python.org/3/library/random.html">https://docs.python.org/3/library/random.html</a></p>
             <p><strong>Code samples</strong>:</p>
             <p>Generate 5 random integers (ints) between 1 and 10:</p>
@@ -184,9 +184,9 @@ print("After: ", vegetables)
 #     After:  ['eggplant', 'carrot', 'artichoke', 'beet', 'daikon', 'fennel']
             </CodeBlock>
             <p><strong>Installation</strong>: This is a standard library so it comes with Python already.</p>
-        </AccordionEntry>
+        </AccordionItem>
 
-        <AccordionEntry name="winsound*" description="to play sounds and music notes">
+        <AccordionItem name="winsound*" description="to play sounds and music notes">
             <p><strong>Documentation</strong>: <a href="https://docs.python.org/3/library/winsound.html">https://docs.python.org/3/library/winsound.html</a></p>
             <p><strong>Code samples</strong>:</p>
             <CodeBlock>
@@ -196,15 +196,15 @@ frequency = 440  # 440 Hertz
 duration_ms = 500  # 500 milliseconds = 0.5 second
 winsound.Beep(frequency, duration_ms)
             </CodeBlock>
-        </AccordionEntry>
-    </div>
+        </AccordionItem>
+    </Accordion>
 
     <h2>How to use a library?</h2>
 
     <p>To use a library in your program, you must <code>import</code> it. There are different ways to do this. Let say you want to use the <code>App</code> class from the <code>guizero</code> library. You can choose one of:</p>
 
     <Accordion id="how-to-use">
-        <AccordionEntry name="Method #1 - Import the whole library" description="&lt;code&gt;import guizero&lt;/code&gt;">
+        <AccordionItem name="Method #1 - Import the whole library" description="&lt;code&gt;import guizero&lt;/code&gt;">
             Import the whole library and use the <code>App</code> class with the <code>guizero.App</code> syntax:
             <CodeBlock>
 import guizero
@@ -214,9 +214,9 @@ app = guizero.App(title="My app")
 ...
             </CodeBlock>
             <p><strong>Installation</strong>: This is a standard library so it comes with Python already.</p>            
-        </AccordionEntry>
+        </AccordionItem>
 
-        <AccordionEntry name="Method #2 - Import the whole library with an alias" description="&lt;code&gt;import guizero as gz&lt;/code&gt;">
+        <AccordionItem name="Method #2 - Import the whole library with an alias" description="&lt;code&gt;import guizero as gz&lt;/code&gt;">
             Import the whole library with an alias, let say <code>gz</code>, and use the <code>App</code> class with the <code>gz.App</code> syntax:
             <CodeBlock>
 import guizero as gz
@@ -225,9 +225,9 @@ import guizero as gz
 app = gz.App(title="My app")
 ...
             </CodeBlock>
-        </AccordionEntry>
+        </AccordionItem>
 
-        <AccordionEntry name="Method #3 - Import just what you need from the library" description="&lt;code&gt;from guizero import App&lt;/code&gt;">
+        <AccordionItem name="Method #3 - Import just what you need from the library" description="&lt;code&gt;from guizero import App&lt;/code&gt;">
             Import just what you need from the library and use the <code>App</code> class directly:
             <CodeBlock>
 from guizero import App
@@ -236,9 +236,9 @@ from guizero import App
 app = App(title="My app")
 ...
             </CodeBlock>
-        </AccordionEntry>
+        </AccordionItem>
 
-        <AccordionEntry name="Method #4 - Import everything from the library" description="&lt;code&gt;from guizero import *&lt;/code&gt;">
+        <AccordionItem name="Method #4 - Import everything from the library" description="&lt;code&gt;from guizero import *&lt;/code&gt;">
             Import everything from the library and use the <code>App</code> class directly:
             <CodeBlock>
 from guizero import *
@@ -247,15 +247,15 @@ from guizero import *
 app = App(title="My app")
 ...
             </CodeBlock>
-        </AccordionEntry>
-    </div>
+        </AccordionItem>
+    </Accordion>
 
     <h2>Common errors</h2>
 
     <p>Here are some common errors that you may encounter when using libraries:</p>
 
     <Accordion id="common-errors">
-        <AccordionEntry name="ModuleNotFoundError" description="No module named 'xyz'">
+        <AccordionItem name="ModuleNotFoundError" description="No module named 'xyz'">
             <p><strong>Error message</strong>: <code>ModuleNotFoundError: No module named 'xyz'</code></p>
             <p><strong>Reason #1</strong>: The library <code>xyz</code> is not installed on your computer.</p>
             <p><strong>Solution #1</strong>: Install the library <code>xyz</code> on your computer. This can usually be done with <code>pip install xyz</code>. Your IDE may also provide an easier way to do this.</p>
@@ -267,12 +267,12 @@ sys.path.append(r"\\dwstr04\Student Shared\CodingClub\python-packages")
             </CodeBlock>
             <p><strong>Reason #3</strong>: You have mispelled the name of the library in the <code>import</code> statement.</p>
             <p><strong>Solution #3</strong>: Check the name of the library and use the correct spelling. Remember that Python is a case-sensitive language (ie upper case letters are different from lower case letters).</p>
-        </AccordionEntry>
+        </AccordionItem>
 
-        <AccordionEntry name="NameError" description="name 'xyz' is not defined">
+        <AccordionItem name="NameError" description="name 'xyz' is not defined">
             <p><strong>Error message</strong>: <code>NameError: name 'xyz' is not defined</code></p>
             <p><strong>Reason</strong>: You have mispelled the name a constant/function/class from the library.</p>
             <p><strong>Solution</strong>: Check the name of the constant/function/class and use the correct spelling. Remember that Python is a case-sensitive language (ie upper case letters are different from lower case letters).</p>
-        </AccordionEntry>
-    </div>
+        </AccordionItem>
+    </Accordion>
 </PageLayout>

@@ -80,3 +80,53 @@ test('should show all cards when clicking All filter after applying filters', as
     await expect(card).toBeVisible();
   }
 });
+
+// Test that the first card changes appearance when hovered
+test('cards should show hover effect', async ({ page }) => {
+  // Get all cards
+  const cards = await page.locator('.card').all();
+
+  // Test each card
+  for (const card of cards) {
+      // Get initial styles
+      const initialBox = await card.evaluate((el) => {
+          const style = window.getComputedStyle(el);
+          return {
+              shadow: style.boxShadow,
+              transform: style.transform,
+              transition: style.transition
+          };
+      });
+
+      // Hover over the card
+      await card.hover();
+
+      // Wait for any transitions to complete (typical transition duration)
+      await page.waitForTimeout(300);
+
+      // Get styles after hover
+      const hoverBox = await card.evaluate((el) => {
+          const style = window.getComputedStyle(el);
+          return {
+              shadow: style.boxShadow,
+              transform: style.transform,
+              transition: style.transition
+          };
+      });
+
+      // Verify that styles changed on hover
+      expect(hoverBox).not.toEqual(initialBox);
+
+      // Optional: Add specific style checks if you know the exact hover effects
+      // For example, if you expect a specific transform or shadow:
+      // expect(hoverBox.transform).not.toBe('none');
+      // expect(hoverBox.shadow).not.toBe('none');
+  }
+
+  // for (const project of projects) {
+  //   test(`card ${project.index} should have correct content`, async ({ page }) => {
+  //     const card = page.locator('.card').nth(project.index);
+
+  //   });
+  // }
+});
