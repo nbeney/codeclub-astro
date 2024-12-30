@@ -1,0 +1,67 @@
+---
+
+---
+
+<div id="p5-truchet-smith"></div>
+
+<script>
+    import p5 from "p5";
+    
+    new p5((p) => {
+        const N = 10;
+        const SHOW_RECT = true;
+
+        p.setup = function () {
+            p.createCanvas(350, 350);
+            p.noLoop();
+        };
+
+        p.draw = function () {
+            p.background(255);
+            p.strokeWeight(5);
+            p.stroke("#000000");
+            const size = p.width / N;
+
+            for (let c = 0; c < 3; c += 2) {
+                const x = (c * p.width) / N;
+                tile_smith(x, 0, size, c / 2, SHOW_RECT);
+            }
+
+            for (let c = 0; c < N; c++) {
+                const x = (c * p.width) / N;
+                for (let r = 2; r < N; r++) {
+                    const y = (r * p.height) / N;
+                    const t = Math.floor(Math.random() * 3);
+                    tile_smith(x, y, size, t, SHOW_RECT);
+                }
+            }
+        };
+
+        function tile_smith(x, y, size, type, show_rect) {
+            p.push();
+            p.translate(x, y);
+            p.noFill();
+            p.stroke("purple");
+
+            if (type === 0) {
+                p.arc(0, 0, size, size, p.radians(0), p.radians(90));
+                p.arc(size, size, size, size, p.radians(180), p.radians(270));
+            } else {
+                p.arc(size, 0, size, size, p.radians(90), p.radians(180));
+                p.arc(0, size, size, size, p.radians(270), p.radians(360));
+            }
+
+            if (show_rect) {
+                p.stroke(120);
+                p.strokeWeight(0.5);
+                p.rect(0, 0, size, size);
+            }
+
+            p.pop();
+        }
+
+        p.mousePressed = function () {
+            p.redraw();
+        };
+    }, "p5-truchet-smith");
+</script>

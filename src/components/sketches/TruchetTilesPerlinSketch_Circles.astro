@@ -1,0 +1,67 @@
+---
+
+---
+
+<div id="p5-truchet-circles"></div>
+
+<script>
+    import p5 from "p5";
+    
+    new p5((p) => {
+        const N = 10;
+        const SHOW_RECT = true;
+
+        p.setup = function () {
+            p.createCanvas(350, 350);
+            p.noLoop();
+        };
+
+        p.draw = function () {
+            p.background(255);
+            p.strokeWeight(5);
+            p.stroke("#000000");
+            const size = p.width / N;
+
+            for (let c = 0; c < 7; c += 2) {
+                const x = (c * p.width) / N;
+                tile_round(x, 0, size, c / 2, SHOW_RECT);
+            }
+
+            for (let c = 0; c < N; c++) {
+                const x = (c * p.width) / N;
+                for (let r = 2; r < N; r++) {
+                    const y = (r * p.height) / N;
+                    const t = (c + r) % 4;
+                    tile_round(x, y, size, t, SHOW_RECT);
+                }
+            }
+        };
+
+        function tile_round(x, y, size, type, show_rect) {
+            p.push();
+            p.translate(x, y);
+            p.fill(0, 0, 255);
+            p.noStroke();
+
+            const diam = size * 2;
+            if (type === 0) {
+                p.arc(0, 0, diam, diam, p.radians(0), p.radians(90));
+            } else if (type === 1) {
+                p.arc(size, 0, diam, diam, p.radians(90), p.radians(180));
+            } else if (type === 2) {
+                p.arc(size, size, diam, diam, p.radians(180), p.radians(270));
+            } else {
+                p.arc(0, size, diam, diam, p.radians(270), p.radians(360));
+            }
+
+            if (show_rect) {
+                p.noFill();
+                p.stroke(120);
+                p.strokeWeight(0.5);
+                p.rect(0, 0, size, size);
+            }
+
+            p.pop();
+        }
+    }, "p5-truchet-circles");
+</script>
