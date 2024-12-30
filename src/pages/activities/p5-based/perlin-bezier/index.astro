@@ -1,26 +1,21 @@
-<!doctype html>
-<html lang="en">
+---
+import path from 'node:path';
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Perlin Bezier</title>
-    <script src="/custom-elements/custom-navbar.js"></script>
-    <script src="/custom-elements/custom-badges.js"></script>
-    <script src="/custom-elements/custom-guizero.js"></script>
-    <script type="module" src="/custom-elements/custom-code-block.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/p5@1.9.1/lib/p5.min.js"></script>
-    <script src="/custom-elements/custom-copyright.js"></script>
-    <link rel="stylesheet" href="/style.css">
-</head>
+import { Image } from 'astro:assets';
 
-<body class="container">
+import CodeBlock from '@components/CodeBlock.astro';
 
-    <cc-navbar active="p5" level="3" />
+import PageLayout from '@layouts/PageLayout.astro';
 
-    <h1>Perlin Bezier
-        <cc-badge-easy/>
-    </h1>
+// import screenshot from '@images/activities/p5-based/screenshot.png';
+
+const title = "Perlin Bezier";
+const heading = "Perlin Bezier";
+
+const filePath = path.resolve('public/activities/p5-based/sample.py');
+---
+
+<PageLayout title={title} heading={heading} active="p5" difficulty="easy">
 
     <h2 style="color: red;">UNDER CONSTRUCTION - UNDER CONSTRUCTION - UNDER CONSTRUCTION</h2>
 
@@ -147,9 +142,4 @@ run()
         -->
     </section>
 
-    <cc-copyright></cc-copyright>
-</body>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-
-</html>
+</PageLayout>
