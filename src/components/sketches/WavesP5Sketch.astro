@@ -1,0 +1,222 @@
+---
+
+---
+
+<div id="p5-waves"></div>
+
+<script>
+    import p5 from "p5";
+
+    new p5((p) => {
+        const NUM_WAVES = 5;
+        const WAVE_MAX_HEIGHT = 90;
+
+        const PALETTE = ["#78C0E0", "#449DD1", "#150578", "#0E0E52", "#3943B7"];
+
+        const OCTAVES = 5;
+        const FALLOFF = 0.4;
+        const REZ = 1 / 300;
+
+        let waves = [];
+        let boat = null;
+
+        p.setup = function () {
+            p.createCanvas(350, 350);
+            p.background(0);
+            p.noiseSeed(Math.floor(Math.random() * 100));
+            p.noiseDetail(OCTAVES, FALLOFF);
+            p.noStroke();
+
+            waves = [
+                new Wave((p.height * 5) / 10, PALETTE[0]),
+                new Wave((p.height * 6) / 10, PALETTE[1]),
+                new Wave((p.height * 7) / 10, PALETTE[2]),
+                new Wave((p.height * 8) / 10, PALETTE[3]),
+                new Wave((p.height * 9) / 10, PALETTE[4]),
+            ];
+            boat = new Boat(waves[2]);
+        };
+
+        p.draw = function () {
+            for (let w of waves) {
+                w.update();
+            }
+            boat.update();
+
+            p.background(0);
+            for (let w of waves) {
+                if (w === boat.wave) {
+                    boat.display();
+                }
+                w.display();
+            }
+        };
+
+        class Wave {
+            constructor(base_y, color) {
+                this.base_y = base_y;
+                this.color = color;
+            }
+
+            update() {
+                const N = Math.floor(p.width / 2);
+                const S = p.width / N;
+                const t = p.frameCount / 100;
+                this.points = [];
+                for (let i = 0; i < N + 1; i++) {
+                    const x = i * S;
+                    const n = p.noise(this.base_y, x * REZ, t);
+                    const y =
+                        this.base_y +
+                        p.map(n, 0, 1, -0.5, 0.5) * WAVE_MAX_HEIGHT;
+                    this.points.push([x, y]);
+                }
+            }
+
+            display() {
+                p.fill(this.color);
+                p.beginShape();
+                p.vertex(0, p.height);
+                for (let [x, y] of this.points) {
+                    p.vertex(x, y);
+                }
+                p.vertex(p.width, p.height);
+                p.endShape(p.CLOSE);
+            }
+        }
+
+        class Boat {
+            constructor(wave) {
+                this.wave = wave;
+            }
+
+            update() {
+                const points = this.wave.points;
+                const mid = Math.floor(points.length / 2);
+                const [x1, y1] = points[mid - 25];
+                const [x2, y2] = points[mid + 25];
+
+                this.x = points[mid][0];
+                this.y = points[mid][1];
+                this.angle = Math.atan2(y2 - y1, x2 - x1);
+            }
+
+            display() {
+                p.push();
+                p.translate(this.x, this.y);
+                p.rotate(this.angle);
+                p.fill(255);
+                p.stroke(0);
+                p.rect(-2, -120, 4, 120);
+                p.quad(-40, 20, -55, -20, 55, -20, 40, 20);
+                p.fill("red");
+                p.triangle(-40, -25, -2, -120, -2, -25);
+                p.fill("yellow");
+                p.triangle(40, -25, 2, -120, 2, -25);
+                p.pop();
+            }
+        }
+    }, "p5-waves");
+</script>
+
+<!-- 
+from p5 import *
+from random import randint
+from math import atan2
+
+NUM_WAVES = 5
+WAVE_MAX_HEIGHT = 90
+
+PALETTE = ["#78C0E0", "#449DD1", "#150578", "#0E0E52", "#3943B7"]
+
+OCTAVES = 5
+FALLOFF = 0.4
+REZ = 1/300
+
+waves = []
+boat = None
+
+def setup():
+    size(350, 350)
+    background(0)
+    noise_seed(randint(0, 100))
+    noise_detail(OCTAVES, FALLOFF)
+    no_stroke()
+
+    global waves, boat
+    waves = [
+        Wave(height * 5/10, PALETTE[0]),
+        Wave(height * 6/10, PALETTE[1]),
+        Wave(height * 7/10, PALETTE[2]),
+        Wave(height * 8/10, PALETTE[3]),
+        Wave(height * 9/10, PALETTE[4]),
+    ]
+    boat = Boat(waves[2])
+
+def draw():
+    for w in waves:
+        w.update()
+    boat.update()
+    
+    background(0)
+    for w in waves:
+        if w == boat.wave:
+            boat.display()    
+        w.display()
+
+class Wave:
+    def __init__(self, base_y, color):
+        self.base_y = base_y
+        self.color = color
+
+    def update(self):
+        N = int(width / 2)
+        S = width / N
+        t = frame_count / 100
+        self.points = []
+        for i in range(N+1):
+            x = i * S
+            n = noise(self.base_y, x * REZ, t)
+            y = self.base_y + map(n, 0, 1, -0.5, 0.5) * WAVE_MAX_HEIGHT
+            self.points.append((x, y))
+
+    def display(self):
+        fill(self.color)
+        begin_shape()
+        vertex(0, height)
+        for x, y in self.points:
+            vertex(x, y)
+        vertex(width, height)
+        end_shape(CLOSE)
+
+class Boat:
+    def __init__(self, wave):
+        self.wave = wave
+
+    def update(self):
+        points = self.wave.points
+        mid = len(points) // 2
+        x1, y1 = points[mid - 25]
+        x2, y2 = points[mid + 25]
+        
+        self.x, self.y = points[mid]
+        self.angle = atan2(y2 - y1, x2 - x1)
+
+    def display(self):
+        push_matrix()
+        push_style()
+        translate(self.x, self.y)
+        rotate(self.angle)
+        fill(255)
+        stroke(0)
+        rect(-2, -120, 4, 120)
+        quad(-40, 20, -55, -20, 55, -20, 40, 20)
+        fill("red")
+        triangle(-40, -25, -2, -120, -2, -25)
+        fill("yellow")
+        triangle(40, -25, 2, -120, 2, -25)
+        pop_matrix()
+        pop_style()
+        
+run()
+-->
