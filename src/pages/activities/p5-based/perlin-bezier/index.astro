@@ -3,7 +3,7 @@ import path from 'node:path';
 
 import { Image } from 'astro:assets';
 
-import CodeBlock from '@components/CodeBlock.astro';
+import PerlinBezierP5Sketch from '@components/sketches/PerlinBezierP5Sketch.astro';
 
 import PageLayout from '@layouts/PageLayout.astro';
 
@@ -24,89 +24,7 @@ const filePath = path.resolve('public/activities/p5-based/sample.py');
 
         <p>A screensaver-like animation with two colourful curves moving smoothly.</p>
 
-        <!-- 
-from p5 import *
-from random import randint
-
-def setup():
-    size(350, 350)
-    background(0)
-    no_fill()
-    stroke_weight(5)
-    noise_seed(randint(0, 100))
-
-def draw():
-    color_mode(RGB)
-    background(0, 20)
-    t = frame_count / 100
-    color_mode(HSB)
-    curve(t)
-
-def curve(t):
-    hue1 = int(noise(t) * 360)
-    hue2 = (hue1 + 180) % 360
-
-    w = width
-    h = height
-    x1 = noise(t / 2 + 10) * w
-    x2 = noise(t / 2 + 20) * w
-    x3 = noise(t / 2 + 30) * w
-    x4 = noise(t / 2 + 40) * w
-    y1 = noise(t / 2 + 50) * h
-    y2 = noise(t / 2 + 60) * h
-    y3 = noise(t / 2 + 70) * h
-    y4 = noise(t / 2 + 80) * h
-
-    stroke(hue1, 100, 100)
-    bezier(x1, y1, x2, y2, x3, y3, x4, y4)
-    stroke(hue2, 100, 100)
-    bezier(w - x1, h - y1, w - x2, h - y2, w - x3, h - y3, w - x4, h - y4)
-    
-run()
-        -->
-
-        <div id="p5-perlin-bezier"></div>
-
-        <script>
-            new p5(p => {
-                p.setup = function() {
-                    p.createCanvas(350, 350);
-                    p.background(0);
-                    p.noFill();
-                    p.strokeWeight(5);
-                    p.noiseSeed(p.random(100));
-                };
-
-                p.draw = function() {
-                    p.colorMode(p.RGB);
-                    p.background(0, 20);
-                    let t = p.frameCount / 100;
-                    p.colorMode(p.HSB);
-                    curve(t);
-                };
-
-                function curve(t) {
-                    let hue1 = p.int(p.noise(t) * 360);
-                    let hue2 = (hue1 + 180) % 360;
-
-                    let w = p.width;
-                    let h = p.height;
-                    let x1 = p.noise(t / 2 + 10) * w;
-                    let x2 = p.noise(t / 2 + 20) * w;
-                    let x3 = p.noise(t / 2 + 30) * w;
-                    let x4 = p.noise(t / 2 + 40) * w;
-                    let y1 = p.noise(t / 2 + 50) * h;
-                    let y2 = p.noise(t / 2 + 60) * h;
-                    let y3 = p.noise(t / 2 + 70) * h;
-                    let y4 = p.noise(t / 2 + 80) * h;
-
-                    p.stroke(hue1, 100, 100);
-                    p.bezier(x1, y1, x2, y2, x3, y3, x4, y4);
-                    p.stroke(hue2, 100, 100);
-                    p.bezier(w - x1, h - y1, w - x2, h - y2, w - x3, h - y3, w - x4, h - y4);
-                }
-            }, "p5-perlin-bezier");
-        </script>
+        <PerlinBezierP5Sketch />
     </section>
 
     <section>
