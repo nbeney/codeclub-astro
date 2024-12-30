@@ -1,9 +1,84 @@
 ---
+import path from 'node:path';
+
+import { Image } from 'astro:assets';
+
+import CodeBlock from '@components/CodeBlock.astro';
+import ProjectCard from '@components/ProjectCard.astro';
+import ProjectList from '@components/ProjectList.astro';
+
 import PageLayout from '@layouts/PageLayout.astro';
+
+// import screenshot from '@images/activities/p5-based/screenshot.png';
 
 const title = "Create an animation or digital art with P5";
 const heading = "Create an animation or digital art with P5";
+
+const filePath = path.resolve('public/activities/p5-based/sample.py');
 ---
 
 <PageLayout title={title} heading={heading} active="p5">
+    <section>
+        <h2>Read this first</h2>
+
+        <p>The p5 library provides graphic functions for drawing, animation and data visualisation. Artists, animators and designers use the p5 Processing library for creative coding.</p>
+
+        <CodeBlock src={filePath} />
+    </section>
+
+    <section>
+        <h2>Documentation</h2>
+        <ul>
+            <li><a href="../python-libraries/p5-using-the-editor.html">Using the editor</a></li>
+            <li><a href="../python-libraries/p5-getting-started.html">Getting started</a></li>
+            <li><a href="../python-libraries/p5-shapes.html">Coordinates, angles & shapes</a></li>
+            <li><a href="../python-libraries/p5-styling.html">Styling</a></li>
+            <li><a href="../python-libraries/p5-colors.html">Colors</a></li>
+            <li><a href="../python-libraries/p5-interactivity.html">Interactivity</a></li>
+            <li><a href="../python-libraries/p5-transformations.html">Transformations</a></li>
+            <li><a href="../python-libraries/p5-typography.html">Typography</a></li>
+            <li><a href="../python-libraries/p5-math.html">Math tidbits</a></li>
+            <li><a href="../python-libraries/p5-randomness-perlin.html">Randomness and Perlin noise</a></li>
+            <li><a href="../python-libraries/p5-reference.html">Reference</a></li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Project ideas</h2>
+
+        <p>The projects with an asterisk (*) are from the <a href="https://projects.raspberrypi.org/en/collections/python">Python path</a> of the <a href="https://www.raspberrypi.org/">Raspberry Pi Foundation</a>.</p>
+
+        <ProjectList>
+            <ProjectCard title="World flags" difficulty="easy" route="/activities/p5-based/world-flags/" />
+            <ProjectCard title="Truchet tiles" difficulty="easy" route="/activities/p5-based/truchet-tiles/" />
+            <ProjectCard title="Perlin Bezier" difficulty="easy" route="/activities/p5-based/perlin-bezier/" />
+            <ProjectCard title="Perlin field" difficulty="medium" route="/activities/p5-based/perlin-field/" />
+            <ProjectCard title="Perlin flow" difficulty="medium" route="/activities/p5-based/perlin-flow/" />
+            <ProjectCard title="Crazy balls" difficulty="hard" route="/activities/p5-based/crazy-balls/" />
+            <ProjectCard title="Checkered flag" difficulty="hard" route="/activities/p5-based/checkered-flag/" />
+            <ProjectCard title="Firework" difficulty="hard" route="/activities/p5-based/firework/" />
+            <ProjectCard title="Waves" difficulty="hard" route="/activities/p5-based/waves/" />
+
+            <!-- Raspberry Pi Foundation - Python path - Level 1 - Explore -->
+            <ProjectCard title="Target practice*" difficulty="easy" route="/activities/p5-based/rpi-target-practice/" href="https://projects.raspberrypi.org/en/projects/target-practice" />
+            <ProjectCard title="Rocket launch*" difficulty="easy" route="/activities/p5-based/rpi-rocket-launch/" href="https://projects.raspberrypi.org/en/projects/rocket-launch" />
+
+            <!-- Raspberry Pi Foundation - Python path - Level 1 - Design -->
+            <ProjectCard title="Make a face*" difficulty="easy" route="/activities/p5-based/rpi-make-a-face/" href="https://projects.raspberrypi.org/en/projects/make-a-face" />
+            <ProjectCard title="Don't collide*" difficulty="medium" route="/activities/p5-based/rpi-dont-collide/" href="https://projects.raspberrypi.org/en/projects/dont-collide" />
+
+            <!-- Raspberry Pi Foundation - Python path - Level 1 - Invent -->
+            <ProjectCard title="Powerful patterns*" difficulty="medium" route="/activities/p5-based/rpi-powerful-patterns/" href="https://projects.raspberrypi.org/en/projects/powerful-patterns" />
+
+            <!-- Raspberry Pi Foundation - Python path - Level 2 - Explore -->
+            <ProjectCard title="Solar system*" difficulty="medium" route="/activities/p5-based/rpi-solar-system-simulator/" href="https://projects.raspberrypi.org/en/projects/solar-system-simulator" />
+
+            <!-- Raspberry Pi Foundation - Python path - Level 2 - Design -->
+            <ProjectCard title="Encoded art*" difficulty="medium" route="/activities/p5-based/rpi-encoded-art/" href="https://projects.raspberrypi.org/en/projects/encoded-art" />
+            <ProjectCard title="Mapping data*" difficulty="hard" route="/activities/p5-based/rpi-mapping-data/" href="https://projects.raspberrypi.org/en/projects/mapping-data" />
+
+            <!-- Raspberry Pi Foundation - Python path - Level 2 - Invent -->
+            <ProjectCard title="Persuasive data*" difficulty="hard" route="/activities/p5-based/rpi-persuasive-data-presentation/" href="https://projects.raspberrypi.org/en/projects/persuasive-data-presentation" />
+        </ProjectList>
+    </section>
 </PageLayout>
