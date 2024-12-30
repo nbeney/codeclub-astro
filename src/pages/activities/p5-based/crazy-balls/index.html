@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Crazy Balls</title>
+    <script src="/custom-elements/custom-navbar.js"></script>
+    <script src="/custom-elements/custom-badges.js"></script>
+    <script src="/custom-elements/custom-guizero.js"></script>
+    <script type="module" src="/custom-elements/custom-code-block.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.9.1/lib/p5.min.js"></script>
+    <script src="/custom-elements/custom-copyright.js"></script>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body class="container">
+
+    <cc-navbar active="p5" level="3" />
+
+    <h1>Crazy Balls
+        <cc-badge-hard/>
+    </h1>
+
+    <h2 style="color: red;">UNDER CONSTRUCTION - UNDER CONSTRUCTION - UNDER CONSTRUCTION</h2>
+
+    <section>
+        <h2>What will I make?</h2>
+
+        <p>A screensaver-like animation with colourful balls bouncing.</p>
+
+        <!-- 
+from p5 import *
+from particle import Particle
+from random import randint, uniform, gauss
+from vector import Vector
+
+particles = []
+NUM = 10
+RADIUS = 50
+
+acc = Vector(0, 0.02)
+
+def color_generator():
+    N = 12
+    count = 0
+    while True:
+        yield count * 360 / N
+        count = (count + 1) % N
+
+gen_color = color_generator()
+
+def setup():
+    size(400, 400)
+    background(0)
+
+def draw():
+    background(0, 60)
+    
+    for p in particles:
+        p.update()
+        p.display()
+
+    for i in range(len(particles) - 1, -1, -1):
+        p = particles[i]
+        if not p.alive():
+            particles.pop(i)
+
+    for _ in range(NUM - len(particles)):
+        r = uniform(RADIUS/5, RADIUS)
+        particles.append(Particle(
+            pos=Vector(randint(10, width - 10), 400 + r), 
+            vel=Vector(gauss(-0.5, 0.5), -4 * uniform(0.6, 1)), 
+            acc=acc,
+            hue=next(gen_color),
+            radius=r))
+
+from p5 import *
+from vector import Vector
+
+class Particle:
+    def __init__(self, pos, vel, acc, hue=0, radius=25):
+        self.pos = pos
+        self.vel = vel
+        self.acc = acc
+        self.hue = hue
+        self.radius = radius
+        self.diam = 2 * radius
+
+    def update(self):
+        self.pos.add(self.vel)
+        self.vel.add(self.acc)
+
+    def display(self):
+        push_style()
+        color_mode(HSB)
+        stroke(255)
+        fill(self.hue, 100, 100, 0.5)
+        circle(self.pos.x, self.pos.y, self.diam)
+        pop_style()
+
+    def alive(self):
+        return (
+            self.pos.x >= -self.radius and 
+            self.pos.x <= width + self.radius and 
+            self.pos.y <= height + self.radius + 10
+        )
+
+from p5 import *
+from math import sqrt, cos, sin
+from random import uniform
+
+class Vector:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __str__(self):
+        return f"V({self.x}, {self.y})"
+
+    def copy(self):
+        return Vector(self.x, self.y)
+
+    def add(self, other):
+        self.x += other.x
+        self.y += other.y
+
+    def subtract(self, other):
+        self.x -= other.x
+        self.y -= other.y
+
+    def mult(self, number):
+        self.x *= number
+        self.y *= number
+
+    def mag(self):
+        return sqrt(self.x ** 2 + self.y ** 2)
+
+    @staticmethod
+    def random():
+        a = uniform(0, TWO_PI)
+        return Vector(cos(a), sin(a))
+        
+run()
+        -->
+
+        <div id="p5-crazy-balls"></div>
+
+        <script>
+            new p5(p => {
+                let particles = [];
+                const NUM = 10;
+                const RADIUS = 50;
+                const acc = p.createVector(0, 0.02);
+
+                function colorGenerator() {
+                    const N = 12;
+                    let count = 0;
+                    return function() {
+                        const hue = count * 360 / N;
+                        count = (count + 1) % N;
+                        return hue;
+                    }
+                }
+
+                const genColor = colorGenerator();
+
+                p.setup = function() {
+                    p.createCanvas(400, 400);
+                    p.background(0);
+                };
+
+                p.draw = function() {
+                    p.background(0, 60);
+
+                    for (let i = particles.length - 1; i >= 0; i--) {
+                        const ptc = particles[i];
+                        ptc.update();
+                        ptc.display();
+                        if (!ptc.alive()) {
+                            particles.splice(i, 1);
+                        }
+                    }
+
+                    for (let i = 0; i < NUM - particles.length; i++) {
+                        const r = p.random(RADIUS / 5, RADIUS);
+                        particles.push(new Particle(
+                            p.createVector(p.random(10, p.width - 10), 400 + r),
+                            p.createVector(p.randomGaussian(-0.5, 0.5), -4 * p.random(0.6, 1)),
+                            acc,
+                            genColor(),
+                            r
+                        ));
+                    }
+                };
+
+                class Particle {
+                    constructor(pos, vel, acc, hue = 0, radius = 25) {
+                        this.pos = pos;
+                        this.vel = vel;
+                        this.acc = acc;
+                        this.hue = hue;
+                        this.radius = radius;
+                        this.diam = 2 * radius;
+                    }
+
+                    update() {
+                        this.pos.add(this.vel);
+                        this.vel.add(this.acc);
+                    }
+
+                    display() {
+                        p.push();
+                        p.colorMode(p.HSB);
+                        p.stroke(255);
+                        p.fill(this.hue, 100, 100, 0.5);
+                        p.circle(this.pos.x, this.pos.y, this.diam);
+                        p.pop();
+                    }
+
+                    alive() {
+                        return (
+                            this.pos.x >= -this.radius &&
+                            this.pos.x <= p.width + this.radius &&
+                            this.pos.y <= p.height + this.radius + 10
+                        );
+                    }
+                }
+            }, "p5-crazy-balls");
+        </script>
+    </section>
+
+    <section>
+        <h2>Instructions</h2>
+        <ol>
+            <li>Open the <a href="https://editor.raspberrypi.org/en/projects/ajar-plank-most" target="_blank">starter project</a> and click the <strong>Run</strong> button.</li>
+            <li>Login to be able to save your work.</li>
+            <li>...</li>
+        </ol>
+    </section>
+
+    <section>
+        <h2>What can I try next?</h2>
+        <p>...</p>
+        <!--
+        <p>Here are some things you can try to make the app better. They are independent from each other so you can pick just a couple or do them in a different order. If you get stuck, use the <em>Hints</em> button or read the Guizero documentation (see <a href="../index.html">Build an app with Guizero</a>).</p>
+        <p>And of course you can also use your imagination and change the app as you like!</p>
+        <ul>
+            <li>Add a button to <strong>change the background color</strong>.
+                <ol>
+                    <li>Create a new <cc-gz-pushbutton/> with <code>text="Background"</code> (or an image) and linked to the <code>on_background</code> callback function.</li>
+                    <li>Create a new <code>on_background</code> callback function to change the background color of <code>output_text</code>.</li>
+                    <details class="hints">
+                        <summary>Hints</summary>
+                        <ul>
+                            <li>Check the existing <code>on_color</code> callback function. It does almost what you need but it changes the foreground color instead of the background color.</li>
+                            <li>Check the documentation for <cc-gz-textbox/> and find the property you need to change.</li>
+                        </ul>
+                    </details>
+                </ol>
+            </li>
+        </ul>
+        -->
+    </section>
+
+    <cc-copyright></cc-copyright>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+</html>

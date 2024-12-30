@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Waves</title>
+    <script src="/custom-elements/custom-navbar.js"></script>
+    <script src="/custom-elements/custom-badges.js"></script>
+    <script src="/custom-elements/custom-guizero.js"></script>
+    <script type="module" src="/custom-elements/custom-code-block.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.9.1/lib/p5.min.js"></script>
+    <script src="/custom-elements/custom-copyright.js"></script>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body class="container">
+
+    <cc-navbar active="p5" level="3" />
+
+    <h1>Waves
+        <cc-badge-hard/>
+    </h1>
+
+    <h2 style="color: red;">UNDER CONSTRUCTION - UNDER CONSTRUCTION - UNDER CONSTRUCTION</h2>
+
+    <section>
+        <h2>What will I make?</h2>
+
+        <p>An animation with a sailboat on a rough sea.</p>
+
+        <!-- 
+from p5 import *
+from random import randint
+from math import atan2
+
+NUM_WAVES = 5
+WAVE_MAX_HEIGHT = 90
+
+PALETTE = ["#78C0E0", "#449DD1", "#150578", "#0E0E52", "#3943B7"]
+
+OCTAVES = 5
+FALLOFF = 0.4
+REZ = 1/300
+
+waves = []
+boat = None
+
+def setup():
+    size(350, 350)
+    background(0)
+    noise_seed(randint(0, 100))
+    noise_detail(OCTAVES, FALLOFF)
+    no_stroke()
+
+    global waves, boat
+    waves = [
+        Wave(height * 5/10, PALETTE[0]),
+        Wave(height * 6/10, PALETTE[1]),
+        Wave(height * 7/10, PALETTE[2]),
+        Wave(height * 8/10, PALETTE[3]),
+        Wave(height * 9/10, PALETTE[4]),
+    ]
+    boat = Boat(waves[2])
+
+def draw():
+    for w in waves:
+        w.update()
+    boat.update()
+    
+    background(0)
+    for w in waves:
+        if w == boat.wave:
+            boat.display()    
+        w.display()
+
+class Wave:
+    def __init__(self, base_y, color):
+        self.base_y = base_y
+        self.color = color
+
+    def update(self):
+        N = int(width / 2)
+        S = width / N
+        t = frame_count / 100
+        self.points = []
+        for i in range(N+1):
+            x = i * S
+            n = noise(self.base_y, x * REZ, t)
+            y = self.base_y + map(n, 0, 1, -0.5, 0.5) * WAVE_MAX_HEIGHT
+            self.points.append((x, y))
+
+    def display(self):
+        fill(self.color)
+        begin_shape()
+        vertex(0, height)
+        for x, y in self.points:
+            vertex(x, y)
+        vertex(width, height)
+        end_shape(CLOSE)
+
+class Boat:
+    def __init__(self, wave):
+        self.wave = wave
+
+    def update(self):
+        points = self.wave.points
+        mid = len(points) // 2
+        x1, y1 = points[mid - 25]
+        x2, y2 = points[mid + 25]
+        
+        self.x, self.y = points[mid]
+        self.angle = atan2(y2 - y1, x2 - x1)
+
+    def display(self):
+        push_matrix()
+        push_style()
+        translate(self.x, self.y)
+        rotate(self.angle)
+        fill(255)
+        stroke(0)
+        rect(-2, -120, 4, 120)
+        quad(-40, 20, -55, -20, 55, -20, 40, 20)
+        fill("red")
+        triangle(-40, -25, -2, -120, -2, -25)
+        fill("yellow")
+        triangle(40, -25, 2, -120, 2, -25)
+        pop_matrix()
+        pop_style()
+        
+run()
+
+        -->
+
+        <div id="p5-waves"></div>
+
+        <script>
+            new p5(p => {
+                const NUM_WAVES = 5;
+                const WAVE_MAX_HEIGHT = 90;
+
+                const PALETTE = ["#78C0E0", "#449DD1", "#150578", "#0E0E52", "#3943B7"];
+
+                const OCTAVES = 5;
+                const FALLOFF = 0.4;
+                const REZ = 1 / 300;
+
+                let waves = [];
+                let boat = null;
+
+                p.setup = function() {
+                    p.createCanvas(350, 350);
+                    p.background(0);
+                    p.noiseSeed(Math.floor(Math.random() * 100));
+                    p.noiseDetail(OCTAVES, FALLOFF);
+                    p.noStroke();
+
+                    waves = [
+                        new Wave(p.height * 5 / 10, PALETTE[0]),
+                        new Wave(p.height * 6 / 10, PALETTE[1]),
+                        new Wave(p.height * 7 / 10, PALETTE[2]),
+                        new Wave(p.height * 8 / 10, PALETTE[3]),
+                        new Wave(p.height * 9 / 10, PALETTE[4]),
+                    ];
+                    boat = new Boat(waves[2]);
+                }
+
+                p.draw = function() {
+                    for (let w of waves) {
+                        w.update();
+                    }
+                    boat.update();
+
+                    p.background(0);
+                    for (let w of waves) {
+                        if (w === boat.wave) {
+                            boat.display();
+                        }
+                        w.display();
+                    }
+                }
+
+                class Wave {
+                    constructor(base_y, color) {
+                        this.base_y = base_y;
+                        this.color = color;
+                    }
+
+                    update() {
+                        const N = Math.floor(p.width / 2);
+                        const S = p.width / N;
+                        const t = p.frameCount / 100;
+                        this.points = [];
+                        for (let i = 0; i < N + 1; i++) {
+                            const x = i * S;
+                            const n = p.noise(this.base_y, x * REZ, t);
+                            const y = this.base_y + p.map(n, 0, 1, -0.5, 0.5) * WAVE_MAX_HEIGHT;
+                            this.points.push([x, y]);
+                        }
+                    }
+
+                    display() {
+                        p.fill(this.color);
+                        p.beginShape();
+                        p.vertex(0, p.height);
+                        for (let [x, y] of this.points) {
+                            p.vertex(x, y);
+                        }
+                        p.vertex(p.width, p.height);
+                        p.endShape(p.CLOSE);
+                    }
+                }
+
+                class Boat {
+                    constructor(wave) {
+                        this.wave = wave;
+                    }
+
+                    update() {
+                        const points = this.wave.points;
+                        const mid = Math.floor(points.length / 2);
+                        const [x1, y1] = points[mid - 25];
+                        const [x2, y2] = points[mid + 25];
+
+                        this.x = points[mid][0];
+                        this.y = points[mid][1];
+                        this.angle = Math.atan2(y2 - y1, x2 - x1);
+                    }
+
+                    display() {
+                        p.push();
+                        p.translate(this.x, this.y);
+                        p.rotate(this.angle);
+                        p.fill(255);
+                        p.stroke(0);
+                        p.rect(-2, -120, 4, 120);
+                        p.quad(-40, 20, -55, -20, 55, -20, 40, 20);
+                        p.fill("red");
+                        p.triangle(-40, -25, -2, -120, -2, -25);
+                        p.fill("yellow");
+                        p.triangle(40, -25, 2, -120, 2, -25);
+                        p.pop();
+                    }
+                }
+            }, "p5-waves");
+        </script>
+    </section>
+
+    <section>
+        <h2>Instructions</h2>
+        <ol>
+            <li>Open the <a href="https://editor.raspberrypi.org/en/projects/ajar-plank-most" target="_blank">starter project</a> and click the <strong>Run</strong> button.</li>
+            <li>Login to be able to save your work.</li>
+            <li>...</li>
+        </ol>
+    </section>
+
+    <section>
+        <h2>What can I try next?</h2>
+        <p>...</p>
+        <!--
+        <p>Here are some things you can try to make the app better. They are independent from each other so you can pick just a couple or do them in a different order. If you get stuck, use the <em>Hints</em> button or read the Guizero documentation (see <a href="../index.html">Build an app with Guizero</a>).</p>
+        <p>And of course you can also use your imagination and change the app as you like!</p>
+        <ul>
+            <li>Add a button to <strong>change the background color</strong>.
+                <ol>
+                    <li>Create a new <cc-gz-pushbutton/> with <code>text="Background"</code> (or an image) and linked to the <code>on_background</code> callback function.</li>
+                    <li>Create a new <code>on_background</code> callback function to change the background color of <code>output_text</code>.</li>
+                    <details class="hints">
+                        <summary>Hints</summary>
+                        <ul>
+                            <li>Check the existing <code>on_color</code> callback function. It does almost what you need but it changes the foreground color instead of the background color.</li>
+                            <li>Check the documentation for <cc-gz-textbox/> and find the property you need to change.</li>
+                        </ul>
+                    </details>
+                </ol>
+            </li>
+        </ul>
+        -->
+    </section>
+
+    <cc-copyright></cc-copyright>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+</html>
