@@ -29,6 +29,8 @@ Any static assets, like images, can be placed in the `public/` directory.
 
 All commands are run from the root of the project, from a terminal:
 
+### Node.js/Astro Commands
+
 | Command                | Action                                           |
 | :--------------------- | :----------------------------------------------- |
 | `npm install`          | Installs dependencies                            |
@@ -37,6 +39,25 @@ All commands are run from the root of the project, from a terminal:
 | `npm run preview`      | Preview your build locally, before deploying     |
 | `npm run astro ...`    | Run CLI commands like `astro add`, `astro check` |
 | `npm run astro --help` | Get help using the Astro CLI                     |
+
+### Python Commands
+
+This project includes Python activities and solutions. The project is set up to use [uv](https://docs.astral.sh/uv/) for Python dependency management.
+
+| Command                | Action                                           |
+| :--------------------- | :----------------------------------------------- |
+| `uv sync`              | Install Python dependencies                     |
+| `uv run python <file>` | Run a Python file with project dependencies     |
+| `uv run pytest`        | Run Python tests                                |
+| `uv add <package>`     | Add a new Python dependency                     |
+
+**Python Dependencies included:**
+- `guizero` - For GUI applications
+- `adventurelib` - For text adventure games  
+- `pytest` - For testing
+
+**Optional Graphics Dependencies:**
+- `p5` - For p5.js-like graphics (available via `uv sync --extra graphics`, may require system dependencies)
 
 ## 👀 Want to learn more?
 

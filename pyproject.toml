@@ -1,0 +1,24 @@
+[project]
+name = "codeclub-astro"
+version = "0.1.0"
+description = "Python activities and solutions for CodeClub Astro"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "guizero>=1.0.0",
+    "adventurelib>=1.0.0",
+    "pytest>=6.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+]
+graphics = [
+    "p5>=0.8.0",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=6.0.0",
+]
