@@ -169,6 +169,23 @@
   .console-output::-webkit-scrollbar-track { background: transparent; }
   .console-output::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
+  /* ── p5 canvas ── */
+  #p5-container {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 12px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    overflow: auto;
+    max-height: 50%;
+  }
+  #p5-container.visible { display: flex; }
+  #p5-container canvas {
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+
   .out-line { white-space: pre-wrap; word-break: break-word; }
   .out-line.print  { color: var(--text); }
   .out-line.error  { color: var(--red); }
@@ -314,6 +331,7 @@
         <button onclick="loadExample('fizzbuzz')">🎯 FizzBuzz</button>
         <button onclick="loadExample('guess')">🎲 Number guessing game</button>
         <button onclick="loadExample('list')">📋 Lists &amp; functions</button>
+        <button onclick="loadExample('p5draw')">🎨 p5 drawing</button>
       </div>
     </div>
     <button class="btn-clear" onclick="clearConsole()">Clear console</button>
@@ -351,6 +369,7 @@ print("Let's code something amazing today.")
       </span>
     </div>
     <div class="console-output" id="output" aria-live="polite" aria-label="Console output"></div>
+    <div id="p5-container" aria-label="Visual output canvas"></div>
     <div class="input-row hidden" id="input-row">
       <span class="input-prompt-label" id="input-prompt-label">▸</span>
       <input type="text" id="console-input" placeholder="Type your answer and press Enter…" autocomplete="off" spellcheck="false">
@@ -367,6 +386,8 @@ print("Let's code something amazing today.")
 
 <!-- Pyodide -->
 <script src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js"></script>
+<!-- p5.js v1.4.1 (same version as Raspberry Pi Foundation Code Editor) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.1/p5.min.js"></script>
 <script>
 let pyodide = null;
 let inputResolve = null;
@@ -441,10 +462,496 @@ builtins.input = _sync_input
     document.getElementById('run-btn').disabled = false;
     document.getElementById('loading').classList.add('hidden');
     appendOutput('Python 3 ready. Press ▶ Run or Ctrl+Enter to execute your code.\n', 'system');
+
+    // Set up p5.js bridge module
+    setupP5Module();
+    await registerP5PythonModule();
   } catch(e) {
     setStatus('error', 'Failed to load Python');
     appendOutput('Error loading Python: ' + e.message, 'error');
   }
+}
+
+// ── p5 support ──
+let p5Instance = null;
+
+function destroyP5() {
+  if (p5Instance) {
+    p5Instance.remove();
+    p5Instance = null;
+  }
+  const container = document.getElementById('p5-container');
+  container.innerHTML = '';
+  container.classList.remove('visible');
+}
+
+function setupP5Module() {
+  // Reset global p5 callback references
+  window._p5_draw_fn = null;
+  window._p5_setup_fn = null;
+  window._p5_key_pressed_fn = null;
+  window._p5_mouse_pressed_fn = null;
+  window._p5_mouse_released_fn = null;
+  window._p5_mouse_moved_fn = null;
+  window._p5_mouse_dragged_fn = null;
+  window._p5_run_requested = false;
+  window._p5_requested_frame_rate = 60;
+  window._p5_setup_called = false;
+  window._p5inst = null;
+}
+
+async function registerP5PythonModule() {
+  await pyodide.runPythonAsync(`
+import sys
+import types
+import js
+from pyodide.ffi import create_proxy
+
+_p5mod = types.ModuleType('p5')
+_p5mod.__file__ = '<p5 bridge>'
+
+# -- Constants --
+import math as _math
+_p5mod.PI = _math.pi
+_p5mod.HALF_PI = _math.pi / 2
+_p5mod.QUARTER_PI = _math.pi / 4
+_p5mod.TWO_PI = _math.pi * 2
+_p5mod.TAU = _math.pi * 2
+_p5mod.DEG_TO_RAD = _math.pi / 180
+_p5mod.RAD_TO_DEG = 180 / _math.pi
+
+_p5mod.P2D = 'p2d'
+_p5mod.WEBGL = 'webgl'
+
+_p5mod.CORNER = 'corner'
+_p5mod.CORNERS = 'corners'
+_p5mod.RADIUS = 'radius'
+_p5mod.CENTER = 'center'
+_p5mod.LEFT = 'left'
+_p5mod.RIGHT = 'right'
+_p5mod.TOP = 'top'
+_p5mod.BOTTOM = 'bottom'
+_p5mod.BASELINE = 'alphabetic'
+
+_p5mod.CLOSE = 'close'
+_p5mod.OPEN = 'open'
+_p5mod.CHORD = 'chord'
+_p5mod.PIE = 'pie'
+_p5mod.ROUND = 'round'
+_p5mod.SQUARE = 'butt'
+_p5mod.PROJECT = 'square'
+_p5mod.BEVEL = 'bevel'
+_p5mod.MITER = 'miter'
+
+_p5mod.RGB = 'rgb'
+_p5mod.HSB = 'hsb'
+_p5mod.HSL = 'hsl'
+
+_p5mod.DEGREES = 'degrees'
+_p5mod.RADIANS = 'radians'
+
+_p5mod.NORMAL = 'normal'
+_p5mod.ITALIC = 'italic'
+_p5mod.BOLD = 'bold'
+_p5mod.BOLDITALIC = 'bold italic'
+
+_p5mod.POINTS = 0x0000
+_p5mod.LINES = 0x0001
+_p5mod.TRIANGLES = 0x0004
+_p5mod.TRIANGLE_FAN = 0x0006
+_p5mod.TRIANGLE_STRIP = 0x0005
+_p5mod.QUADS = 'quads'
+_p5mod.QUAD_STRIP = 'quad_strip'
+
+# Arrow keys
+_p5mod.LEFT_ARROW = 37
+_p5mod.RIGHT_ARROW = 39
+_p5mod.UP_ARROW = 38
+_p5mod.DOWN_ARROW = 40
+_p5mod.ENTER = 13
+_p5mod.SHIFT = 16
+_p5mod.BACKSPACE = 8
+_p5mod.DELETE = 46
+_p5mod.TAB = 9
+_p5mod.ESCAPE = 27
+
+# -- Helper to get the p5 instance --
+def _inst():
+    return js.window._p5inst
+
+# -- Environment --
+def _get_width():
+    p = _inst()
+    return p.width if p else 0
+
+def _get_height():
+    p = _inst()
+    return p.height if p else 0
+
+def _get_mouse_x():
+    p = _inst()
+    return p.mouseX if p else 0
+
+def _get_mouse_y():
+    p = _inst()
+    return p.mouseY if p else 0
+
+def _get_frame_count():
+    p = _inst()
+    return p.frameCount if p else 0
+
+def _get_key():
+    p = _inst()
+    return str(p.key) if p else ''
+
+def _get_key_code():
+    p = _inst()
+    return int(p.keyCode) if p else 0
+
+def _get_mouse_is_pressed():
+    p = _inst()
+    return bool(p.mouseIsPressed) if p else False
+
+# We use a class with __getattr__ to provide dynamic properties
+class _P5Module(types.ModuleType):
+    def __getattr__(self, name):
+        if name == 'width':
+            return _get_width()
+        elif name == 'height':
+            return _get_height()
+        elif name == 'mouse_x':
+            return _get_mouse_x()
+        elif name == 'mouse_y':
+            return _get_mouse_y()
+        elif name == 'frame_count':
+            return _get_frame_count()
+        elif name == 'key':
+            return _get_key()
+        elif name == 'key_code':
+            return _get_key_code()
+        elif name == 'mouse_is_pressed':
+            return _get_mouse_is_pressed()
+        raise AttributeError(f"module 'p5' has no attribute '{name}'")
+
+# Copy all existing attributes to the class-based module
+_p5dyn = _P5Module('p5')
+for _k, _v in _p5mod.__dict__.items():
+    if not _k.startswith('__'):
+        setattr(_p5dyn, _k, _v)
+_p5mod = _p5dyn
+
+# -- Drawing functions --
+def size(w, h, mode=None):
+    import js
+    js.window._p5_canvas_width = w
+    js.window._p5_canvas_height = h
+    js.window._p5_canvas_mode = mode
+    js.window._p5_setup_called = True
+_p5mod.size = size
+
+def background(*args):
+    _inst().background(*args)
+_p5mod.background = background
+
+def fill(*args):
+    _inst().fill(*args)
+_p5mod.fill = fill
+
+def no_fill():
+    _inst().noFill()
+_p5mod.no_fill = no_fill
+
+def stroke(*args):
+    _inst().stroke(*args)
+_p5mod.stroke = stroke
+
+def no_stroke():
+    _inst().noStroke()
+_p5mod.no_stroke = no_stroke
+
+def stroke_weight(w):
+    _inst().strokeWeight(w)
+_p5mod.stroke_weight = stroke_weight
+
+def color_mode(*args):
+    _inst().colorMode(*args)
+_p5mod.color_mode = color_mode
+
+def color(*args):
+    return _inst().color(*args)
+_p5mod.color = color
+
+# -- Shapes --
+def rect(*args):
+    _inst().rect(*args)
+_p5mod.rect = rect
+
+def ellipse(*args):
+    _inst().ellipse(*args)
+_p5mod.ellipse = ellipse
+
+def circle(x, y, d):
+    _inst().circle(x, y, d)
+_p5mod.circle = circle
+
+def line(*args):
+    _inst().line(*args)
+_p5mod.line = line
+
+def point(*args):
+    _inst().point(*args)
+_p5mod.point = point
+
+def triangle(x1, y1, x2, y2, x3, y3):
+    _inst().triangle(x1, y1, x2, y2, x3, y3)
+_p5mod.triangle = triangle
+
+def quad(*args):
+    _inst().quad(*args)
+_p5mod.quad = quad
+
+def arc(*args):
+    _inst().arc(*args)
+_p5mod.arc = arc
+
+def square(*args):
+    _inst().square(*args)
+_p5mod.square = square
+
+# -- Vertex --
+def begin_shape(kind=None):
+    if kind is None:
+        _inst().beginShape()
+    else:
+        _inst().beginShape(kind)
+_p5mod.begin_shape = begin_shape
+
+def end_shape(mode=None):
+    if mode is None:
+        _inst().endShape()
+    else:
+        _inst().endShape(mode)
+_p5mod.end_shape = end_shape
+
+def vertex(*args):
+    _inst().vertex(*args)
+_p5mod.vertex = vertex
+
+# -- Transforms --
+def translate(*args):
+    _inst().translate(*args)
+_p5mod.translate = translate
+
+def rotate(angle):
+    _inst().rotate(angle)
+_p5mod.rotate = rotate
+
+def rotate_x(angle):
+    _inst().rotateX(angle)
+_p5mod.rotate_x = rotate_x
+
+def rotate_y(angle):
+    _inst().rotateY(angle)
+_p5mod.rotate_y = rotate_y
+
+def scale(*args):
+    _inst().scale(*args)
+_p5mod.scale = scale
+
+def push_matrix():
+    _inst().push()
+_p5mod.push_matrix = push_matrix
+
+def pop_matrix():
+    _inst().pop()
+_p5mod.pop_matrix = pop_matrix
+
+def push_style():
+    _inst().push()
+_p5mod.push_style = push_style
+
+def pop_style():
+    _inst().pop()
+_p5mod.pop_style = pop_style
+
+def reset_matrix():
+    _inst().resetMatrix()
+_p5mod.reset_matrix = reset_matrix
+
+# -- Typography --
+def text(txt, x, y):
+    _inst().text(str(txt), x, y)
+_p5mod.text = text
+
+def text_size(s):
+    _inst().textSize(s)
+_p5mod.text_size = text_size
+
+def text_align(*args):
+    _inst().textAlign(*args)
+_p5mod.text_align = text_align
+
+def text_font(font, size=None):
+    if size is None:
+        _inst().textFont(font)
+    else:
+        _inst().textFont(font, size)
+_p5mod.text_font = text_font
+
+def text_style(style):
+    _inst().textStyle(style)
+_p5mod.text_style = text_style
+
+def text_width(txt):
+    return _inst().textWidth(str(txt))
+_p5mod.text_width = text_width
+
+# -- Shape attributes --
+def ellipse_mode(mode):
+    _inst().ellipseMode(mode)
+_p5mod.ellipse_mode = ellipse_mode
+
+def rect_mode(mode):
+    _inst().rectMode(mode)
+_p5mod.rect_mode = rect_mode
+
+def stroke_cap(cap):
+    _inst().strokeCap(cap)
+_p5mod.stroke_cap = stroke_cap
+
+def stroke_join(join):
+    _inst().strokeJoin(join)
+_p5mod.stroke_join = stroke_join
+
+# -- Math --
+def dist(*args):
+    return _inst().dist(*args)
+_p5mod.dist = dist
+
+def lerp(v1, v2, amt):
+    return _inst().lerp(v1, v2, amt)
+_p5mod.lerp = lerp
+
+def constrain(value, low, high):
+    return _inst().constrain(value, low, high)
+_p5mod.constrain = constrain
+
+def _map(value, start1, stop1, start2, stop2):
+    return _inst().map(value, start1, stop1, start2, stop2)
+_p5mod.map = _map
+
+def radians(degrees):
+    return _inst().radians(degrees)
+_p5mod.radians = radians
+
+def degrees(radians):
+    return _inst().degrees(radians)
+_p5mod.degrees = degrees
+
+def random(*args):
+    return _inst().random(*args)
+_p5mod.random = random
+
+def random_seed(seed):
+    _inst().randomSeed(seed)
+_p5mod.random_seed = random_seed
+
+def noise(*args):
+    return _inst().noise(*args)
+_p5mod.noise = noise
+
+# -- Color reading --
+def red(c):
+    return _inst().red(c)
+_p5mod.red = red
+
+def green(c):
+    return _inst().green(c)
+_p5mod.green = green
+
+def blue(c):
+    return _inst().blue(c)
+_p5mod.blue = blue
+
+# -- Image --
+def load_image(path):
+    return _inst().loadImage(path)
+_p5mod.load_image = load_image
+
+def image(img, *args):
+    _inst().image(img, *args)
+_p5mod.image = image
+
+# -- Environment controls --
+def frame_rate(fps):
+    _inst().frameRate(fps)
+_p5mod.frame_rate = frame_rate
+
+def no_loop():
+    _inst().noLoop()
+_p5mod.no_loop = no_loop
+
+def loop():
+    _inst().loop()
+_p5mod.loop = loop
+
+def clear():
+    _inst().clear()
+_p5mod.clear = clear
+
+def erase(*args):
+    _inst().erase(*args)
+_p5mod.erase = erase
+
+def no_erase():
+    _inst().noErase()
+_p5mod.no_erase = no_erase
+
+# -- Curves --
+def bezier(*args):
+    _inst().bezier(*args)
+_p5mod.bezier = bezier
+
+def curve(*args):
+    _inst().curve(*args)
+_p5mod.curve = curve
+
+# -- run() starts the sketch --
+# This is called synchronously — the actual p5 instance creation
+# is triggered from JavaScript after the Python code completes
+def run(fr=60):
+    import js
+    js.window._p5_requested_frame_rate = fr
+    js.window._p5_run_requested = True
+_p5mod.run = run
+
+# Register in sys.modules
+sys.modules['p5'] = _p5mod
+`);
+}
+
+// Called before running user code that imports p5
+function codeUsesP5(code) {
+  return /^(?:from\s+p5\s+import|import\s+p5)/m.test(code);
+}
+
+async function prepareP5ForRun(code) {
+  // Reset p5 state
+  destroyP5();
+  window._p5_draw_fn = null;
+  window._p5_setup_fn = null;
+  window._p5_key_pressed_fn = null;
+  window._p5_mouse_pressed_fn = null;
+  window._p5_mouse_released_fn = null;
+  window._p5_mouse_moved_fn = null;
+  window._p5_mouse_dragged_fn = null;
+  window._p5_setup_called = false;
+  window._p5_run_requested = false;
+  window._p5_requested_frame_rate = 60;
+  window._p5_canvas_width = 400;
+  window._p5_canvas_height = 400;
+  window._p5_canvas_mode = null;
+  window._p5inst = null;
 }
 
 // ── Run code ──
@@ -457,8 +964,101 @@ async function runCode() {
   document.getElementById('run-btn').disabled = true;
   appendOutput('\n── Running ──────────────────────\n', 'system');
 
+  const usesP5 = codeUsesP5(code);
+
   try {
+    // Always clean up a previous p5 sketch
+    destroyP5();
+
+    if (usesP5) {
+      await prepareP5ForRun(code);
+    }
+
     await pyodide.runPythonAsync(code);
+
+    if (usesP5 && window._p5_run_requested) {
+      // Start the p5 sketch now that user code has defined draw(), etc.
+      const fr = window._p5_requested_frame_rate || 60;
+      const container = document.getElementById('p5-container');
+      container.classList.add('visible');
+
+      const sketch = (p) => {
+        window._p5inst = p;
+        p.setup = function() {
+          p.frameRate(fr);
+          const w = window._p5_canvas_width || 400;
+          const h = window._p5_canvas_height || 400;
+          const mode = window._p5_canvas_mode;
+          if (mode) {
+            p.createCanvas(w, h, mode);
+          } else {
+            p.createCanvas(w, h);
+          }
+        };
+        p.draw = function() {
+          if (window._p5_draw_fn) {
+            try { window._p5_draw_fn(); } catch(e) { p.noLoop(); console.error(e); }
+          }
+        };
+        p.keyPressed = function() {
+          if (window._p5_key_pressed_fn) {
+            try { window._p5_key_pressed_fn(); } catch(e) { console.error(e); }
+          }
+        };
+        p.mousePressed = function() {
+          if (window._p5_mouse_pressed_fn) {
+            try { window._p5_mouse_pressed_fn(); } catch(e) { console.error(e); }
+          }
+        };
+        p.mouseReleased = function() {
+          if (window._p5_mouse_released_fn) {
+            try { window._p5_mouse_released_fn(); } catch(e) { console.error(e); }
+          }
+        };
+        p.mouseMoved = function() {
+          if (window._p5_mouse_moved_fn) {
+            try { window._p5_mouse_moved_fn(); } catch(e) { console.error(e); }
+          }
+        };
+        p.mouseDragged = function() {
+          if (window._p5_mouse_dragged_fn) {
+            try { window._p5_mouse_dragged_fn(); } catch(e) { console.error(e); }
+          }
+        };
+      };
+
+      p5Instance = new p5(sketch, container);
+
+      // Wire up Python draw/event callbacks after a short delay for p5 init
+      await new Promise(r => setTimeout(r, 50));
+
+      // After user code runs, wire up draw/key_pressed/mouse_pressed callbacks
+      await pyodide.runPythonAsync(`
+import sys as _sys
+import js as _js
+from pyodide.ffi import create_proxy as _create_proxy
+
+def _wire_p5_callbacks():
+    _g = _sys.modules.get('__main__').__dict__
+
+    if 'draw' in _g and callable(_g['draw']):
+        _js.window._p5_draw_fn = _create_proxy(_g['draw'])
+    if 'key_pressed' in _g and callable(_g['key_pressed']):
+        _js.window._p5_key_pressed_fn = _create_proxy(_g['key_pressed'])
+    if 'mouse_pressed' in _g and callable(_g['mouse_pressed']):
+        _js.window._p5_mouse_pressed_fn = _create_proxy(_g['mouse_pressed'])
+    if 'mouse_released' in _g and callable(_g['mouse_released']):
+        _js.window._p5_mouse_released_fn = _create_proxy(_g['mouse_released'])
+    if 'mouse_moved' in _g and callable(_g['mouse_moved']):
+        _js.window._p5_mouse_moved_fn = _create_proxy(_g['mouse_moved'])
+    if 'mouse_dragged' in _g and callable(_g['mouse_dragged']):
+        _js.window._p5_mouse_dragged_fn = _create_proxy(_g['mouse_dragged'])
+
+_wire_p5_callbacks()
+del _wire_p5_callbacks
+`);
+    }
+
     flushOutput();
     appendOutput('── Done ──────────────────────────\n', 'system');
     setStatus('ready', 'Done — Ctrl+Enter to run again');
@@ -513,6 +1113,7 @@ function renderLine(text, cls) {
 
 function clearConsole() {
   document.getElementById('output').innerHTML = '';
+  destroyP5();
 }
 
 // ── Input handling ──
@@ -621,6 +1222,42 @@ elif avg >= 60:
     print("Good effort! 👍")
 else:
     print("Keep practising! 💪")
+`,
+  p5draw: `# Drawing with p5 — same library as the RPi Code Editor!
+from p5 import *
+
+size(400, 400)
+
+def draw():
+    background(20, 20, 40)
+    no_stroke()
+
+    # Sun
+    fill(255, 200, 50)
+    circle(mouse_x, mouse_y, 60)
+
+    # Ground
+    fill(34, 139, 34)
+    rect(0, 300, 400, 100)
+
+    # House
+    fill(180, 80, 60)
+    rect(150, 200, 100, 100)
+
+    # Roof
+    fill(100, 50, 30)
+    triangle(140, 200, 200, 140, 260, 200)
+
+    # Door
+    fill(80, 40, 20)
+    rect(180, 250, 30, 50)
+
+    # Window
+    fill(200, 230, 255)
+    square(170, 220, 20)
+    square(210, 220, 20)
+
+run()
 `
 };
 
