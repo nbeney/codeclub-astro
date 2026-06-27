@@ -1008,6 +1008,10 @@ async function runCode() {
           } else {
             p.createCanvas(w, h);
           }
+          // Call user's setup() if defined (wired up after p5 init)
+          if (window._p5_setup_fn) {
+            try { window._p5_setup_fn(); } catch(e) { console.error(e); }
+          }
         };
         p.draw = function() {
           if (window._p5_draw_fn) {
@@ -1041,12 +1045,8 @@ async function runCode() {
         };
       };
 
-      p5Instance = new p5(sketch, container);
-
-      // Wire up Python draw/event callbacks after a short delay for p5 init
-      await new Promise(r => setTimeout(r, 50));
-
-      // After user code runs, wire up draw/key_pressed/mouse_pressed callbacks
+      // Wire up Python callbacks BEFORE creating p5 instance
+      // (so setup() is available when p5 calls it)
       await pyodide.runPythonAsync(`
 import sys as _sys
 import js as _js
@@ -1055,6 +1055,15 @@ from pyodide.ffi import create_proxy as _create_proxy
 def _wire_p5_callbacks():
     _g = _sys.modules.get('__main__').__dict__
     _p5 = _sys.modules.get('p5')
+
+    # Wrap setup to inject dynamic p5 properties
+    if 'setup' in _g and callable(_g['setup']):
+        _original_setup = _g['setup']
+        def _setup_wrapper():
+            _g['width'] = _p5.width
+            _g['height'] = _p5.height
+            _original_setup()
+        _js.window._p5_setup_fn = _create_proxy(_setup_wrapper)
 
     # Wrap draw to inject dynamic p5 properties into __main__ globals
     if 'draw' in _g and callable(_g['draw']):
@@ -1084,6 +1093,8 @@ def _wire_p5_callbacks():
 _wire_p5_callbacks()
 del _wire_p5_callbacks
 `);
+
+      p5Instance = new p5(sketch, container);
     }
 
     flushOutput();
@@ -1255,11 +1266,19 @@ from p5 import *
 
 size(400, 400)
 
+def setup():
+    background("white")
+
 def draw():
-    background(20, 20, 40)
+    background("white")
+    fill(0)
+    text_size(18)
+    text_align(CENTER, CENTER)
+    text("HOME SWEET HOME", width/2, 30)
+
     no_stroke()
 
-    # Sun
+    # Sun follows the mouse
     fill(255, 200, 50)
     circle(mouse_x, mouse_y, 60)
 
@@ -1279,7 +1298,7 @@ def draw():
     fill(80, 40, 20)
     rect(180, 250, 30, 50)
 
-    # Window
+    # Windows
     fill(200, 230, 255)
     square(170, 220, 20)
     square(210, 220, 20)
