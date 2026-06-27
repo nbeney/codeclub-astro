@@ -19,7 +19,7 @@ const heading = "P5 library - Coordinates, angles & shapes";
             <li>use <code>width, height</code> instead of of <code>300, 200</code> for the bottom-right corner</li>
         </ul>
         <p>For example <code>size(8, 8)</code> makes the canvas 8 pixels wide and 8 pixels high.</p>
-        <img src="/activities/python-libraries/p5-images/p5-coordinates.png" alt="coordinates">
+        <img src="/codeclub-astro/activities/python-libraries/p5-images/p5-coordinates.png" alt="coordinates">
     </section>
 
     <h2 id="angles">Angles</h2>
@@ -36,7 +36,7 @@ const heading = "P5 library - Coordinates, angles & shapes";
             <div class="row align-items-center">
                 <div class="col">
                     <div id="p5-angles"></div>
-                    <script is:inline src="/activities/python-libraries/p5js-scripts/p5-angles.js"></script>
+                    <script is:inline src="/codeclub-astro/activities/python-libraries/p5js-scripts/p5-angles.js"></script>
                 </div>
                 <div class="col">
                     <table class="table table-sm table-striped">
@@ -66,7 +66,7 @@ const heading = "P5 library - Coordinates, angles & shapes";
         <p>Use <code>point(<em>x</em>, <em>y</em>)</code> to draw a single point at coordinates (x, y).</p>        
         <p>For example the following code will draw this:</p>
         <pre><code class="language-python">point(3, 5)</code></pre>
-        <img src="/activities/python-libraries/p5-images/p5-point.png" alt="point">
+        <img src="/codeclub-astro/activities/python-libraries/p5-images/p5-point.png" alt="point">
     </section>
 
     <h2 id="line">Line</h2>
@@ -75,7 +75,7 @@ const heading = "P5 library - Coordinates, angles & shapes";
         <p>Use <code>line(<em>x1</em>, <em>y1</em>, <em>x2</em>, <em>y2</em>)</code> to draw a line between coordinates (x1, y1) and (x2, y2).</p>
         <p>For example the following code will draw this:</p>
         <pre><code class="language-python">line(2, 6, 5, 1)</code></pre>
-        <img src="/activities/python-libraries/p5-images/p5-line.png" alt="line">
+        <img src="/codeclub-astro/activities/python-libraries/p5-images/p5-line.png" alt="line">
     </section>
 
     <h2 id="triangle">Triangle</h2>
@@ -84,7 +84,7 @@ const heading = "P5 library - Coordinates, angles & shapes";
         <p>Use <code>triangle(<em>x1</em>, <em>y1</em>, <em>x2</em>, <em>y2</em>, <em>x3</em>, <em>y3</em>)</code> to draw a triangle between coordinates (x1, y1), (x2, y2), and (x3, y3).</p>
         <p>For example the following code will draw this:</p>
         <pre><code class="language-python">triangle(2, 3, 5, 1, 4, 6)</code></pre>
-        <img src="/activities/python-libraries/p5-images/p5-triangle.png" alt="triangle">
+        <img src="/codeclub-astro/activities/python-libraries/p5-images/p5-triangle.png" alt="triangle">
     </section>
 
     <h2 id="quad">Quad</h2>
@@ -93,7 +93,7 @@ const heading = "P5 library - Coordinates, angles & shapes";
         <p>Use <code>quad(<em>x1</em>, <em>y1</em>, <em>x2</em>, <em>y2</em>, <em>x3</em>, <em>y3</em>, <em>x4</em>, <em>y4</em>)</code> to draw a quadrilateral between coordinates (x1, y1), (x2, y2), (x3, y3), and (x4, y4).</p>
         <p>For example the following code will draw this:</p>
         <pre><code class="language-python">quad(1, 6, 2, 2, 5, 1, 6, 5)</code></pre>
-        <img src="/activities/python-libraries/p5-images/p5-quad.png" alt="quad">
+        <img src="/codeclub-astro/activities/python-libraries/p5-images/p5-quad.png" alt="quad">
     </section>
 
     <h2 id="rect">Rect</h2>
@@ -103,19 +103,19 @@ const heading = "P5 library - Coordinates, angles & shapes";
         <p>For example the following code will draw this:</p>
         <pre><code class="language-python">rect_mode(CORNER)
 rect(1, 1, 2, 4)</code></pre>
-        <img src="/activities/python-libraries/p5-images/p5-rect-CORNER.png" alt="rect-CORNER">
+        <img src="/codeclub-astro/activities/python-libraries/p5-images/p5-rect-CORNER.png" alt="rect-CORNER">
 
         <p>To draw a rectangle specified by its <strong>center and dimensions</strong>, use <code>rect_mode(CENTER)</code> and <code>rect(<em>cx</em>, <em>cy</em>, <em>width</em>, <em>height</em>)</code>.</p>
         <p>For example the following code will draw this:</p>
         <pre><code class="language-python">rect_mode(CENTER)
 rect(2, 3, 2, 4)</code></pre>
-        <img src="/activities/python-libraries/p5-images/p5-rect-CENTER.png" alt="rect-CENTER">
+        <img src="/codeclub-astro/activities/python-libraries/p5-images/p5-rect-CENTER.png" alt="rect-CENTER">
 
         <p>To draw a rectangle specified by <strong>two opposite corners</strong>, use <code>rect_mode(CORNERS)</code> and <code>rect(<em>x1</em>, <em>y1</em>, <em>x2</em>, <em>y2</em>)</code>.</p>
         <p>For example the following code will draw this:</p>
         <pre><code class="language-python">rect_mode(CORNERS)
 rect(1, 1, 3, 5)</code></pre>
-        <img src="/activities/python-libraries/p5-images/p5-rect-CORNERS.png" alt="rect-CORNERS">
+        <img src="/codeclub-astro/activities/python-libraries/p5-images/p5-rect-CORNERS.png" alt="rect-CORNERS">
 
         <p>To draw <strong>rounded corners</strong>, specify one radius number (all the corners are identical) or four radius numbers (all the corners are different).</p>
         <p>For example the following code will draw this:</p>
@@ -136,13 +136,13 @@ rect(300, 300, 400, 400, 10, 20, 40, 80)  # each corner has a different radius</
         <p>For example the following code will draw this:</p>
         <pre><code class="language-python">rect_mode(CORNER)
 square(1, 1, 4)</code></pre>
-        <img src="/activities/python-libraries/p5-images/p5-square-CORNER.png" alt="square-CORNER">
+        <img src="/codeclub-astro/activities/python-libraries/p5-images/p5-square-CORNER.png" alt="square-CORNER">
 
         <p>To draw a square specified by its <strong>center and size</strong>, use <code>rect_mode(CENTER)</code> and <code>square(<em>cx</em>, <em>cy</em>, <em>size</em>)</code>.</p>
         <p>For example the following code will draw this:</p>
         <pre><code class="language-python">rect_mode(CENTER)
 square(3, 3, 4)</code></pre>
-        <img src="/activities/python-libraries/p5-images/p5-square-CENTER.png" alt="square-CENTER">
+        <img src="/codeclub-astro/activities/python-libraries/p5-images/p5-square-CENTER.png" alt="square-CENTER">
 
         <p>To draw <strong>rounded corners</strong>, specify one radius number (all the corners are identical) or four radius numbers (all the corners are different).</p>
         <p>For example the following code will draw this:</p>
@@ -153,7 +153,7 @@ stroke("green")
 square(150, 150, 400, 30)  # all corners have a radius of 30
 stroke("blue")
 square(300, 300, 400, 10, 20, 40, 80)  # each corner has a different radius</code></pre>
-        <img src="/activities/python-libraries/p5-images/p5-rect-rounded.png" alt="square-rounded">
+        <img src="/codeclub-astro/activities/python-libraries/p5-images/p5-rect-rounded.png" alt="square-rounded">
     </section>
 
     <h2 id="ellipse">Ellipse</h2>
@@ -163,19 +163,19 @@ square(300, 300, 400, 10, 20, 40, 80)  # each corner has a different radius</cod
         <p>For example the following code will draw this:</p>
         <pre><code class="language-python">ellipse_mode(CORNER)
 ellipse(1, 1, 2, 4)</code></pre>
-        <img src="/activities/python-libraries/p5-images/p5-ellipse-CORNER.png" alt="ellipse-CORNER">
+        <img src="/codeclub-astro/activities/python-libraries/p5-images/p5-ellipse-CORNER.png" alt="ellipse-CORNER">
 
         <p>To draw an ellipse specified by its <strong>center and dimensions</strong>, use <code>ellipse_mode(CENTER)</code> and <code>ellipse(<em>cx</em>, <em>cy</em>, <em>width</em>, <em>height</em>)</code>.</p>
         <p>For example the following code will draw this:</p>
         <pre><code class="language-python">ellipse_mode(CENTER)
 ellipse(2, 3, 2, 4)</code></pre>
-        <img src="/activities/python-libraries/p5-images/p5-ellipse-CENTER.png" alt="ellipse-CENTER">
+        <img src="/codeclub-astro/activities/python-libraries/p5-images/p5-ellipse-CENTER.png" alt="ellipse-CENTER">
 
         <p>To draw an ellipse specified by <strong>two opposite corners</strong>, use <code>ellipse_mode(CORNERS)</code> and <code>ellipse(<em>x1</em>, <em>y1</em>, <em>x2</em>, <em>y2</em>)</code>.</p>
         <p>For example the following code will draw this:</p>
         <pre><code class="language-python">ellipse_mode(CORNERS)
 ellipse(1, 1, 3, 5)</code></pre>
-        <img src="/activities/python-libraries/p5-images/p5-ellipse-CORNERS.png" alt="ellipse-CORNERS">
+        <img src="/codeclub-astro/activities/python-libraries/p5-images/p5-ellipse-CORNERS.png" alt="ellipse-CORNERS">
     </section>
 
     <h2 id="circle">Circle</h2>
@@ -185,7 +185,7 @@ ellipse(1, 1, 3, 5)</code></pre>
         <p>Use <code>circle(<em>cx</em>, <em>cy</em>, <em>diameter</em>)</code> to draw a circle centered at coordinates (cx, cy).</p>
         <p>For example the following code will draw this:</p>
         <pre><code class="language-python">circle(3, 3, 4)</code></pre>
-        <img src="/activities/python-libraries/p5-images/p5-circle.png" alt="circle">
+        <img src="/codeclub-astro/activities/python-libraries/p5-images/p5-circle.png" alt="circle">
     </section>
 
     <h2 id="arc">Arc</h2>
@@ -194,17 +194,17 @@ ellipse(1, 1, 3, 5)</code></pre>
         <p>To draw an ellipse <strong>arc</strong>, use <code>arc(<em>cx</em>, <em>cy</em>, <em>width</em>, <em>height</em>, <em>start_angle</em>, <em>stop_angle</em>, OPEN)</code>.</p>
         <p>For example the following code will draw this:</p>
         <pre><code class="language-python">arc(4, 2, 5, 7, radians(45), radians(180), OPEN)</code></pre>
-        <img src="/activities/python-libraries/p5-images/p5-arc-OPEN.png" alt="arc-OPEN">
+        <img src="/codeclub-astro/activities/python-libraries/p5-images/p5-arc-OPEN.png" alt="arc-OPEN">
 
         <p>To draw an ellipse <strong>chord</strong>, use <code>arc(<em>cx</em>, <em>cy</em>, <em>width</em>, <em>height</em>, <em>start_angle</em>, <em>stop_angle</em>, CHORD)</code>.</p>
         <p>For example the following code will draw this:</p>
         <pre><code class="language-python">arc(4, 2, 5, 7, radians(45), radians(180), CHORD)</code></pre>
-        <img src="/activities/python-libraries/p5-images/p5-arc-CHORD.png" alt="arc-CHORD">
+        <img src="/codeclub-astro/activities/python-libraries/p5-images/p5-arc-CHORD.png" alt="arc-CHORD">
 
         <p>To draw an ellipse <strong>pie</strong>, use <code>arc(<em>cx</em>, <em>cy</em>, <em>width</em>, <em>height</em>, <em>start_angle</em>, <em>stop_angle</em>, PIE)</code>.</p>
         <p>For example the following code will draw this:</p>
         <pre><code class="language-python">arc(4, 2, 5, 7, radians(45), radians(180), PIE)</code></pre>
-        <img src="/activities/python-libraries/p5-images/p5-arc-PIE.png" alt="arc-PIE">
+        <img src="/codeclub-astro/activities/python-libraries/p5-images/p5-arc-PIE.png" alt="arc-PIE">
     </section>
 
     <h2 id="shape">Shape = Polygon</h2>
@@ -222,7 +222,7 @@ vertex(5, 5)
 vertex(5, 6)
 vertex(2, 6)
 end_shape(CLOSE)</code></pre>
-        <img src="/activities/python-libraries/p5-images/p5-shape.png" alt="shape">
+        <img src="/codeclub-astro/activities/python-libraries/p5-images/p5-shape.png" alt="shape">
         <p><br>It is also possible to draw complex polygons with holes and inner shapes:</p>
         <ul>
             <li>start with <code>begin_shape()</code></li>
@@ -253,7 +253,7 @@ vertex(4, 4)
 vertex(3, 4)
 end_contour()
 end_shape(CLOSE)</code></pre>
-        <img src="/activities/python-libraries/p5-images/p5-shape-complex.png" alt="shape-complex">
+        <img src="/codeclub-astro/activities/python-libraries/p5-images/p5-shape-complex.png" alt="shape-complex">
     </section>
 
     <h2 id="bezier">Bezier</h2>
@@ -267,7 +267,7 @@ end_shape(CLOSE)</code></pre>
     4, 1,  # 2nd control point
     5, 3   # stop point
 )</code></pre>
-        <img src="/activities/python-libraries/p5-images/p5-bezier.png" alt="bezier">
+        <img src="/codeclub-astro/activities/python-libraries/p5-images/p5-bezier.png" alt="bezier">
         <p>Note in particular how:</p>
         <ul>
             <li>the curve at the start point is tangent to the line passing through the start point and the 1st control point</li>
@@ -275,7 +275,7 @@ end_shape(CLOSE)</code></pre>
         </ul>
         <p>Drag the dots hereunder to get a feeling for how the start, stop and control points interact with each other.</p>
         <div id="p5-bezier-playground"></div>
-        <script is:inline src="/activities/python-libraries/p5js-scripts/p5-bezier-playground.js"></script>
+        <script is:inline src="/codeclub-astro/activities/python-libraries/p5js-scripts/p5-bezier-playground.js"></script>
     </section>
 
     <h2 id="text">Text</h2>
@@ -284,7 +284,7 @@ end_shape(CLOSE)</code></pre>
         <p>Use <code>text(<em>string</em>, <em>x</em>, <em>y</em>)</code> to draw text at coordinates (x, y).</p>
         <p>For example the following code will draw this:</p>
         <pre><code class="language-python">text("I love P5!", 1, 4)</code></pre>
-        <img src="/activities/python-libraries/p5-images/p5-text.png" alt="text">
+        <img src="/codeclub-astro/activities/python-libraries/p5-images/p5-text.png" alt="text">
         <p>Check the <a href="./p5-typography">Typography</a> page to find out how to style text.</p>
     </section>
 </P5PageLayout>
