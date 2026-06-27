@@ -614,24 +614,28 @@ def _get_mouse_is_pressed():
 
 # We use a class with __getattr__ to provide dynamic properties
 class _P5Module(types.ModuleType):
-    def __getattr__(self, name):
-        if name == 'width':
-            return _get_width()
-        elif name == 'height':
-            return _get_height()
-        elif name == 'mouse_x':
-            return _get_mouse_x()
-        elif name == 'mouse_y':
-            return _get_mouse_y()
-        elif name == 'frame_count':
-            return _get_frame_count()
-        elif name == 'key':
-            return _get_key()
-        elif name == 'key_code':
-            return _get_key_code()
-        elif name == 'mouse_is_pressed':
-            return _get_mouse_is_pressed()
-        raise AttributeError(f"module 'p5' has no attribute '{name}'")
+    _DYNAMIC = {'width', 'height', 'mouse_x', 'mouse_y',
+                'frame_count', 'key', 'key_code', 'mouse_is_pressed'}
+
+    def __getattribute__(self, name):
+        if name in object.__getattribute__(self, '_DYNAMIC'):
+            if name == 'width':
+                return _get_width()
+            elif name == 'height':
+                return _get_height()
+            elif name == 'mouse_x':
+                return _get_mouse_x()
+            elif name == 'mouse_y':
+                return _get_mouse_y()
+            elif name == 'frame_count':
+                return _get_frame_count()
+            elif name == 'key':
+                return _get_key()
+            elif name == 'key_code':
+                return _get_key_code()
+            elif name == 'mouse_is_pressed':
+                return _get_mouse_is_pressed()
+        return super().__getattribute__(name)
 
 # Copy all existing attributes to the class-based module
 _p5dyn = _P5Module('p5')
@@ -639,6 +643,16 @@ for _k, _v in _p5mod.__dict__.items():
     if not _k.startswith('__'):
         setattr(_p5dyn, _k, _v)
 _p5mod = _p5dyn
+
+# Set initial values for dynamic properties so 'from p5 import *' picks them up
+_p5mod.mouse_x = 0
+_p5mod.mouse_y = 0
+_p5mod.width = 0
+_p5mod.height = 0
+_p5mod.frame_count = 0
+_p5mod.key = ''
+_p5mod.key_code = 0
+_p5mod.mouse_is_pressed = False
 
 # -- Drawing functions --
 def size(w, h, mode=None):
@@ -1040,9 +1054,22 @@ from pyodide.ffi import create_proxy as _create_proxy
 
 def _wire_p5_callbacks():
     _g = _sys.modules.get('__main__').__dict__
+    _p5 = _sys.modules.get('p5')
 
+    # Wrap draw to inject dynamic p5 properties into __main__ globals
     if 'draw' in _g and callable(_g['draw']):
-        _js.window._p5_draw_fn = _create_proxy(_g['draw'])
+        _original_draw = _g['draw']
+        def _draw_wrapper():
+            _g['mouse_x'] = _p5.mouse_x
+            _g['mouse_y'] = _p5.mouse_y
+            _g['width'] = _p5.width
+            _g['height'] = _p5.height
+            _g['frame_count'] = _p5.frame_count
+            _g['key'] = _p5.key
+            _g['key_code'] = _p5.key_code
+            _g['mouse_is_pressed'] = _p5.mouse_is_pressed
+            _original_draw()
+        _js.window._p5_draw_fn = _create_proxy(_draw_wrapper)
     if 'key_pressed' in _g and callable(_g['key_pressed']):
         _js.window._p5_key_pressed_fn = _create_proxy(_g['key_pressed'])
     if 'mouse_pressed' in _g and callable(_g['mouse_pressed']):
