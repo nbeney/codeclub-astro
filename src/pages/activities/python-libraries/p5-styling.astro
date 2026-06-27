@@ -1,0 +1,401 @@
+---
+import P5PageLayout from '@layouts/P5PageLayout.astro';
+
+const title = "P5 - Styling";
+const heading = "P5 library - Styling";
+---
+
+<P5PageLayout title={title} heading={heading}>
+    <h2 id="background">Background color and/or reset the canvas</h2>
+
+    <section>
+        <p>...</p>
+
+        <pre><code class="language-python">from p5 import *
+
+def setup():
+    size(350, 350)
+    reset_canvas()
+
+def reset_canvas():
+    background(240)
+    text("Click to reset the canvas", 10, 20)
+
+def mouse_moved():
+    push_style()
+    color_mode(HSB)
+    fill(frame_count % 360, 100, 100, 0.3)
+    circle(mouse_x, mouse_y, 50)
+    pop_style()
+
+def mouse_pressed():
+    reset_canvas()</code></pre>
+
+        <div id="p5-background"></div>
+        <script is:inline>
+            new p5(p => {
+                p.setup = () => {
+                    p.createCanvas(350, 350);
+                    p.reset_canvas();
+                };
+
+                p.draw = () => {};
+
+                p.reset_canvas = () => {
+                    p.background(240);
+                    p.text("Click to reset the canvas", 10, 20);
+                };
+
+                p.draw_circle = () => {
+                    p.push();
+                    p.colorMode(p.HSB);
+                    p.fill(p.frameCount % 360, 100, 100, 0.3);
+                    p.circle(p.mouseX, p.mouseY, 50);
+                    p.pop();
+                };
+
+                p.mouseMoved = p.draw_circle;
+
+                p.touchMoved = p.draw_circle;
+
+                p.mousePressed = () => {
+                    if (p.mouseX < 0 || p.mouseX > p.width || p.mouseY < 0 || p.mouseY > p.height) {
+                        return;
+                    }
+                    p.reset_canvas();
+                };
+            }, "p5-background");
+        </script>
+    </section>    
+
+    <h2 id="fill">Fill color</h2>
+
+    <section>
+        <p>...</p>
+
+        <pre><code class="language-python">from p5 import *
+
+def setup():
+    size(350, 350)
+    background(240)
+
+    # Default fill is white.
+    rect(0, height * 0.475, width, height * 0.05)
+
+    fill("red")
+    circle(width * 1/4, height / 2, width * 0.35)
+
+    fill("#00FF0030")  # green with transparency
+    circle(width * 1/2, height / 2, width * 0.35)
+
+    no_fill()
+    circle(width * 3/4, height / 2, width * 0.35)</code></pre>
+
+        <div id="p5-fill"></div>
+        <script is:inline>
+            new p5(p => {
+                p.setup = () => {
+                    p.createCanvas(350, 350);
+                    p.background(240);
+
+                    p.rect(0, p.height * 0.475, p.width, p.height * 0.05);
+
+                    p.fill("red");
+                    p.circle(p.width * 1/4, p.height / 2, p.width * 0.35);
+
+                    p.fill("#00FF0030");
+                    p.circle(p.width * 1/2, p.height / 2, p.width * 0.35);
+
+                    p.noFill();
+                    p.circle(p.width * 3/4, p.height / 2, p.width * 0.35);
+                };
+            }, "p5-fill");
+        </script>
+    </section>    
+
+    <h2 id="stroke-weight">Stroke weight</h2>
+
+    <section>
+        <p>...</p>
+
+        <pre><code class="language-python">from p5 import *
+
+def setup():
+    size(350, 350)
+    background(240)
+    fill("#FF0000")  # red
+
+    # Default stroke weight is 1.
+    circle(width * 1/4, height * 1/4, width * 0.35)
+
+    stroke_weight(5)
+    circle(width * 3/4, height * 1/4, width * 0.35)
+
+    stroke_weight(25)
+    circle(width * 1/4, height * 3/4, width * 0.35)
+
+    no_stroke()
+    circle(width * 3/4, height * 3/4, width * 0.35)</code></pre>
+
+        <div id="p5-stroke-weight"></div>
+        <script is:inline>
+            new p5(p => {
+                p.setup = () => {
+                    p.createCanvas(350, 350);
+                    p.background(240);
+                    p.fill("#FF0000");
+
+                    p.circle(p.width * 1/4, p.height * 1/4, p.width * 0.35);
+
+                    p.strokeWeight(5);
+                    p.circle(p.width * 3/4, p.height * 1/4, p.width * 0.35);
+
+                    p.strokeWeight(25);
+                    p.circle(p.width * 1/4, p.height * 3/4, p.width * 0.35);
+
+                    p.noStroke();
+                    p.circle(p.width * 3/4, p.height * 3/4, p.width * 0.35);
+                };
+            }, "p5-stroke-weight");
+        </script>
+    </section>    
+
+    <h2 id="stroke">Stroke color</h2>
+
+    <section>
+        <p>...</p>
+
+        <pre><code class="language-python">from p5 import *
+
+def setup():
+    size(350, 350)
+    background(240)
+    fill("#FF0000")  # red
+    stroke_weight(10)
+
+    # Default stroke is black.
+    circle(width * 1/4, height * 1/4, width * 0.35)
+
+    stroke("blue")
+    circle(width * 3/4, height * 1/4, width * 0.35)
+
+    stroke("#0000FF60")  # blue with transparency
+    circle(width * 1/4, height * 3/4, width * 0.35)
+
+    no_stroke()
+    circle(width * 3/4, height * 3/4, width * 0.35)</code></pre>
+
+        <div id="p5-stroke"></div>
+        <script is:inline>
+            new p5(p => {
+                p.setup = () => {
+                    p.createCanvas(350, 350);
+                    p.background(240);
+                    p.fill("#FF0000");
+                    p.strokeWeight(10);
+
+                    p.circle(p.width * 1/4, p.height * 1/4, p.width * 0.35);
+
+                    p.stroke("blue");
+                    p.circle(p.width * 3/4, p.height * 1/4, p.width * 0.35);
+
+                    p.stroke("#0000FF60");
+                    p.circle(p.width * 1/4, p.height * 3/4, p.width * 0.35);
+
+                    p.noStroke();
+                    p.circle(p.width * 3/4, p.height * 3/4, p.width * 0.35);
+                };
+            }, "p5-stroke");
+        </script>
+    </section>    
+
+    <h2 id="stroke-cap">Stroke cap</h2>
+
+    <section>
+        <p>...</p>
+
+        <pre><code class="language-python">from p5 import *
+
+def setup():
+    size(350, 350)
+    background(240)
+    stroke(0)
+    stroke_weight(20)
+
+    # Default stroke cap is ROUND.
+    line(width * 0.15, height * 0.2, width * 0.85, height * 0.2)
+
+    stroke_cap(SQUARE)
+    line(width * 0.15, height * 0.4, width * 0.85, height * 0.4)
+    
+    stroke_cap(PROJECT)
+    line(width * 0.15, height * 0.6, width * 0.85, height * 0.6)
+
+    stroke_cap(ROUND)
+    line(width * 0.15, height * 0.8, width * 0.85, height * 0.8)
+
+    stroke(200)
+    stroke_weight(1)
+    line(width * 0.15, 0, width * 0.15, height)
+    line(width * 0.85, 0, width * 0.85, height)</code></pre>
+
+        <div id="p5-stroke-cap"></div>
+        <script is:inline>
+            new p5(p => {
+                p.setup = () => {
+                    p.createCanvas(350, 350);
+                    p.background(240);
+                    p.stroke(0);
+                    p.strokeWeight(20);
+
+                    p.line(p.width * 0.15, p.height * 0.2, p.width * 0.85, p.height * 0.2);
+
+                    p.strokeCap(p.SQUARE);
+                    p.line(p.width * 0.15, p.height * 0.4, p.width * 0.85, p.height * 0.4);
+
+                    p.strokeCap(p.PROJECT);
+                    p.line(p.width * 0.15, p.height * 0.6, p.width * 0.85, p.height * 0.6);
+
+                    p.strokeCap(p.ROUND);
+                    p.line(p.width * 0.15, p.height * 0.8, p.width * 0.85, p.height * 0.8);
+
+                    p.stroke(200);
+                    p.strokeWeight(1);
+                    p.line(p.width * 0.15, 0, p.width * 0.15, p.height);
+                    p.line(p.width * 0.85, 0, p.width * 0.85, p.height);
+                };
+            }, "p5-stroke-cap");
+        </script>
+    </section>    
+
+    <h2 id="stroke-join">Stroke join</h2>
+
+    <section>
+        <p>...</p>
+
+        <pre><code class="language-python">from p5 import *
+
+def setup():
+    size(350, 350)
+    background(240)
+    rect_mode(CENTER)
+    stroke_weight(20)
+
+    SIDE = width * 0.3
+
+    # Default stroke join is MITER.
+    rect(width * 1/4, height * 1/4, SIDE, SIDE)
+
+    stroke_join(ROUND)
+    rect(width * 3/4, height * 1/4, SIDE, SIDE)
+
+    stroke_join(BEVEL)
+    rect(width * 1/4, height * 3/4, SIDE, SIDE)
+    
+    stroke_join(MITER)
+    rect(width * 3/4, height * 3/4, SIDE, SIDE)</code></pre>
+
+        <div id="p5-stroke-join"></div>
+        <script is:inline>
+            new p5(p => {
+                p.setup = () => {
+                    p.createCanvas(350, 350);
+                    p.background(240);
+                    p.rectMode(p.CENTER);
+                    p.strokeWeight(20);
+
+                    const SIDE = p.width * 0.3;
+
+                    p.rect(p.width * 1/4, p.height * 1/4, SIDE, SIDE);
+
+                    p.strokeJoin(p.ROUND);
+                    p.rect(p.width * 3/4, p.height * 1/4, SIDE, SIDE);
+
+                    p.strokeJoin(p.BEVEL);
+                    p.rect(p.width * 1/4, p.height * 3/4, SIDE, SIDE);
+
+                    p.strokeJoin(p.MITER);
+                    p.rect(p.width * 3/4, p.height * 3/4, SIDE, SIDE);
+                };
+            }, "p5-stroke-join");
+        </script>
+    </section>    
+
+    <h2 id="push-pop-style">Save and restore the styling context</h2>
+
+    <section>
+        <p>...</p>
+
+        <pre><code class="language-python">from p5 import *
+
+def setup():
+    size(350, 350)
+    
+    LEFT = width * 1/5
+    CENTER = width * 1/2
+    RIGHT = width * 4/5
+    TOP = height * 1/3
+    BOTTOM = height * 2/3
+    DIAM = width * 0.2
+
+    background(240)
+    
+    fill("red")
+    circle(LEFT, TOP, DIAM)  # RED
+
+    push_style()  # save styling context, fill is still red
+    fill("green")
+    circle(CENTER, TOP, DIAM)  # GREEN
+
+    push_style()  # save styling context, fill is still green
+    fill("blue")
+    circle(RIGHT, TOP, DIAM)  # BLUE
+    fill("yellow")
+    circle(LEFT, BOTTOM, DIAM)  # YELLOW
+    pop_style()  # restore styling context, fill is green again
+    
+    circle(CENTER, BOTTOM, DIAM)  # GREEN
+    pop_style()  # restore styling context, fill is red again
+    
+    circle(RIGHT, BOTTOM, DIAM)  # RED
+
+run()</code></pre>
+
+        <div id="p5-push-pop-style"></div>
+        <script is:inline>
+            new p5(p => {
+                p.setup = () => {
+                    p.createCanvas(350, 350);
+
+                    const LEFT = p.width * 1/5;
+                    const CENTER = p.width * 1/2;
+                    const RIGHT = p.width * 4/5;
+                    const TOP = p.height * 1/3;
+                    const BOTTOM = p.height * 2/3;
+                    const DIAM = p.width * 0.2;
+
+                    p.background(240);
+
+                    p.fill("red");
+                    p.circle(LEFT, TOP, DIAM);
+
+                    p.push();
+                    p.fill("green");
+                    p.circle(CENTER, TOP, DIAM);
+
+                    p.push();
+                    p.fill("blue");
+                    p.circle(RIGHT, TOP, DIAM);
+                    p.fill("yellow");
+                    p.circle(LEFT, BOTTOM, DIAM);
+                    p.pop();
+
+                    p.circle(CENTER, BOTTOM, DIAM);
+                    p.pop();
+
+                    p.circle(RIGHT, BOTTOM, DIAM);
+                };
+            }, "p5-push-pop-style");
+        </script>
+    </section>    
+</P5PageLayout>

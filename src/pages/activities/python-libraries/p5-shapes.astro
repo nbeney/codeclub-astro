@@ -1,0 +1,290 @@
+---
+import P5PageLayout from '@layouts/P5PageLayout.astro';
+
+const title = "P5 - Coordinates, angles & shapes";
+const heading = "P5 library - Coordinates, angles & shapes";
+---
+
+<P5PageLayout title={title} heading={heading}>
+    <h2 id="coordinates">Coordinates</h2> 
+    
+    <section>
+        <p>Use <code>size(<em>width</em>, <em>height</em>)</code> to set the width and the height of the canvas.</p>
+        <p>The x-axis goes from left to right but the <strong>y-axis goes from top to bottom</strong>.</p>
+        <p>There are two predefined variables to get the canvas dimensions: <code>width</code> and <code>height</code>. Generally you should use these variables to calculate coordinates instead of using hard-coded numbers because it will make it easier to read and understand your code. Also your code should continue working when the canvas is resized. For example, if the canvas is 300 by 200:</p>
+        <ul>
+            <li>use <code>width/2, height/2</code> instead of of <code>150, 100</code> for the center</li>
+            <li>use <code>width, 0</code> instead of of <code>300, 0</code> for the top-right corner</li>
+            <li>use <code>0, height</code> instead of of <code>0, 200</code> for the bottom-left corner</li>
+            <li>use <code>width, height</code> instead of of <code>300, 200</code> for the bottom-right corner</li>
+        </ul>
+        <p>For example <code>size(8, 8)</code> makes the canvas 8 pixels wide and 8 pixels high.</p>
+        <img src="/activities/python-libraries/p5-images/p5-coordinates.png" alt="coordinates">
+    </section>
+
+    <h2 id="angles">Angles</h2>
+
+    <section>
+        <p>
+            P5 uses <strong>radians</strong> instead of degrees. 
+            One full turn is 2&pi; (= 360&deg;). 
+            The angles are measured <strong>clockwise</strong> with zero being east.
+            You can convert degrees to radians with <code>radians(<em>degrees</em>)</code> and radians to degrees with <code>degrees(<em>radians</em>)</code>.
+            Besides the usual <code>PI</code>, P5 also defines <code>TWO_PI</code>, <code>HALF_PI</code>, <code>QUARTER_PI</code>, and <code>TAU</code> which is 2&pi;.
+        </p>
+        <div class="container text-center">
+            <div class="row align-items-center">
+                <div class="col">
+                    <div id="p5-angles"></div>
+                    <script is:inline src="/activities/python-libraries/p5js-scripts/p5-angles.js"></script>
+                </div>
+                <div class="col">
+                    <table class="table table-sm table-striped">
+                        <thead>
+                            <tr><th>Degrees</th><th>Radians</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>0&deg;</td><td>0</td></tr>
+                            <tr><td>45&deg;</td><td>PI/4 = QUARTER_PI</td></tr>
+                            <tr><td>90&deg;</td><td>PI/2 = HALF_PI</td></tr>
+                            <tr><td>135&deg;</td><td>3*PI/4 = 3*QUARTER_PI</td></tr>
+                            <tr><td>180&deg;</td><td>PI</td></tr>
+                            <tr><td>225&deg;</td><td>5*PI/4 = 5*QUARTER_PI</td></tr>
+                            <tr><td>270&deg;</td><td>3*PI/2 = 3*HALF_PI</td></tr>
+                            <tr><td>315&deg;</td><td>7*PI/4 = 7*QUARTER_PI</td></tr>
+                            <tr><td>360&deg;</td><td>2*PI = TWO_PI = TAU</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <h2 id="point">Point</h2>
+
+    <section>
+        <p>Use <code>point(<em>x</em>, <em>y</em>)</code> to draw a single point at coordinates (x, y).</p>        
+        <p>For example the following code will draw this:</p>
+        <pre><code class="language-python">point(3, 5)</code></pre>
+        <img src="/activities/python-libraries/p5-images/p5-point.png" alt="point">
+    </section>
+
+    <h2 id="line">Line</h2>
+
+    <section>
+        <p>Use <code>line(<em>x1</em>, <em>y1</em>, <em>x2</em>, <em>y2</em>)</code> to draw a line between coordinates (x1, y1) and (x2, y2).</p>
+        <p>For example the following code will draw this:</p>
+        <pre><code class="language-python">line(2, 6, 5, 1)</code></pre>
+        <img src="/activities/python-libraries/p5-images/p5-line.png" alt="line">
+    </section>
+
+    <h2 id="triangle">Triangle</h2>
+
+    <section>
+        <p>Use <code>triangle(<em>x1</em>, <em>y1</em>, <em>x2</em>, <em>y2</em>, <em>x3</em>, <em>y3</em>)</code> to draw a triangle between coordinates (x1, y1), (x2, y2), and (x3, y3).</p>
+        <p>For example the following code will draw this:</p>
+        <pre><code class="language-python">triangle(2, 3, 5, 1, 4, 6)</code></pre>
+        <img src="/activities/python-libraries/p5-images/p5-triangle.png" alt="triangle">
+    </section>
+
+    <h2 id="quad">Quad</h2>
+
+    <section>
+        <p>Use <code>quad(<em>x1</em>, <em>y1</em>, <em>x2</em>, <em>y2</em>, <em>x3</em>, <em>y3</em>, <em>x4</em>, <em>y4</em>)</code> to draw a quadrilateral between coordinates (x1, y1), (x2, y2), (x3, y3), and (x4, y4).</p>
+        <p>For example the following code will draw this:</p>
+        <pre><code class="language-python">quad(1, 6, 2, 2, 5, 1, 6, 5)</code></pre>
+        <img src="/activities/python-libraries/p5-images/p5-quad.png" alt="quad">
+    </section>
+
+    <h2 id="rect">Rect</h2>
+
+    <section>
+        <p>To draw a rectangle specified by its <strong>top-left corner and dimensions</strong>, use <code>rect_mode(CORNER)</code> and <code>rect(<em>x</em>, <em>y</em>, <em>width</em>, <em>height</em>)</code>.</p>
+        <p>For example the following code will draw this:</p>
+        <pre><code class="language-python">rect_mode(CORNER)
+rect(1, 1, 2, 4)</code></pre>
+        <img src="/activities/python-libraries/p5-images/p5-rect-CORNER.png" alt="rect-CORNER">
+
+        <p>To draw a rectangle specified by its <strong>center and dimensions</strong>, use <code>rect_mode(CENTER)</code> and <code>rect(<em>cx</em>, <em>cy</em>, <em>width</em>, <em>height</em>)</code>.</p>
+        <p>For example the following code will draw this:</p>
+        <pre><code class="language-python">rect_mode(CENTER)
+rect(2, 3, 2, 4)</code></pre>
+        <img src="/activities/python-libraries/p5-images/p5-rect-CENTER.png" alt="rect-CENTER">
+
+        <p>To draw a rectangle specified by <strong>two opposite corners</strong>, use <code>rect_mode(CORNERS)</code> and <code>rect(<em>x1</em>, <em>y1</em>, <em>x2</em>, <em>y2</em>)</code>.</p>
+        <p>For example the following code will draw this:</p>
+        <pre><code class="language-python">rect_mode(CORNERS)
+rect(1, 1, 3, 5)</code></pre>
+        <img src="/activities/python-libraries/p5-images/p5-rect-CORNERS.png" alt="rect-CORNERS">
+
+        <p>To draw <strong>rounded corners</strong>, specify one radius number (all the corners are identical) or four radius numbers (all the corners are different).</p>
+        <p>For example the following code will draw this:</p>
+        <pre><code class="language-python">no_fill()
+stroke("red")
+rect(0, 0, 400, 400)  # no rounded corners
+stroke("green")
+rect(150, 150, 400, 400, 30)  # all corners have a radius of 30
+stroke("blue")
+rect(300, 300, 400, 400, 10, 20, 40, 80)  # each corner has a different radius</code></pre>
+    </section>
+
+    <h2 id="square">Square</h2>
+
+    <section>
+        <p><code>square</code> is a special case of <code>rect</code> where the width and the height are identical.</p>
+        <p>To draw a square specified by its <strong>top-left corner and size</strong>, use <code>rect_mode(CORNER)</code> and <code>square(<em>x</em>, <em>y</em>, <em>size</em>)</code>.</p>
+        <p>For example the following code will draw this:</p>
+        <pre><code class="language-python">rect_mode(CORNER)
+square(1, 1, 4)</code></pre>
+        <img src="/activities/python-libraries/p5-images/p5-square-CORNER.png" alt="square-CORNER">
+
+        <p>To draw a square specified by its <strong>center and size</strong>, use <code>rect_mode(CENTER)</code> and <code>square(<em>cx</em>, <em>cy</em>, <em>size</em>)</code>.</p>
+        <p>For example the following code will draw this:</p>
+        <pre><code class="language-python">rect_mode(CENTER)
+square(3, 3, 4)</code></pre>
+        <img src="/activities/python-libraries/p5-images/p5-square-CENTER.png" alt="square-CENTER">
+
+        <p>To draw <strong>rounded corners</strong>, specify one radius number (all the corners are identical) or four radius numbers (all the corners are different).</p>
+        <p>For example the following code will draw this:</p>
+        <pre><code class="language-python">no_fill()
+stroke("red")
+square(0, 0, 400)  # no rounded corners
+stroke("green")
+square(150, 150, 400, 30)  # all corners have a radius of 30
+stroke("blue")
+square(300, 300, 400, 10, 20, 40, 80)  # each corner has a different radius</code></pre>
+        <img src="/activities/python-libraries/p5-images/p5-rect-rounded.png" alt="square-rounded">
+    </section>
+
+    <h2 id="ellipse">Ellipse</h2>
+
+    <section>
+        <p>To draw an ellipse specified by its <strong>top-left corner and dimensions</strong>, use <code>ellipse_mode(CORNER)</code> and <code>ellipse(<em>x</em>, <em>y</em>, <em>width</em>, <em>height</em>)</code>.</p>
+        <p>For example the following code will draw this:</p>
+        <pre><code class="language-python">ellipse_mode(CORNER)
+ellipse(1, 1, 2, 4)</code></pre>
+        <img src="/activities/python-libraries/p5-images/p5-ellipse-CORNER.png" alt="ellipse-CORNER">
+
+        <p>To draw an ellipse specified by its <strong>center and dimensions</strong>, use <code>ellipse_mode(CENTER)</code> and <code>ellipse(<em>cx</em>, <em>cy</em>, <em>width</em>, <em>height</em>)</code>.</p>
+        <p>For example the following code will draw this:</p>
+        <pre><code class="language-python">ellipse_mode(CENTER)
+ellipse(2, 3, 2, 4)</code></pre>
+        <img src="/activities/python-libraries/p5-images/p5-ellipse-CENTER.png" alt="ellipse-CENTER">
+
+        <p>To draw an ellipse specified by <strong>two opposite corners</strong>, use <code>ellipse_mode(CORNERS)</code> and <code>ellipse(<em>x1</em>, <em>y1</em>, <em>x2</em>, <em>y2</em>)</code>.</p>
+        <p>For example the following code will draw this:</p>
+        <pre><code class="language-python">ellipse_mode(CORNERS)
+ellipse(1, 1, 3, 5)</code></pre>
+        <img src="/activities/python-libraries/p5-images/p5-ellipse-CORNERS.png" alt="ellipse-CORNERS">
+    </section>
+
+    <h2 id="circle">Circle</h2>
+
+    <section>
+        <p><code>circle</code> is a special case of <code>ellipse</code> where the width and the height are identical.</p>
+        <p>Use <code>circle(<em>cx</em>, <em>cy</em>, <em>diameter</em>)</code> to draw a circle centered at coordinates (cx, cy).</p>
+        <p>For example the following code will draw this:</p>
+        <pre><code class="language-python">circle(3, 3, 4)</code></pre>
+        <img src="/activities/python-libraries/p5-images/p5-circle.png" alt="circle">
+    </section>
+
+    <h2 id="arc">Arc</h2>
+
+    <section>
+        <p>To draw an ellipse <strong>arc</strong>, use <code>arc(<em>cx</em>, <em>cy</em>, <em>width</em>, <em>height</em>, <em>start_angle</em>, <em>stop_angle</em>, OPEN)</code>.</p>
+        <p>For example the following code will draw this:</p>
+        <pre><code class="language-python">arc(4, 2, 5, 7, radians(45), radians(180), OPEN)</code></pre>
+        <img src="/activities/python-libraries/p5-images/p5-arc-OPEN.png" alt="arc-OPEN">
+
+        <p>To draw an ellipse <strong>chord</strong>, use <code>arc(<em>cx</em>, <em>cy</em>, <em>width</em>, <em>height</em>, <em>start_angle</em>, <em>stop_angle</em>, CHORD)</code>.</p>
+        <p>For example the following code will draw this:</p>
+        <pre><code class="language-python">arc(4, 2, 5, 7, radians(45), radians(180), CHORD)</code></pre>
+        <img src="/activities/python-libraries/p5-images/p5-arc-CHORD.png" alt="arc-CHORD">
+
+        <p>To draw an ellipse <strong>pie</strong>, use <code>arc(<em>cx</em>, <em>cy</em>, <em>width</em>, <em>height</em>, <em>start_angle</em>, <em>stop_angle</em>, PIE)</code>.</p>
+        <p>For example the following code will draw this:</p>
+        <pre><code class="language-python">arc(4, 2, 5, 7, radians(45), radians(180), PIE)</code></pre>
+        <img src="/activities/python-libraries/p5-images/p5-arc-PIE.png" alt="arc-PIE">
+    </section>
+
+    <h2 id="shape">Shape = Polygon</h2>
+
+    <section>
+        <p>To draw an arbitrary polygon, start with <code>begin_shape()</code>, then add as many points as needed with <code>vertex(<em>x</em>, <em>y</em>)</code>, and finish with <code>end_shape(CLOSE)</code>.</p>
+        <p>For example the following code will draw a &quot;C&quot;:</p>
+        <pre><code class="language-python">begin_shape()
+vertex(2, 1)
+vertex(5, 1)
+vertex(5, 2)
+vertex(3, 2)
+vertex(3, 5)
+vertex(5, 5)
+vertex(5, 6)
+vertex(2, 6)
+end_shape(CLOSE)</code></pre>
+        <img src="/activities/python-libraries/p5-images/p5-shape.png" alt="shape">
+        <p><br>It is also possible to draw complex polygons with holes and inner shapes:</p>
+        <ul>
+            <li>start with <code>begin_shape()</code></li>
+            <li>add the <strong>outer shape</strong> with <code>vertex</code> in <strong>clockwise</strong> order</li>
+            <li>add each <strong>hole</strong> with <code>vertex</code> in <strong>counter-clockwise</strong> order between <code>begin_contour()</code> and <code>end_contour()</code></li>
+            <li>add each <strong>inner shape</strong> with <code>vertex</code> in <strong>clockwise</strong> order between <code>begin_contour()</code> and <code>end_contour()</code></li>
+            <li>end with <code>end_shape(CLOSE)</code></li>
+        </ul>
+        <p>For example the following code will draw an &quot;O&quot; with a dot in the middle:</p>
+        <pre><code class="language-python">begin_shape()
+# Outer square - clockwise
+vertex(1, 1)
+vertex(6, 1)
+vertex(6, 6)
+vertex(1, 6)
+# Hole - counter-clockwise
+begin_contour()
+vertex(2, 2)
+vertex(2, 5)
+vertex(5, 5)
+vertex(5, 2)
+end_contour()
+# Inner square - clockwise
+begin_contour()
+vertex(3, 3)
+vertex(4, 3)
+vertex(4, 4)
+vertex(3, 4)
+end_contour()
+end_shape(CLOSE)</code></pre>
+        <img src="/activities/python-libraries/p5-images/p5-shape-complex.png" alt="shape-complex">
+    </section>
+
+    <h2 id="bezier">Bezier</h2>
+
+    <section>
+        <p>To draw smooth and artistic looking curves, use <code>bezier(<em>start_x</em>, <em>start_y</em>, <em>cp1_x</em>, <em>cp1_y</em>, <em>cp2_x</em>, <em>cp2_y</em>, <em>stop_x</em>, <em>stop_y</em>)</code>.</p>
+        <p>For example the following code will draw the left half of a heart:</p>
+        <pre><code class="language-python">bezier(
+    5, 6,  # start point
+    1, 3,  # 1st control point
+    4, 1,  # 2nd control point
+    5, 3   # stop point
+)</code></pre>
+        <img src="/activities/python-libraries/p5-images/p5-bezier.png" alt="bezier">
+        <p>Note in particular how:</p>
+        <ul>
+            <li>the curve at the start point is tangent to the line passing through the start point and the 1st control point</li>
+            <li>the curve at the stop point is tangent to the line passing through the stop point and the 2nd control point</li>
+        </ul>
+        <p>Drag the dots hereunder to get a feeling for how the start, stop and control points interact with each other.</p>
+        <div id="p5-bezier-playground"></div>
+        <script is:inline src="/activities/python-libraries/p5js-scripts/p5-bezier-playground.js"></script>
+    </section>
+
+    <h2 id="text">Text</h2>
+
+    <section>
+        <p>Use <code>text(<em>string</em>, <em>x</em>, <em>y</em>)</code> to draw text at coordinates (x, y).</p>
+        <p>For example the following code will draw this:</p>
+        <pre><code class="language-python">text("I love P5!", 1, 4)</code></pre>
+        <img src="/activities/python-libraries/p5-images/p5-text.png" alt="text">
+        <p>Check the <a href="./p5-typography">Typography</a> page to find out how to style text.</p>
+    </section>
+</P5PageLayout>

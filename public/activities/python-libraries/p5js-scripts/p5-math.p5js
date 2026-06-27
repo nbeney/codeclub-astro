@@ -1,0 +1,162 @@
+const SIZE = 250;
+const N = 7;
+
+let d;
+
+function setup() {
+  createCanvas(SIZE, SIZE);
+  noLoop();
+  d = width / (N + 2);
+}
+
+function draw() {
+  translate(d, d);
+  scale(d, d);
+  fill(200, 255, 200);
+  strokeWeight(1 / d);
+  textSize(3 / N);
+  
+  // generate_dist();
+  // generate_lerp_dotted();
+}
+
+function generate_dist() {
+  const x1 = 1;
+  const y1 = 2;
+  const x2 = 4;
+  const y2 = 6;
+  const d = dist(x1, y1, x2, y2);
+  const label = `dist(${x1}, ${y1}, ${x2}, ${y2}) = ${d}`;
+  const labelX = (x1 + x2) / 2 + 0.5;
+  const labelY = (y1 + y2) / 2;
+  
+  clear();
+  background(255);
+  draw_grid();
+  push();
+  line(x1, y1, x2, y2);
+  fill("red");
+  text(label, labelX, labelY);
+  pop();
+  draw_point(x1, y1, RIGHT);
+  draw_point(x2, y2, RIGHT);
+  saveCanvas(`p5-math-${name}.png`);
+}
+
+function generate_lerp_dotted() {
+  const x1 = 1;
+  const y1 = 1;
+  const x2 = 6;
+  const y2 = 6;
+  const n = 20;
+  
+  clear();
+  background(255);
+  draw_grid();
+  push();
+  stroke("red");
+  for (let i = 0; i < n; i += 2) {
+    const amt1 = i * 1 / n;
+    const amt2 = (i + 1) * 1 / n;
+    line(
+      lerp(x1, x2, amt1), 
+      lerp(y1, y2, amt1), 
+      lerp(x1, x2, amt2), 
+      lerp(y1, y2, amt2) 
+    );
+  }
+  pop();
+  draw_point(x1, y1, TOP);
+  draw_point(x2, y2, BOTTOM);
+  saveCanvas(`p5-math-lerp-dotted.png`);
+}
+
+function draw_grid() {
+  // Draw the grid.
+  
+  push();
+  stroke(180);
+  for (let x = 0; x <= N; x++) {
+    line(x, 0, x, N);
+  }
+  for (let y = 0; y <= N; y++) {
+    line(0, y, N, y);
+  }
+  pop();
+  
+  // Draw the units.
+  
+  push();  
+  fill(0);
+  for (let x = 0; x <= N; x++) {
+    textAlign(CENTER, BOTTOM);
+    text(x, x, -1/N);
+  }
+  for (let y = 0; y <= N; y++) {
+    textAlign(RIGHT, CENTER);
+    text(y, -2/N, y);
+  }
+  pop();
+  
+  // Draw the x-axis.
+  
+  draw_line(0, 0, N, 0);
+  push();
+  fill(0);
+  textAlign(LEFT, CENTER);
+  text("x", N + 4/N, 0);
+  pop();
+  
+  // Draw the y-axis.
+  
+  draw_line(0, 0, 0, N);
+  push();
+  fill(0);
+  textAlign(CENTER, TOP);
+  text("y", 0, N + 3/N);
+  pop();
+}
+
+function draw_line(x1, y1, x2, y2, color) {
+  push();
+  stroke(color || "black");
+  line(x1, y1, x2, y2);
+  pop();
+}
+
+function draw_point(x, y, labelPos, color, labelText) {
+  // Draw the dot.
+  
+  push();
+  stroke(color || "black");
+  strokeWeight(7 / d);
+  point(x, y);
+  pop();
+
+  // Draw the label.
+  
+  push();
+  fill(0);
+  const label = labelText || `(${x}, ${y})`;
+  switch (labelPos) {
+    case LEFT:
+      textAlign(RIGHT, CENTER);
+      text(label, x - 8/d, y);
+      break;
+    case RIGHT:
+      textAlign(LEFT, CENTER);
+      text(label, x + 8/d, y);
+      break;
+    case TOP:
+      textAlign(CENTER, BOTTOM);
+      text(label, x, y - 8/d);
+      break;
+    case BOTTOM:
+      textAlign(CENTER, TOP);
+      text(label, x, y + 8/d);
+      break;
+    default:
+      // do nothing
+  }
+  pop();
+}

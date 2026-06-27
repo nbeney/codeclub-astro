@@ -1,0 +1,135 @@
+---
+import P5PageLayout from '@layouts/P5PageLayout.astro';
+
+const title = "P5 - Using the editor";
+const heading = "P5 library - Using the editor";
+---
+
+<P5PageLayout title={title} heading={heading} showP5={false}>
+    <style>
+        tr > th:first-child,
+        tr > td:first-child {
+            width: 12em;
+        }
+    </style>
+
+    <h2 id="something-wrong">When something goes wrong</h2>
+    <section>
+        <table class="table table-sm table-striped">
+            <thead><tr><th>Shortcut</th><th>Action</th></tr></thead>
+            <tbody>
+                <tr><td>Ctrl - Z</td><td>Undo the last action (can be used multiple times)</td></tr>
+                <tr><td>Ctrl - Y</td><td>Redo the last undone action (can be used multiple times)</td></tr>
+                <tr><td>Esc</td><td>...</td></tr>
+                <tr><td>F5</td><td>...</td></tr>
+            </tbody>
+        </table>
+    </section>
+
+    <h2 id="auto-completion">Auto-completion</h2>
+    <section>
+        <p>When you start typing a keyword, a function or a variable name, the editor will suggest completions. You can press <kbd>Enter</kbd> to accept the suggestion, use <kbd>&uarr;</kbd> and <kbd>&darr;</kbd> to navigate through the suggestions, or press <kbd>Esc</kbd> or continue typing to close the suggestions.</p>
+        <video controls><source src="/activities/python-libraries/p5-images/auto-complete.mp4" type="video/mp4">Sorry, your browser does not support the video tag.</video>
+    </section>
+
+    <h2 id="comment">Commenting and uncommenting</h2>
+    <section>
+        <table class="table table-sm table-striped">
+            <thead><tr><th>Shortcut</th><th>Action</th></tr></thead>
+            <tbody><tr><td>Ctrl + /</td><td>Comment/uncomment the current line or the selection (toggle)</td></tr></tbody>
+        </table>
+        <video controls><source src="/activities/python-libraries/p5-images/comment-uncomment.mp4" type="video/mp4">Sorry, your browser does not support the video tag.</video>
+    </section>
+
+    <h2 id="indent">Indenting and dedenting</h2>
+    <section>
+        <table class="table table-sm table-striped">
+            <thead><tr><th>Shortcut</th><th>Action</th></tr></thead>
+            <tbody>
+                <tr><td>Tab</td><td>Indent the current line or the selection (= push it to the right)</td></tr>
+                <tr><td>Shift + Tab</td><td>Dedent the current line or the selection (= push it to the left)</td></tr>
+            </tbody>
+        </table>
+        <video controls><source src="/activities/python-libraries/p5-images/indent-dedent.mp4" type="video/mp4">Sorry, your browser does not support the video tag.</video>
+    </section>
+
+    <h2 id="find-replace">Finding and replacing text</h2>
+    <section>
+        <table class="table table-sm table-striped">
+            <thead><tr><th>Shortcut</th><th>Action</th></tr></thead>
+            <tbody>
+                <tr><td>Ctrl - F</td><td>Open the find/replace dialog box</td></tr>
+                <tr><td>Esc</td><td>Close the find/replace dialog box</td></tr>
+            </tbody>
+        </table>
+        <video controls><source src="/activities/python-libraries/p5-images/find-replace.mp4" type="video/mp4">Sorry, your browser does not support the video tag.</video>
+    </section>
+
+    <h2 id="modify-clipboard">Clipboard and modifying text</h2>
+    <section>
+        <table class="table table-sm table-striped">
+            <thead><tr><th>Shortcut</th><th>Action</th></tr></thead>
+            <tbody>
+                <tr><td>Ctrl - X</td><td>Cut the selected text into the clipboard</td></tr>
+                <tr><td>Ctrl - C</td><td>Copy the selected text into the clipboard</td></tr>
+                <tr><td>Ctrl - V</td><td>Paste the clipboard content</td></tr>
+                <tr><td>Shift - Delete</td><td>Cut the current line (no need to select it first)</td></tr>
+                <tr><td>Backspace</td><td>Delete the previous character</td></tr>
+                <tr><td>Delete</td><td>Delete the next character</td></tr>
+            </tbody>
+        </table>
+    </section>
+
+    <h2 id="move">Moving the caret (= insertion point)</h2>
+    <section>
+        <table class="table table-sm table-striped">
+            <thead><tr><th>Shortcut</th><th>Action</th></tr></thead>
+            <tbody>
+                <tr><td>Left</td><td>Move one character to the left</td></tr>
+                <tr><td>Right</td><td>Move one character to the right</td></tr>
+                <tr><td>Ctrl + Left</td><td>Move one word to the left</td></tr>
+                <tr><td>Ctrl + Right</td><td>Move one word to the right</td></tr>
+                <tr><td>Up</td><td>Move one line up</td></tr>
+                <tr><td>Down</td><td>Move one line down</td></tr>
+                <tr><td>Home</td><td>Move to the start of the line (toggle)</td></tr>
+                <tr><td>End</td><td>Move to the end of the line</td></tr>
+                <tr><td>PgUp</td><td>Move one page up</td></tr>
+                <tr><td>PgDn</td><td>Move one page down</td></tr>
+                <tr><td>Ctrl + Home</td><td>Move to the top of the file</td></tr>
+                <tr><td>Ctrl + End</td><td>Move to the bottom of the file</td></tr>
+            </tbody>
+        </table>
+    </section>
+
+    <h2 id="select">Selecting text</h2>
+    <section>
+        <p>In general, pressing <kbd>Shift</kbd> at the same time as one of the keyboard shortcuts to move the cursor will select text.</p>
+        <table class="table table-sm table-striped">
+            <thead><tr><th>Shortcut</th><th>Action</th></tr></thead>
+            <tbody>
+                <tr><td>Esc</td><td>Unselect</td></tr>
+                <tr><td>Ctrl + A</td><td>Select the whole content of the file</td></tr>
+                <tr><td>Shift + Left</td><td>Select the previous character</td></tr>
+                <tr><td>Shift + Right</td><td>Select the next character</td></tr>
+                <tr><td>Ctrl + Shift + Left</td><td>Select the previous word</td></tr>
+                <tr><td>Ctrl + Shift + Right</td><td>Select the next word</td></tr>
+                <tr><td>Ctrl + Shift + Home</td><td>Select until the top of the file</td></tr>
+                <tr><td>Ctrl + Shift + End</td><td>Select until the bottom of the file</td></tr>
+            </tbody>
+        </table>
+    </section>
+
+    <h2 id="mouse">Using the mouse</h2>
+    <section>
+        <table class="table table-sm table-striped">
+            <thead><tr><th>Shortcut</th><th>Action</th></tr></thead>
+            <tbody>
+                <tr><td>Click</td><td>Move the caret</td></tr>
+                <tr><td>Double - click</td><td>Select one word (or more if you continue dragging the mouse)</td></tr>
+                <tr><td>Triple - click</td><td>Select one line (or more if you continue dragging the mouse)</td></tr>
+                <tr><td>Drag</td><td>Move the selection</td></tr>
+                <tr><td>Ctrl + drag</td><td>Copy the selection</td></tr>
+            </tbody>
+        </table>
+    </section>
+</P5PageLayout>

@@ -1,0 +1,26 @@
+---
+---
+
+<aside>
+    <h2>Table of contents</h2>
+    <ul class="toc" id="toc-list"></ul>
+</aside>
+
+<script is:inline>
+    document.addEventListener('DOMContentLoaded', function() {
+        const toc = document.getElementById('toc-list');
+        if (!toc) return;
+        const headings = document.querySelectorAll('h2[id]');
+        for (const heading of headings) {
+            // Skip the "Table of contents" heading itself
+            if (heading.textContent === 'Table of contents') continue;
+            const li = document.createElement('li');
+            li.className = 'toc-entry';
+            const a = document.createElement('a');
+            a.href = `#${heading.id}`;
+            a.textContent = heading.textContent;
+            li.appendChild(a);
+            toc.appendChild(li);
+        }
+    });
+</script>

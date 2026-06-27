@@ -1,0 +1,390 @@
+---
+import P5PageLayout from '@layouts/P5PageLayout.astro';
+
+const title = "P5 - Typography";
+const heading = "P5 library - Typography";
+---
+
+<P5PageLayout title={title} heading={heading}>
+    <h2 id="text_font">Font family</h2>
+
+    <section>
+        <p>...</p>
+        <pre><code class="language-python">from p5 import *
+
+FONTS = ["Serif", "Sans-Serif", "Monospace", "Cursive", "System-UI"]
+
+def setup():
+    size(300, 300)
+    background(240)
+
+    text_align(CENTER, CENTER)
+    text_size(40)
+
+    for idx, font in enumerate(FONTS):
+        text_font(font)
+        text(font, width/2, (idx + 1) * height / (len(FONTS) + 1))
+
+run()</code></pre>
+        <div id="p5-text_font"></div>
+        <script is:inline>
+            new p5((p) => {
+                const FONTS = ["Serif", "Sans-Serif", "Monospace", "Cursive", "System-UI"];
+                const MAP = {
+                    "Serif": "Times New Roman",
+                    "Sans-Serif": "Arial",
+                    "Monospace": "Courier New",
+                    "Cursive": "Comic Sans MS",
+                    "System-UI": "Arial"
+                };
+
+                p.setup = function () {
+                    p.createCanvas(300, 300);
+                    p.background(240);
+
+                    p.textAlign(p.CENTER, p.CENTER);
+                    p.textSize(40);
+
+                    for (let idx = 0; idx < FONTS.length; idx++) {
+                        p.textFont(MAP[FONTS[idx]]);
+                        p.text(FONTS[idx], p.width / 2, (idx + 1) * p.height / (FONTS.length + 1));
+                    }
+                };
+            }, "p5-text_font");
+        </script>
+    </section>
+
+    <h2 id="text_size">Font size</h2>
+
+    <section>
+        <p>...</p>
+        <pre><code class="language-python">from p5 import *
+
+TEXT = "P5"
+
+def setup():
+    size(300, 300)
+    background(240)
+
+    text_align(CENTER, CENTER)
+
+    # Default size
+    text(TEXT, width*1/8, height/2)
+
+    # 10-pixel size
+    text_size(10)
+    text(TEXT, width*3/8, height/2)
+    
+    # 30-pixel size
+    text_size(30)
+    text(TEXT, width*5/8, height/2)
+    
+    # 50-pixel size
+    text_size(50)
+    text(TEXT, width*7/8, height/2)
+
+run()</code></pre>
+        <div id="p5-text_size"></div>
+        <script is:inline>
+            new p5((p) => {
+                const TEXT = "P5";
+
+                p.setup = function () {
+                    p.createCanvas(300, 300);
+                    p.background(240);
+
+                    p.textAlign(p.CENTER, p.CENTER);
+                    p.textFont("Arial");
+
+                    p.text(TEXT, p.width * 1 / 8, p.height / 2);
+
+                    p.textSize(10);
+                    p.text(TEXT, p.width * 3 / 8, p.height / 2);
+
+                    p.textSize(30);
+                    p.text(TEXT, p.width * 5 / 8, p.height / 2);
+
+                    p.textSize(50);
+                    p.text(TEXT, p.width * 7 / 8, p.height / 2);
+
+                    p.stroke(200);
+                    for (let i = 2; i <= 6; i += 2) {
+                        p.line(p.width * i / 8, 0, p.width * i / 8, p.height);
+                    }
+                };
+            }, "p5-text_size");
+        </script>
+    </section>
+
+    <h2 id="text_style">Font style</h2>
+
+    <section>
+        <p>...</p>
+        <pre><code class="language-python">from p5 import *
+
+STYLES = [NORMAL, ITALIC, BOLD, BOLDITALIC]
+
+def setup():
+    size(300, 300)
+    background(240)
+
+    text_align(CENTER, CENTER)
+    text_size(40)
+
+    for idx, style in enumerate(STYLES):
+        text_style(style)
+        txt = style.upper().replace(" ", "")
+        text(txt, width/2, (idx + 1) * height / (len(STYLES) + 1))
+
+run()</code></pre>
+        <div id="p5-text_style"></div>
+        <script is:inline>
+            new p5((p) => {
+                const STYLES = [p.NORMAL, p.ITALIC, p.BOLD, p.BOLDITALIC];
+
+                p.setup = function () {
+                    p.createCanvas(300, 300);
+                    p.background(240);
+
+                    p.textAlign(p.CENTER, p.CENTER);
+                    p.textSize(40);
+                    p.textFont("Arial");
+
+                    for (let idx = 0; idx < STYLES.length; idx++) {
+                        p.textStyle(STYLES[idx]);
+                        const txt = STYLES[idx].toUpperCase().replace(" ", "");
+                        p.text(txt, p.width / 2, (idx + 1) * p.height / (STYLES.length + 1));
+                    }
+                };
+            }, "p5-text_style");
+        </script>
+    </section>
+
+    <h2 id="text_align">Alignment</h2>
+
+    <section>
+        <p>...</p>
+        <pre><code class="language-python">from p5 import *
+
+HORIZ_ALIGN = [LEFT, CENTER, RIGHT]
+VERT_ALIGN = [TOP, CENTER, BASELINE, BOTTOM]
+
+combinations = [(h, v) for v in VERT_ALIGN for h in HORIZ_ALIGN]
+
+def setup():
+    size(300, 300)
+
+def draw():
+    horiz, vert = combinations[(frame_count // 60) % len(combinations)]
+    horiz_str = horiz.upper()
+    vert_str = vert.upper().replace("ALPHABETIC", "BASELINE")
+    
+    background(240)
+    text(f"text_align(&#123;horiz_str&#125;, &#123;vert_str&#125;)", 10, 20)
+
+    push_style()
+    translate(width/2, height/2)
+
+    stroke(200)
+    line(-width/2, 0, width/2, 0)
+    line(0, -height/2, 0, height/2)
+
+    text_align(horiz, vert)
+    text_size(50)
+    text("Go, go, go!", 0, 0)
+
+    stroke("red")
+    stroke_weight(5)
+    point(0, 0)
+
+    pop_style()
+
+run()</code></pre>
+        <div id="p5-text_align"></div>
+        <script is:inline>
+            new p5((p) => {
+                const HORIZ_ALIGN = [p.LEFT, p.CENTER, p.RIGHT];
+                const VERT_ALIGN = [p.TOP, p.CENTER, p.BASELINE, p.BOTTOM];
+
+                const combinations = [];
+                for (const v of VERT_ALIGN) {
+                    for (const h of HORIZ_ALIGN) {
+                        combinations.push([h, v]);
+                    }
+                }
+
+                p.setup = function () {
+                    p.createCanvas(300, 300);
+                };
+
+                p.draw = function () {
+                    const [horiz, vert] = combinations[Math.floor(p.frameCount / 60) % combinations.length];
+                    const horizStr = horiz === p.LEFT ? "LEFT" : horiz === p.CENTER ? "CENTER" : "RIGHT";
+                    const vertStr = vert === p.TOP ? "TOP" : vert === p.CENTER ? "CENTER" : vert === p.BASELINE ? "BASELINE" : "BOTTOM";
+
+                    p.background(240);
+                    p.text(`text_align(${horizStr}, ${vertStr})`, 10, 20);
+
+                    p.push();
+                    p.translate(p.width / 2, p.height / 2);
+
+                    p.stroke(200);
+                    p.line(-p.width / 2, 0, p.width / 2, 0);
+                    p.line(0, -p.height / 2 + 25, 0, p.height / 2);
+
+                    p.textAlign(horiz, vert);
+                    p.textSize(50);
+                    p.textFont("Arial");
+                    p.text("Go, go, go!", 0, 0);
+
+                    p.stroke("red");
+                    p.strokeWeight(10);
+                    p.point(0, 0);
+
+                    p.pop();
+                };
+            }, "p5-text_align");
+        </script>
+    </section>
+
+    <h2 id="text_leading">Line spacing</h2>
+
+    <section>
+        <p>
+            <code>text_leading(<em>#pixels</em>)</code> sets the vertical space between lines of text. Will be reset by subsequent calls to <code>text_size()</code>.
+        </p>
+        <pre><code class="language-python">from p5 import *
+
+TEXT = "L1\nL2\nL3"  # 3 lines
+
+def setup():
+    size(300, 300)
+    background(240)
+
+    text_align(CENTER, TOP)
+    text_size(40)
+
+    # Default spacing
+    text(TEXT, width*1/8, 30)
+
+    # 35-pixel spacing
+    text_leading(35)
+    text(TEXT, width*3/8, 30)
+    
+    # 65-pixel spacing
+    text_leading(65)
+    text(TEXT, width*5/8, 30)
+    
+    # 100-pixel spacing
+    text_leading(100)
+    text(TEXT, width*7/8, 30)
+
+run()</code></pre>
+        <div id="p5-text_leading"></div>
+        <script is:inline>
+            new p5((p) => {
+                const TEXT = "L1\nL2\nL3";
+
+                p.setup = function () {
+                    p.createCanvas(300, 300);
+                    p.background(240);
+
+                    p.textAlign(p.CENTER, p.TOP);
+                    p.textFont("Arial");
+                    p.textSize(40);
+
+                    p.text(TEXT, p.width * 1 / 8, 30);
+
+                    p.textLeading(35);
+                    p.text(TEXT, p.width * 3 / 8, 30);
+
+                    p.textLeading(65);
+                    p.text(TEXT, p.width * 5 / 8, 30);
+
+                    p.textLeading(100);
+                    p.text(TEXT, p.width * 7 / 8, 30);
+
+                    p.stroke(200);
+                    for (let i = 2; i <= 6; i += 2) {
+                        p.line(p.width * i / 8, 0, p.width * i / 8, p.height);
+                    }
+                };
+            }, "p5-text_leading");
+        </script>
+    </section>
+
+    <h2 id="text_dimension">Font metrics</h2>
+
+    <section>
+        <p>
+            <code>text_ascent()</code> returns the height of the font above the baseline. 
+            <code>text_descent()</code> returns the height of the font below the baseline.
+            Adding the two will give you the total height of the current font (at its current size).
+        </p>
+        <pre><code class="language-python">font_height = text_ascent() + text_descent()</code></pre>
+        <p>
+            <code>text_width(<em>string</em>)</code> returns the width of the string in the current font and size.
+        </p>
+        <p>Here is an example that uses font metrics to draw a box around some text.</p>
+        <pre><code class="language-python">from p5 import *
+
+TEXT = "I love P5!"
+
+def setup():
+    size(300, 300)
+    background(240)
+
+    text_align(CENTER, CENTER)
+    text_font("Cursive")
+    text_size(40)
+
+    padding = 20
+    w = text_width(TEXT) + 2 * padding
+    h = text_ascent() + text_descent() + 2 * padding
+
+    translate(width / 2, height / 2)
+
+    stroke("red")
+    stroke_weight(5)
+    fill(255)
+    rect_mode(CENTER)
+    rect(0, 0, w, h, 10)
+
+    no_stroke()
+    fill(0)
+    text(TEXT, 0, 0)
+
+run()</code></pre>
+        <div id="text-box"></div>
+        <script is:inline>
+            new p5((p) => {
+                const TEXT = "I love P5!";
+
+                p.setup = function () {
+                    p.createCanvas(300, 300);
+                    p.background(240);
+
+                    p.textAlign(p.CENTER, p.CENTER);
+                    p.textFont("Comic Sans MS");
+                    p.textSize(40);
+
+                    const padding = 20;
+                    const w = p.textWidth(TEXT) + 2 * padding;
+                    const h = p.textAscent() + p.textDescent() + 2 * padding;
+
+                    p.translate(p.width / 2, p.height / 2);
+
+                    p.stroke("red");
+                    p.strokeWeight(5);
+                    p.fill(255);
+                    p.rectMode(p.CENTER);
+                    p.rect(0, 0, w, h, 10);
+
+                    p.noStroke();
+                    p.fill(0);
+                    p.text(TEXT, 0, 0);
+                };
+            }, "text-box");
+        </script>
+    </section>
+</P5PageLayout>

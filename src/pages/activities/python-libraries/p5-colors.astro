@@ -1,0 +1,676 @@
+---
+import P5PageLayout from '@layouts/P5PageLayout.astro';
+
+const title = "P5 - Colors";
+const heading = "P5 library - Colors";
+---
+
+<P5PageLayout title={title} heading={heading}>
+    <script is:inline src="/activities/python-libraries/p5js-scripts/p5-named-colors.js"></script>
+
+    <h2 id="greyscale">Greyscale colors</h2>
+
+    <section>
+        <p>...</p>
+
+        <div id="p5-greyscale-tool"></div>
+        <script is:inline>
+            new p5(p => {
+                function contrastColor(color) {
+                    const r = p.red(color);
+                    const g = p.green(color);
+                    const b = p.blue(color);
+                    const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+                    return luminance > 0.5 ? 'black' : 'white';
+                }
+                
+                p.setup = () => {
+                    p.createCanvas(350, 150);
+                    p.slider = makeSlider("Shade", 0, 255, 128, 1);
+                };
+
+                p.draw = () => {
+                    gradient();
+                    patch();
+                };
+
+                function gradient() {
+                    const N = 9;
+                    const w = p.width / N;
+                    const h = p.height / 2;
+                    for (let i = 0; i <= N; i++) {
+                        const level = Math.round(p.map(i, 0, N - 1, 0, 255));
+                        const color = p.color(level);
+                        p.push();
+                        p.translate(i * w, 0);
+                        p.fill(color);
+                        p.rect(0, 0, w, h);
+                        p.translate(w / 2, h / 2);
+                        p.rotate(-p.HALF_PI);
+                        p.textAlign(p.CENTER, p.CENTER);
+                        p.fill(contrastColor(color));
+                        p.text(level, 0, 0);
+                        p.pop();
+                    }
+                }
+
+                function patch() {
+                    const level = p.slider.value();
+                    const color = p.color(level);
+                    p.push();
+                    p.fill(color);
+                    p.rect(1, p.height / 2, p.width - 1, p.height / 2 - 1);
+                    p.translate(p.width / 2, p.height * 3 / 4);
+                    p.fill(contrastColor(color));
+                    p.text(level, 0, 0);
+                    p.pop();
+                }
+
+                function makeSlider(labelText, minValue, maxValue, initValue, step) {
+                    const div = p.createDiv();
+                    const label = p.createSpan(labelText);
+                    label.parent(div);
+                    const slider = p.createSlider(minValue, maxValue, initValue, step);
+                    slider.style("margin", "0px 10px");
+                    slider.parent(div);
+                    slider.input(() => value.html(slider.value()));
+                    const value = p.createSpan(initValue);
+                    value.parent(div);
+                    return slider;
+                }
+            }, "p5-greyscale-tool");
+        </script>
+
+        <p>...</p>
+
+        <pre><code class="language-python">from p5 import *
+
+def setup():
+    size(300, 300)
+    background(191)  # light grey
+    fill(255)  # white
+    stroke(0)  # black
+    stroke_weight(10)
+    circle(width / 2, height / 2, width * 0.75)
+
+run()</code></pre>
+
+        <div id="p5-greyscale-code"></div>
+        <script is:inline>
+            new p5(p => {
+                p.setup = () => {
+                    p.createCanvas(350, 350);
+                    p.background(191);
+                    p.fill(255);
+                    p.stroke(0);
+                    p.strokeWeight(10);
+                    p.circle(p.width / 2, p.height / 2, p.width * 0.75);
+                };
+            }, "p5-greyscale-code");
+        </script>
+    </section>
+
+    <h2 id="named">Named colors</h2>
+
+    <section>
+        <p>...</p>
+
+        <div id="named-colors-table"></div>
+
+        <p>...</p>
+
+        <pre><code class="language-python">from p5 import *
+
+def setup():
+    size(300, 300)
+    background("lightskyblue")
+    fill("mediumorchid")
+    stroke("teal")
+    stroke_weight(10)
+    circle(width / 2, height / 2, width * 0.75)
+
+run()</code></pre>
+
+        <div id="p5-named-code"></div>
+        <script is:inline>
+            new p5(p => {
+                p.setup = () => {
+                    p.createCanvas(350, 350);
+                    p.background("lightskyblue");
+                    p.fill("mediumorchid");
+                    p.stroke("teal");
+                    p.strokeWeight(10);
+                    p.circle(p.width / 2, p.height / 2, p.width * 0.75);
+                };
+            }, "p5-named-code");
+        </script>
+    </section>
+
+    <h2 id="rgb">RGB colors</h2>
+
+    <section>
+        <p>...</p>
+
+        <div id="p5-rgb-tool"></div>
+        <script is:inline>
+            new p5(p => {
+                function contrastColor(color) {
+                    const r = p.red(color);
+                    const g = p.green(color);
+                    const b = p.blue(color);
+                    const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+                    return luminance > 0.5 ? 'black' : 'white';
+                }
+                
+                p.setup = () => {
+                    p.createCanvas(350, 100);
+                    makeColorPatches();
+                    makeSliders();
+                };
+
+                p.draw = () => {
+                    const r = p.sliderR.value();
+                    const g = p.sliderG.value();
+                    const b = p.sliderB.value();
+                    const color = p.color(r, g, b);
+                    const legend = `${r},${g},${b}\n\n${toHexColor(r, g, b)}`;
+
+                    p.fill(color);
+                    p.rect(0, 0, p.width, p.height);
+                    p.translate(p.width / 2, p.height / 2);
+                    p.fill(contrastColor(color));
+                    p.textAlign(p.CENTER, p.CENTER);
+                    p.textSize(p.height / 6);
+                    p.text(legend, 0, 0);
+                };
+
+                function makeSliders() {
+                    [p.sliderR, p.legendR] = makeSlider("R", 0, 255, 81, 1);
+                    [p.sliderG, p.legendG] = makeSlider("G", 0, 255, 210, 1);
+                    [p.sliderB, p.legendB] = makeSlider("B", 0, 255, 175, 1);
+                }
+
+                function makeSlider(labelText, minValue, maxValue, initValue, step) {
+                    const div = p.createDiv();
+                    const label = p.createSpan(labelText);
+                    label.parent(div);
+                    const slider = p.createSlider(minValue, maxValue, initValue, step);
+                    slider.style("margin", "0px 10px");
+                    slider.parent(div);
+                    slider.input(() => legend.html(formatValue(slider.value())));
+                    const legend = p.createSpan(formatValue(initValue));
+                    legend.style("font-family", "monospace");
+                    legend.parent(div);
+                    return [slider, legend];
+                }
+
+                function formatValue(value) {
+                    const dec = value.toString().padStart(3, '_');
+                    const hex = value.toString(16).toUpperCase().padStart(2, '0');
+                    return `${dec} = ${hex}<sub style='font-size: 9px;'>16</sub>`;
+                }
+
+                function toHexColor(r, g, b) {
+                    const hexR = r.toString(16).toUpperCase().padStart(2, '0');
+                    const hexG = g.toString(16).toUpperCase().padStart(2, '0');
+                    const hexB = b.toString(16).toUpperCase().padStart(2, '0');
+                    return `#${hexR}${hexG}${hexB}`;
+                }
+
+                function makeColorPatches() {
+                    const colors = [
+                        "red", "lime", "blue", "black", "dimgrey", "grey", "lightgrey", "white", 
+                        "yellow", "cyan", "magenta", "orange", "darkgreen", "skyblue", "purple", "sienna"
+                    ];
+                    const div = p.createDiv();
+                    for (let c of colors) {
+                        const button = p.createButton("");
+                        button.style("background", c);
+                        button.style("margin", "10px 5px 10px 0");
+                        button.style("width", "30px");
+                        button.style("height", "30px");
+                        button.parent(div);
+                        button.mousePressed(() => {
+                            const col = p.color(c);
+                            p.sliderR.value(p.red(col));
+                            p.sliderG.value(p.green(col));
+                            p.sliderB.value(p.blue(col));
+                            updateLegends();
+                        });
+                    }
+                }
+
+                function updateLegends() {
+                    p.legendR.html(formatValue(p.sliderR.value()));
+                    p.legendG.html(formatValue(p.sliderG.value()));
+                    p.legendB.html(formatValue(p.sliderB.value()));
+                }
+            }, "p5-rgb-tool");
+        </script>
+
+        <p>...</p>
+
+        <ul>
+            <li>(r, g, b)</li>
+            <li>(r, g, b, a)</li>
+            <li>color_mode(RGB)</li>
+            <li>color_mode(RGB, mr, mg, mb)</li>
+            <li>color_mode(RGB, mr, mg, mb, ma)</li>
+        </ul>
+
+        <p>...</p>
+                
+        <pre><code class="language-python">from p5 import *
+
+def setup():
+    size(300, 300)
+    color_mode(RGB)  # THIS LINE IS OPTIONAL, RGB MODE IS THE DEFAULT
+    background(212, 247, 212)  # or "#D4F7D4", some light green
+    fill(85, 158, 84)  # or "#559E54", some dark green
+    stroke(154, 7, 148)  # or "#9A0794", some purple
+    stroke_weight(10)
+    circle(width / 2, height / 2, width * 0.75)
+
+run()</code></pre>
+
+        <div id="p5-rgb-code"></div>
+        <script is:inline>
+            new p5(p => {
+                p.setup = () => {
+                    p.createCanvas(350, 350);
+                    p.background(212, 247, 212);
+                    p.fill(85, 158, 84);
+                    p.stroke(154, 7, 148);
+                    p.strokeWeight(10);
+                    p.circle(p.width / 2, p.height / 2, p.width * 0.75);
+                };
+            }, "p5-rgb-code");
+        </script>
+    </section>
+
+    <h2 id="hsb">HSB colors</h2>
+
+    <section>
+        <p>...</p>
+
+        <div id="p5-color-wheel"></div>
+        <script is:inline>
+            new p5(p => {
+                function contrastColor(color) {
+                    const r = p.red(color);
+                    const g = p.green(color);
+                    const b = p.blue(color);
+                    const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+                    return luminance > 0.5 ? 'black' : 'white';
+                }
+                
+                p.setup = () => {
+                    p.createCanvas(350, 350);
+                    drawWheel(0);
+                };
+
+                p.mousePressed = () => { update(); };
+                p.mouseDragged = () => { update(); };
+
+                function update() {
+                    if (p.mouseX < 0 || p.mouseX > p.width || p.mouseY < 0 || p.mouseY > p.height) return;
+                    const angle = Math.round(p.degrees(p.atan2(p.mouseY - p.height / 2, p.mouseX - p.width / 2)));
+                    const hue = (angle + 360) % 360;
+                    drawWheel(hue);
+                }
+
+                function drawWheel(hue) {
+                    p.push();
+                    p.colorMode(p.HSB, 360, 100, 100);
+                    const color = p.color(hue, 100, 100);
+                    p.noStroke();
+                    p.translate(p.width / 2, p.height / 2);
+                    const N = 120;
+                    for (let i = 0; i < N; i++) {
+                        const h = p.map(i, 0, N, 0, 360);
+                        const start = p.radians(i * 360 / N - 180 / N);
+                        const stop = start + p.radians(360 / N);
+                        p.fill(h, 100, 100);
+                        p.arc(0, 0, p.width, p.height, start, stop, p.PIE);
+                    }
+                    p.fill(255);
+                    p.circle(0, 0, p.width * 0.5);
+                    p.fill(color);
+                    p.circle(0, 0, p.width * 0.35);
+                    p.fill(contrastColor(color));
+                    p.textAlign(p.CENTER, p.CENTER);
+                    p.textSize(24);
+                    p.text(`H = ${hue}`, 0, 0);
+                    p.rotate(p.radians(hue));
+                    p.translate(p.width * 0.4, 0);
+                    p.fill(255);
+                    p.stroke(0);
+                    p.circle(0, 0, p.width * 0.05);
+                    p.pop();
+                }
+            }, "p5-color-wheel");
+        </script>
+
+        <p>...</p>
+
+        <div id="p5-color-line"></div>
+        <script is:inline>
+            new p5(p => {
+                function contrastColor(color) {
+                    const r = p.red(color);
+                    const g = p.green(color);
+                    const b = p.blue(color);
+                    const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+                    return luminance > 0.5 ? 'black' : 'white';
+                }
+                
+                p.setup = () => {
+                    p.createCanvas(350, 75);
+                    p.colorMode(p.HSB, 360, 100, 100);
+                    p.rectMode(p.CENTER);
+                    const w = p.width / 12;
+                    for (let hue = 0; hue < 360; hue += 30) {
+                        const x = hue / 360 * p.width + w / 2;
+                        const y = p.height / 2;
+                        const color = p.color(hue, 100, 100);
+                        p.push();
+                        p.translate(x, y);
+                        p.fill(color);
+                        p.rect(0, 0, w, p.height);
+                        p.rotate(-p.HALF_PI);
+                        p.fill(contrastColor(color));
+                        p.textAlign(p.CENTER, p.CENTER);
+                        p.text(hue, 0, 0);
+                        p.pop();
+                    }
+                };
+            }, "p5-color-line");
+        </script>
+
+        <p>...</p>
+
+        <div id="p5-hsb-tool"></div>
+        <script is:inline>
+            new p5(p => {
+                function contrastColor(color) {
+                    const r = p.red(color);
+                    const g = p.green(color);
+                    const b = p.blue(color);
+                    const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+                    return luminance > 0.5 ? 'black' : 'white';
+                }
+                
+                p.setup = () => {
+                    p.createCanvas(350, 100);
+                    makeColorPatches();
+                    makeSliders();
+                };
+
+                p.draw = () => {
+                    const h = p.sliderH.value();
+                    const s = p.sliderS.value();
+                    const b = p.sliderB.value();
+                    const color = p.color(h, s, b);
+                    const legend = `${h},${s},${b}`;
+                    p.colorMode(p.HSB, 360, 100, 100);
+                    p.fill(color);
+                    p.rect(0, 0, p.width, p.height);
+                    p.translate(p.width / 2, p.height / 2);
+                    p.fill(contrastColor(color));
+                    p.textAlign(p.CENTER, p.CENTER);
+                    p.textSize(p.height / 6);
+                    p.text(legend, 0, 0);
+                };
+
+                function makeSliders() {
+                    [p.sliderH, p.legendH] = makeSlider("H", 0, 360, 0, 1);
+                    [p.sliderS, p.legendS] = makeSlider("S", 0, 100, 100, 1);
+                    [p.sliderB, p.legendB] = makeSlider("B", 0, 100, 100, 1);
+                }
+
+                function makeSlider(labelText, minValue, maxValue, initValue, step) {
+                    const div = p.createDiv();
+                    const label = p.createSpan(labelText);
+                    label.parent(div);
+                    const slider = p.createSlider(minValue, maxValue, initValue, step);
+                    slider.style("margin", "0px 10px");
+                    slider.parent(div);
+                    slider.input(() => legend.html(slider.value()));
+                    const legend = p.createSpan(initValue);
+                    legend.style("font-family", "monospace");
+                    legend.parent(div);
+                    return [slider, legend];
+                }
+
+                function makeColorPatches() {
+                    const colors = [
+                        "red", "lime", "blue", "black", "dimgrey", "grey", "lightgrey", "white", 
+                        "yellow", "cyan", "magenta", "orange", "darkgreen", "skyblue", "purple", "sienna"
+                    ];
+                    const div = p.createDiv();
+                    for (let c of colors) {
+                        const button = p.createButton("");
+                        button.style("background", c);
+                        button.style("margin", "10px 5px 10px 0");
+                        button.style("width", "30px");
+                        button.style("height", "30px");
+                        button.parent(div);
+                        button.mousePressed(() => {
+                            const col = p.color(c);
+                            p.sliderH.value(p.hue(col));
+                            p.sliderS.value(p.saturation(col));
+                            p.sliderB.value(p.brightness(col));
+                            updateLegends();
+                        });
+                    }
+                }
+
+                function updateLegends() {
+                    p.legendH.html(p.sliderH.value());
+                    p.legendS.html(p.sliderS.value());
+                    p.legendB.html(p.sliderB.value());
+                }
+            }, "p5-hsb-tool");
+        </script>
+
+        <p>...</p>
+
+        <ul>
+            <li>(h, s, b)</li>
+            <li>(h, s, b, a)</li>
+            <li>color_mode(HSB)</li>
+            <li>color_mode(HSB, mh, ms, mb)</li>
+            <li>color_mode(HSB, mh, ms, mb, ma)</li>
+        </ul>
+
+        <p>...</p>
+
+        <pre><code class="language-python">from p5 import *
+
+def setup():
+    size(300, 300)
+    color_mode(HSB)  # DO NOT FORGET THIS LINE
+    background(212, 247, 212)  # some blue
+    fill(85, 158, 84)  # some green
+    stroke(154, 7, 148)  # some white
+    stroke_weight(10)
+    circle(width / 2, height / 2, width * 0.75)
+
+    run()</code></pre>
+
+        <div id="p5-hsb-code"></div>
+        <script is:inline>
+            new p5(p => {
+                p.setup = () => {
+                    p.createCanvas(350, 350);
+                    p.colorMode(p.HSB, 360, 100, 100);
+                    p.background(212, 247, 212);
+                    p.fill(85, 158, 84);
+                    p.stroke(154, 7, 148);
+                    p.strokeWeight(10);
+                    p.circle(p.width / 2, p.height / 2, p.width * 0.75);
+                };
+            }, "p5-hsb-code");
+        </script>
+    </section>
+
+    <h2 id="transparency">Transparency (alpha = opacity)</h2>
+
+    <section>
+        <p>...</p>
+
+        <div id="p5-transparency-tool"></div>
+        <script is:inline>
+            new p5(p => {
+                p.setup = () => {
+                    p.createCanvas(350, 100);
+                    p.slider = makeSlider("Alpha", 0, 255, 128, 1);
+                };
+
+                p.draw = () => {
+                    p.background(240);
+                    p.fill(255, 0, 0, 255);
+                    p.noStroke();
+                    p.rect(p.width * 0.4, 0, p.width * 0.2, p.height);
+                    const alpha = p.slider.value();
+                    p.fill(0, 0, 255, alpha);
+                    p.rect(0, p.height / 4, p.width, p.height / 2);
+                };
+
+                function makeSlider(labelText, minValue, maxValue, initValue, step) {
+                    const div = p.createDiv();
+                    const label = p.createSpan(labelText);
+                    label.parent(div);
+                    const slider = p.createSlider(minValue, maxValue, initValue, step);
+                    slider.style("margin", "0px 10px");
+                    slider.parent(div);
+                    slider.input(() => value.html(slider.value()));
+                    const value = p.createSpan(initValue);
+                    value.parent(div);
+                    return slider;
+                }
+            }, "p5-transparency-tool");
+        </script>
+
+        <p>...</p>
+
+        <ul>
+            <li>#rrggbbaa</li>
+            <li>#hhssbbaa</li>
+            <li>(r, g, b, a)</li>
+            <li>(h, s, b, a)</li>
+        </ul>
+
+        <p>...</p>
+
+        <pre><code class="language-python">from p5 import *
+from math import cos
+
+def setup():
+    size(350, 350)
+
+def draw():
+    background(240)
+    no_stroke()
+
+    # Trunk (opaque)
+    fill("brown")
+    rect(width * 0.4, height / 4, width * 0.2, height)
+
+    # Leaves (opaque)
+    fill("green")
+    circle(width / 2, height / 2, width * 0.75)
+
+    # Apples (opacity changes with time)
+    alpha = map(cos(radians(frame_count)), -1, +1, 0, 255)
+    fill(255, 0, 0, alpha)  # <=== WE USE TRANSPARENCY HERE
+    circle(width / 2, height / 2, 25)
+    circle(175, 88, 25)
+    circle(251, 131, 25)
+    circle(251, 219, 25)
+    circle(175, 263, 25)
+    circle(99, 219, 25)
+    circle(99, 131, 25)
+
+    # Text
+    fill(0)
+    text(f"Alpha = &#123;int(alpha)&#125;", 10, 10)
+        
+run()</code></pre>
+
+        <div id="p5-transparency-code"></div>
+        <script is:inline>
+            new p5(p => {
+                p.setup = () => {
+                    p.createCanvas(350, 350);
+                };
+
+                p.draw = () => {
+                    p.background(240);
+                    p.noStroke();
+
+                    p.fill("brown");
+                    p.rect(p.width * 0.4, p.height / 4, p.width * 0.2, p.height);
+
+                    p.fill("green");
+                    p.circle(p.width / 2, p.height / 2, p.width * 0.75);
+
+                    const alpha = p.map(p.cos(p.radians(p.frameCount)), -1, +1, 0, 255);
+                    p.fill(255, 0, 0, alpha);
+                    p.circle(p.width / 2, p.height / 2, 25);
+                    p.circle(175, 88, 25);
+                    p.circle(251, 131, 25);
+                    p.circle(251, 219, 25);
+                    p.circle(175, 263, 25);
+                    p.circle(99, 219, 25);
+                    p.circle(99, 131, 25);
+
+                    p.fill(0);
+                    p.text(`Alpha = ${Math.round(alpha)}`, 10, 10);
+                };
+            }, "p5-transparency-code");
+        </script>
+    </section>
+
+    <h2 id="get">Check a pixel's color</h2>
+
+    <section>
+        <p>
+            <code>get(<em>x</em>, <em>y</em>)</code> returns an object representing the color of the pixel at coordinates (x, y).
+            This object has the following properties:
+        </p>
+        <ul>
+            <li><code>hex</code>: the color in hexadecimal format</li>
+            <li><code>red</code>, <code>green</code>, <code>blue</code>: the color in RGB format</li>
+            <li><code>hue</code>, <code>saturation</code>, <code>brightness</code>: the color in HSB format</li>
+            <li><code>alpha</code>: the opacity of the color</li>
+        </ul>
+        <p>Here is a sample program:</p>
+        <pre><code class="language-python">from p5 import *
+
+def setup():
+    size(300, 300)
+    background("salmon")
+    
+    color = get(width / 2, height / 2)
+    print(f"  hex: &#123;color.hex&#125;")
+    print(f"  rgb: &#123;color.red&#125;, &#123;color.green&#125;, &#123;color.blue&#125;")
+    print(f"  hsb: &#123;color.hue:.0f&#125;, &#123;color.saturation:.0f&#125;, &#123;color.brightness:.0f&#125;")
+    print(f"alpha: &#123;color.alpha&#125;")
+
+run()
+
+# OUTPUT:
+# ======
+#   hex: #FA8072
+#   rgb: 250, 128, 114
+#   hsb: 6, 93, 98
+# alpha: 255</code></pre>
+
+        <p>Checking a pixel's color is used mainly for games and you can see an example in <a href="./p5-interactivity#color-at-coords">P5 library - Interactivity</a>.</p>
+    </section>
+</P5PageLayout>
+
+<script is:inline>
+    generateNamedColorsTable("named-colors-table");
+</script>

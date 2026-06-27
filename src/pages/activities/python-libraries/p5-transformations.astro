@@ -1,0 +1,422 @@
+---
+import P5PageLayout from '@layouts/P5PageLayout.astro';
+
+const title = "P5 - Transformations";
+const heading = "P5 library - Transformations";
+---
+
+<P5PageLayout title={title} heading={heading}>
+    <script is:inline>
+    const gridColorOn = "rgba(0, 0, 255, 0.7)";
+    const gridColorOff = "rgba(150, 150, 150, 0.5)";
+
+    function grid(p, x, y, w, h, rows, cols, color) {
+        p.push();
+        p.translate(x, y);
+        p.stroke(color);
+        p.strokeWeight(1);
+        for (let i = 0; i <= rows; i++) {
+            p.line(0, i * h / rows, w, i * h / rows);
+        }
+        for (let i = 0; i <= cols; i++) {
+            p.line(i * w / cols, 0, i * w / cols, h);
+        }
+        p.pop();
+    }
+
+    function arrow(p, x1, y1, x2, y2) {
+        p.push();
+        p.stroke("blue");
+        p.strokeWeight(3);
+        p.line(x1, y1, x2, y2);
+        p.translate(x2, y2);
+        const angle = Math.atan2(y2 - y1, x2 - x1);
+        p.rotate(angle);
+        p.line(0, 0, -10, -10);
+        p.line(0, 0, -10, 10);
+        p.pop();
+    }
+
+    function angle(p, x, y, r, startAngle, stopAngle) {
+        p.push();
+        p.fill(0, 0, 255, 40);
+        p.stroke("blue");
+        p.strokeWeight(3);
+        p.arc(0, 0, r, r, startAngle, stopAngle, p.ARC);
+        p.rotate(stopAngle);
+        p.translate(r/2, 0);
+        p.rotate(p.HALF_PI);
+        p.line(0, 0, -10, -10);
+        p.line(0, 0, -10, 10);
+        p.pop();
+     }
+
+    function dot(p, x, y) {
+        p.push();
+        p.stroke("black");
+        p.strokeWeight(10);
+        p.point(x, y);
+        p.strokeWeight(1);
+        p.textAlign(p.CENTER, p.BOTTOM);
+        p.textFont("Arial");
+        p.text(`(${x}, ${y})`, x, y - 10);
+        p.pop();
+    }
+
+    function house(p, halign, valign) {
+        halign = halign || p.CENTER;
+        valign = valign || p.CENTER;
+
+        const WALL_WIDTH = 100;
+        const WALL_HEIGHT = WALL_WIDTH / 1.7;
+        const ROOF_HEIGHT = WALL_HEIGHT * 0.7;
+        const CHIMNEY_WIDTH = WALL_WIDTH * 0.15;
+        const CHIMNEY_HEIGHT = ROOF_HEIGHT * 0.9;
+        const DOOR_WIDTH = WALL_WIDTH * 0.2;
+        const DOOR_HEIGHT = WALL_HEIGHT * 0.8;
+        const WINDOW_WIDTH = (WALL_WIDTH - DOOR_WIDTH) * 0.6 / 2;
+        const WINDOW_HEIGHT = WALL_HEIGHT * 0.5;
+        const TOTAL_WIDTH = WALL_WIDTH;
+        const TOTAL_HEIGHT = WALL_HEIGHT + ROOF_HEIGHT;
+
+        const offset_x = (halign === p.LEFT ? 0 : (halign === p.CENTER ? -TOTAL_WIDTH / 2 : -TOTAL_WIDTH));
+        const offset_y = (valign === p.TOP ? 0 : (valign === p.CENTER ? -TOTAL_HEIGHT / 2 : -TOTAL_HEIGHT));
+
+        p.push();
+        p.translate(offset_x, offset_y);
+        p.translate(50, 50);
+
+        // Wall
+        p.fill("white");
+        p.rectMode(p.CORNER);
+        p.rect(0, ROOF_HEIGHT, WALL_WIDTH, WALL_HEIGHT);
+
+        // Chimney
+        p.fill("white");
+        p.rectMode(p.CENTER);
+        p.rect(WALL_WIDTH / 4, ROOF_HEIGHT - CHIMNEY_HEIGHT / 2, CHIMNEY_WIDTH, CHIMNEY_HEIGHT);
+
+        // Roof
+        p.fill("red");
+        p.triangle(0, ROOF_HEIGHT, WALL_WIDTH, ROOF_HEIGHT, WALL_WIDTH / 2, 0);
+
+        // Door
+        p.fill("green");
+        p.rectMode(p.CENTER);
+        p.rect(WALL_WIDTH / 2, TOTAL_HEIGHT - DOOR_HEIGHT / 2, DOOR_WIDTH, DOOR_HEIGHT);
+
+        // Windows
+        p.fill("skyblue");
+        p.rectMode(p.CENTER);
+        const x1 = (WALL_WIDTH - DOOR_WIDTH) / 2 / 2;
+        const x2 = WALL_WIDTH - x1;
+        const y = TOTAL_HEIGHT - DOOR_HEIGHT + WINDOW_HEIGHT / 2;
+        p.rect(x1, y, WINDOW_WIDTH, WINDOW_HEIGHT);
+        p.rect(x2, y, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+        p.pop();
+    }
+    </script>
+
+    <h2 id="intro">Introduction</h2>
+
+    <section>
+        <p>...</p>
+        <pre><code class="language-python">from p5 import *
+
+def setup():
+    size(300, 300)
+
+def draw():
+    background(240)
+    house(LEFT, TOP)
+
+def house(halign=CENTER, valign=CENTER):
+    ...
+
+run()</code></pre>
+        <div id="p5-intro"></div>
+        <script is:inline>
+            new p5((p) => {
+                p.setup = function () {
+                    p.createCanvas(300, 300);
+                };
+
+                p.draw = function () {
+                    p.background(240);
+                    grid(p, 0, 0, 300, 300, 6, 6, gridColorOn);
+                    house(p, p.LEFT, p.TOP);
+                    dot(p, 50, 50);
+                };
+            }, "p5-intro");
+        </script>
+        <p>Details for the <code>house</code> function.</p>
+        <details class="show-me">
+            <summary>Show me</summary>
+            <pre><code class="language-python">def house(halign=CENTER, valign=CENTER):
+    WALL_WIDTH = 100
+    WALL_HEIGHT = WALL_WIDTH / 1.7
+    ROOF_HEIGHT = WALL_HEIGHT * 0.7
+    CHIMNEY_WIDTH = WALL_WIDTH * 0.15
+    CHIMNEY_HEIGHT = ROOF_HEIGHT * 0.9
+    DOOR_WIDTH = WALL_WIDTH * 0.2
+    DOOR_HEIGHT = WALL_HEIGHT * 0.8
+    WINDOW_WIDTH = (WALL_WIDTH - DOOR_WIDTH) * 0.6 / 2
+    WINDOW_HEIGHT = WALL_HEIGHT * 0.5
+    TOTAL_WIDTH = WALL_WIDTH
+    TOTAL_HEIGHT = WALL_HEIGHT + ROOF_HEIGHT
+
+    offset_x = 0 if halign == LEFT else (-TOTAL_WIDTH/2 if halign == CENTER else -TOTAL_WIDTH)
+    offset_y = 0 if valign == TOP else (-TOTAL_HEIGHT/2 if valign == CENTER else -TOTAL_HEIGHT)
+
+    push_style()
+    push_matrix()
+    translate(offset_x, offset_y)
+    translate(50, 50)
+    
+    # Wall
+    fill("white")
+    rect_mode(CORNER)
+    rect(0, ROOF_HEIGHT, WALL_WIDTH, WALL_HEIGHT)
+
+    # Chimney
+    fill("white")
+    rect_mode(CENTER)
+    rect(WALL_WIDTH/4, ROOF_HEIGHT - CHIMNEY_HEIGHT/2, CHIMNEY_WIDTH, CHIMNEY_HEIGHT)
+    
+    # Roof
+    fill("red")
+    triangle(0, ROOF_HEIGHT, WALL_WIDTH, ROOF_HEIGHT, WALL_WIDTH/2, 0)
+    
+    # Door
+    fill("green")
+    rect_mode(CENTER)
+    rect(WALL_WIDTH/2, TOTAL_HEIGHT - DOOR_HEIGHT/2, DOOR_WIDTH, DOOR_HEIGHT)
+
+    # Windows
+    fill("skyblue")
+    rect_mode(CENTER)
+    x1 = (WALL_WIDTH - DOOR_WIDTH) / 2 / 2
+    x2 = WALL_WIDTH - x1
+    y = TOTAL_HEIGHT - DOOR_HEIGHT + WINDOW_HEIGHT/2
+    rect(x1, y, WINDOW_WIDTH, WINDOW_HEIGHT)
+    rect(x2, y, WINDOW_WIDTH, WINDOW_HEIGHT)
+    
+    pop_style()
+    pop_matrix()</code></pre>
+        </details>
+    </section>
+
+    <h2 id="translate">Translate = Move the grid</h2>
+
+    <section>
+        <p>...</p>
+        <pre><code class="language-python">from p5 import *
+
+def setup():
+    size(300, 300)
+
+def draw():
+    background(240)
+    translate(100, 100)
+    house(LEFT, TOP)
+
+def house(halign=CENTER, valign=CENTER):
+    ...
+
+run()</code></pre>
+        <div id="p5-translate"></div>
+        <script is:inline>
+            new p5((p) => {
+                let sliderOffsetX, labelOffsetX;
+                let sliderOffsetY, labelOffsetY;
+
+                p.setup = function () {
+                    p.createCanvas(300, 300);
+
+                    let divContainerX = p.createDiv();
+                    sliderOffsetX = p.createSlider(-300, 350, 100, 5).parent(divContainerX);
+                    p.createSpan("   ").parent(divContainerX);
+                    labelOffsetX = p.createSpan("???").parent(divContainerX);
+
+                    let divContainerY = p.createDiv();
+                    sliderOffsetY = p.createSlider(-300, 350, 100, 5).parent(divContainerY);
+                    p.createSpan("   ").parent(divContainerY);
+                    labelOffsetY = p.createSpan("???").parent(divContainerY);
+                };
+
+                p.draw = function () {
+                    let offsetX = sliderOffsetX.value();
+                    labelOffsetX.html(`X offset = ${offsetX}`);
+                    let offsetY = sliderOffsetY.value();
+                    labelOffsetY.html(`Y offset = ${offsetY}`);
+
+                    p.background(240);
+                    grid(p, 0, 0, 300, 300, 6, 6, gridColorOff);
+                    arrow(p, 0, 0, offsetX, offsetY);
+                    p.translate(offsetX, offsetY);
+                    grid(p, 0, 0, 300, 300, 6, 6, gridColorOn);
+                    house(p, p.LEFT, p.TOP);
+                    dot(p, 50, 50);
+                };
+
+                function updateOffsets() {
+                    if (p.mouseX >= 0 && p.mouseX < p.width && p.mouseY >= 0 && p.mouseY < p.height) {
+                        sliderOffsetX.value(p.mouseX);
+                        sliderOffsetY.value(p.mouseY);
+                    }
+                }
+
+                p.mousePressed = function () { updateOffsets(); };
+                p.mouseDragged = function () { updateOffsets(); };
+            }, "p5-translate");
+        </script>
+    </section>
+
+    <h2 id="rotate">Rotate = Turn the grid</h2>
+
+    <section>
+        <p>...</p>
+        <pre><code class="language-python">from p5 import *
+
+def setup():
+    size(300, 300)
+
+def draw():
+    background(240)
+    rotate(radians(15))
+    house(LEFT, TOP)
+
+def house(halign=CENTER, valign=CENTER):
+    ...
+
+run()</code></pre>
+        <div id="p5-rotate"></div>
+        <script is:inline>
+            new p5((p) => {
+                let sliderAngle, labelAngle;
+
+                p.setup = function () {
+                    p.createCanvas(300, 300);
+
+                    let divContainer = p.createDiv();
+                    sliderAngle = p.createSlider(-360, 360, 15, 1).parent(divContainer);
+                    p.createSpan("   ").parent(divContainer);
+                    labelAngle = p.createSpan("???").parent(divContainer);
+                };
+
+                p.draw = function () {
+                    let angleDeg = sliderAngle.value();
+                    let angleRad = p.radians(angleDeg);
+                    labelAngle.html(`Angle = ${angleDeg}\u00B0 = ${angleRad.toFixed(2)} rad`);
+
+                    p.background(240);
+                    grid(p, 0, 0, 300, 300, 6, 6, gridColorOff);
+                    angle(p, 0, 0, 550, 0, angleRad);
+                    p.rotate(angleRad);
+                    grid(p, 0, 0, 300, 300, 6, 6, gridColorOn);
+                    house(p, p.LEFT, p.TOP);
+                    dot(p, 50, 50);
+                };
+
+                function updateAngle() {
+                    if (p.mouseX >= 0 && p.mouseX < p.width && p.mouseY >= 0 && p.mouseY < p.height) {
+                        sliderAngle.value(p.degrees(p.atan2(p.mouseY, p.mouseX)));
+                    }
+                }
+
+                p.mousePressed = function () { updateAngle(); };
+                p.mouseDragged = function () { updateAngle(); };
+            }, "p5-rotate");
+        </script>
+    </section>
+
+    <h2 id="scale">Scale = Resize the grid</h2>
+
+    <section>
+        <p>...</p>
+        <pre><code class="language-python">from p5 import *
+
+def setup():
+    size(300, 300)
+
+def draw():
+    background(240)
+    scale(1.5, 1.5)
+    house(LEFT, TOP)
+
+def house(halign=CENTER, valign=CENTER):
+    ...
+
+run()</code></pre>
+        <div id="p5-scale-grow"></div>
+        <script is:inline>
+            new p5((p) => {
+                let sliderScaleX, labelScaleX;
+                let sliderScaleY, labelScaleY;
+                let checkboxAspectRatio;
+
+                p.setup = function () {
+                    p.createCanvas(300, 300);
+
+                    let divContainerX = p.createDiv();
+                    sliderScaleX = p.createSlider(0.0, 4, 1.5, 0.1).parent(divContainerX);
+                    p.createSpan("   ").parent(divContainerX);
+                    labelScaleX = p.createSpan("???").parent(divContainerX);
+                    sliderScaleX.input(() => {
+                        if (checkboxAspectRatio.checked()) {
+                            sliderScaleY.value(sliderScaleX.value());
+                        }
+                    });
+
+                    let divContainerY = p.createDiv();
+                    sliderScaleY = p.createSlider(0.0, 4, 1.5, 0.1).parent(divContainerY);
+                    p.createSpan("   ").parent(divContainerY);
+                    labelScaleY = p.createSpan("???").parent(divContainerY);
+                    sliderScaleY.input(() => {
+                        if (checkboxAspectRatio.checked()) {
+                            sliderScaleX.value(sliderScaleY.value());
+                        }
+                    });
+
+                    checkboxAspectRatio = p.createCheckbox("Preserve aspect ratio", true);
+                };
+
+                p.draw = function () {
+                    let scaleX = sliderScaleX.value();
+                    labelScaleX.html(`X scale = ${scaleX}`);
+                    let scaleY = sliderScaleY.value();
+                    labelScaleY.html(`Y scale = ${scaleY}`);
+
+                    p.background(240);
+                    grid(p, 0, 0, 300, 300, 6, 6, gridColorOff);
+                    p.scale(scaleX, scaleY);
+                    grid(p, 0, 0, 300, 300, 6, 6, gridColorOn);
+                    house(p, p.LEFT, p.TOP);
+                    dot(p, 50, 50);
+                };
+            }, "p5-scale-grow");
+        </script>
+    </section>
+
+    <h2 id="combine">Combine transformations</h2>
+
+    <section>
+        <p>...</p>
+        <pre><code class="language-python"># TODO</code></pre>
+    </section>
+
+    <h2 id="order">Order matters</h2>
+
+    <section>
+        <p>...</p>
+        <pre><code class="language-python"># TODO</code></pre>
+    </section>
+
+    <h2 id="save-restore">Save and restore the grid</h2>
+
+    <section>
+        <p>...</p>
+        <pre><code class="language-python"> # TODO</code></pre>
+    </section>
+</P5PageLayout>

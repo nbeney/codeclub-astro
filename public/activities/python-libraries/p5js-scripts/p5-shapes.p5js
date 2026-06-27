@@ -1,0 +1,490 @@
+const SIZE = 250;
+const N = 7;
+
+let d;
+
+function setup() {
+  createCanvas(SIZE, SIZE);
+  noLoop();
+  d = width / (N + 2);
+}
+
+function draw() {
+  translate(d, d);
+  scale(d, d);
+  fill(200, 255, 200);
+  strokeWeight(1 / d);
+  textSize(3 / N);
+  
+  // generate_coordinate_system();
+  // generate_angles();
+  // generate_point();
+  // generate_line();
+  // generate_triangle();
+  // generate_quad();
+  // generate_rect();
+  // generate_square();
+  // generate_ellipse()
+  // generate_circle();
+  // generate_arc();
+  // generate_shape();
+  // generate_bezier();
+  // generate_text();
+}
+
+function generate_coordinate_system() {
+  clear();
+  background(255);
+  draw_grid();
+  push();
+  stroke("blue");
+  line(0, 5, 3, 5);
+  line(3, 0, 3, 5);
+  pop();
+  draw_point(3, 5, RIGHT, "red", "(x=3, y=5)");
+  saveCanvas("p5-coordinates.png");
+}
+
+function generate_angles() {
+  clear();
+  background(240);
+  // draw_grid();
+  push();
+  translate(3.5, 3.5);
+  noFill();
+  D = 7
+  circle(0, 0, D);
+  for (const pair of [
+    [0, "0"], 
+    [45, "π/4"], 
+    [90, "π/2"],
+    [135, "3π/4"],
+    [180, "π"],
+    [225, "5π/4"],
+    [270, "3π/2"],
+    [315, "7π/4"]
+  ]) {
+    deg = pair[0]
+    rad = pair[1]
+    push();
+    rotate(radians(deg));
+    translate(D/2, 0);
+    line(-0.1, 0, 0.1, 0);
+    noStroke();
+    textSize(0.3);
+    fill("blue");
+    textAlign(RIGHT, CENTER);
+    text(`${deg}`, -0.2, 0);
+    fill("red");
+    textAlign(LEFT, CENTER);
+    text(rad, 0.2, 0);
+    pop();
+  }
+  pop();
+  saveCanvas("p5-angles.png");
+}
+
+function generate_point() {
+  clear();
+  background(255);
+  draw_grid();
+  draw_point(3, 5, RIGHT, "red");
+  saveCanvas("p5-point.png");
+}
+
+function generate_line() {
+  clear();
+  background(255);
+  draw_grid();
+  push();
+  stroke("red");
+  line(2, 6, 5, 1);
+  pop();
+  draw_point(2, 6, LEFT);
+  draw_point(5, 1, RIGHT);
+  saveCanvas("p5-line.png");
+}
+
+function generate_triangle() {
+  clear();
+  background(255);
+  draw_grid();
+  push();
+  stroke("red");
+  triangle(2, 3, 5, 1, 4, 6);
+  pop();
+  draw_point(2, 3, LEFT);
+  draw_point(5, 1, RIGHT);
+  draw_point(4, 6, BOTTOM);
+  saveCanvas("p5-triangle.png");
+}
+
+function generate_quad() {
+  clear();
+  background(255);
+  draw_grid();
+  push();
+  stroke("red");
+  quad(1, 6, 2, 2, 5, 1, 6, 5);
+  pop();
+  draw_point(1, 6, BOTTOM);
+  draw_point(2, 2, LEFT);
+  draw_point(5, 1, TOP);
+  draw_point(6, 5, BOTTOM);
+  saveCanvas("p5-quad.png");
+}
+
+function generate_rect() {
+  // generate_rect_corner_mode();
+  // generate_rect_center_mode();
+  // generate_rect_corners_mode();
+  generate_rect_rounded();
+}
+
+function generate_rect_corner_mode() {
+  clear();
+  background(255);
+  draw_grid();
+  push();
+  stroke("red");
+  rectMode(CORNER);
+  rect(1, 1, 2, 4);
+  pop();
+  draw_point(1, 1, TOP);
+  saveCanvas("p5-rect-CORNER.png");
+}
+
+function generate_rect_center_mode() {
+  clear();
+  background(255);
+  draw_grid();
+  push();
+  stroke("red");
+  rectMode(CENTER);
+  rect(2, 3, 2, 4);
+  pop();
+  draw_point(2, 3, BOTTOM);
+  saveCanvas("p5-rect-CENTER.png");
+}
+
+function generate_rect_corners_mode() {
+  clear();
+  background(255);
+  draw_grid();
+  push();
+  stroke("red");
+  rectMode(CORNERS);
+  rect(1, 1, 3, 5);
+  pop();
+  draw_point(1, 1, TOP);
+  draw_point(3, 5, BOTTOM);
+  saveCanvas("p5-rect-CORNERS.png");
+}
+
+function generate_rect_rounded() {
+  clear();
+  background(255);
+  // draw_grid();
+  push();
+  noFill();
+  stroke("red");
+  rect(0, 0, 4, 4);
+  stroke("green");
+  rect(1.5, 1.5, 4, 4, 0.3);
+  stroke("blue");
+  rect(3, 3, 4, 4, 0.1, 0.2, 0.4, 0.8);
+  pop();
+  saveCanvas("p5-rect-rounded.png");
+}
+
+function generate_square() {
+  generate_square_corner_mode()
+  generate_square_center_mode()
+}
+
+function generate_square_corner_mode() {
+  clear();
+  background(255);
+  draw_grid();
+  push();
+  stroke("red");
+  rectMode(CORNER);
+  square(1, 1, 4);
+  pop();
+  draw_point(1, 1, TOP);
+  saveCanvas("p5-square-CORNER.png");
+}
+
+function generate_square_center_mode() {
+  clear();
+  background(255);
+  draw_grid();
+  push();
+  stroke("red");
+  rectMode(CENTER);
+  rect(3, 3, 4);
+  pop();
+  draw_point(3, 3, BOTTOM);
+  saveCanvas("p5-square-CENTER.png");
+}
+
+function generate_ellipse() {
+  generate_ellipse_corner_mode();
+  generate_ellipse_center_mode();
+  generate_ellipse_corners_mode();
+}
+
+function generate_ellipse_corner_mode() {
+  clear();
+  background(255);
+  draw_grid();
+  push();
+  stroke("red");
+  ellipseMode(CORNER);
+  ellipse(1, 1, 2, 4);
+  pop();
+  draw_point(1, 1, TOP);
+  saveCanvas("p5-ellipse-CORNER.png");
+}
+
+function generate_ellipse_center_mode() {
+  clear();
+  background(255);
+  draw_grid();
+  push();
+  stroke("red");
+  ellipseMode(CENTER);
+  ellipse(2, 3, 2, 4);
+  pop();
+  draw_point(2, 3, BOTTOM);
+  saveCanvas("p5-ellipse-CENTER.png");
+}
+
+function generate_ellipse_corners_mode() {
+  clear();
+  background(255);
+  draw_grid();
+  push();
+  stroke("red");
+  ellipseMode(CORNERS);
+  ellipse(1, 1, 3, 5);
+  pop();
+  draw_point(1, 1, TOP);
+  draw_point(3, 5, BOTTOM);
+  saveCanvas("p5-ellipse-CORNERS.png");
+}
+
+function generate_circle() {
+  clear();
+  background(255);
+  draw_grid();
+  push();
+  stroke("red");
+  circle(3, 3, 4);
+  pop();
+  draw_point(3, 3, BOTTOM);
+  saveCanvas("p5-circle.png");
+}
+
+function generate_arc() {
+  for (const mode of [OPEN, CHORD, PIE]) {
+    clear();
+    background(255);
+    draw_grid();
+    push();
+    stroke("red");
+    arc(4, 2, 5, 7, radians(45), radians(180), mode);
+    pop();
+    draw_point(4, 2, TOP);
+    saveCanvas(`p5-arc-${mode.toUpperCase()}.png`);
+  }
+}
+
+function generate_shape() {
+  generate_shape_simple();
+  generate_shape_complex();
+}
+
+function generate_shape_simple() {
+  clear();
+  background(255);
+  draw_grid();
+  push();
+  stroke("red");
+  beginShape();
+  vertex(2, 1);
+  vertex(5, 1);
+  vertex(5, 2);
+  vertex(3, 2);
+  vertex(3, 5);
+  vertex(5, 5);
+  vertex(5, 6);
+  vertex(2, 6);
+  endShape(CLOSE);
+  pop();
+  draw_point(2, 1, TOP);
+  draw_point(5, 1, TOP);
+  draw_point(5, 2, BOTTOM);
+  draw_point(3, 2, TOP);
+  draw_point(3, 5, BOTTOM);
+  draw_point(5, 5, TOP);
+  draw_point(5, 6, BOTTOM);
+  draw_point(2, 6, BOTTOM);
+  saveCanvas("p5-shape.png");
+}
+
+function generate_shape_complex() {
+  clear();
+  background(255);
+  draw_grid();
+  push();
+  stroke("red");
+  beginShape()
+  // Outer square - clockwise
+  vertex(1, 1)
+  vertex(6, 1)
+  vertex(6, 6)
+  vertex(1, 6)
+  // Hole - counter-clockwise
+  beginContour()
+  vertex(2, 2)
+  vertex(2, 5)
+  vertex(5, 5)
+  vertex(5, 2)
+  endContour()
+  // Inner square - clockwise
+  beginContour()
+  vertex(3, 3)
+  vertex(4, 3)
+  vertex(4, 4)
+  vertex(3, 4)
+  endContour()
+  endShape(CLOSE)
+  pop();
+  saveCanvas("p5-shape-complex.png");
+}
+
+function generate_bezier() {
+  clear();
+  background(255);
+  draw_grid();
+  push();
+  stroke("red");
+  bezier(
+    5, 6, // start point
+    1, 3, // control point #1
+    4, 1, // control point #2
+    5, 3  // stop point
+  );
+  pop();
+  draw_line(5, 6, 1, 3, "grey")
+  draw_line(5, 3, 4, 1, "grey")
+  draw_point(5, 6, RIGHT);
+  draw_point(1, 3, RIGHT);
+  draw_point(4, 1, RIGHT);
+  draw_point(5, 3, RIGHT);
+  saveCanvas(`p5-bezier.png`);
+}
+
+function generate_text() {
+  clear();
+  background(255);
+  draw_grid();
+  push();
+  fill("red");
+  textSize(1.4);
+  text("I love P5!", 1, 4);
+  pop();
+  draw_point(1, 4, BOTTOM);
+  saveCanvas(`p5-text.png`);
+}
+
+function draw_grid() {
+  // Draw the grid.
+  
+  push();
+  stroke(180);
+  for (let x = 0; x <= N; x++) {
+    line(x, 0, x, N);
+  }
+  for (let y = 0; y <= N; y++) {
+    line(0, y, N, y);
+  }
+  pop();
+  
+  // Draw the units.
+  
+  push();  
+  fill(0);
+  for (let x = 0; x <= N; x++) {
+    textAlign(CENTER, BOTTOM);
+    text(x, x, -1/N);
+  }
+  for (let y = 0; y <= N; y++) {
+    textAlign(RIGHT, CENTER);
+    text(y, -2/N, y);
+  }
+  pop();
+  
+  // Draw the x-axis.
+  
+  draw_line(0, 0, N, 0);
+  push();
+  fill(0);
+  textAlign(LEFT, CENTER);
+  text("x", N + 4/N, 0);
+  pop();
+  
+  // Draw the y-axis.
+  
+  draw_line(0, 0, 0, N);
+  push();
+  fill(0);
+  textAlign(CENTER, TOP);
+  text("y", 0, N + 3/N);
+  pop();
+}
+
+function draw_line(x1, y1, x2, y2, color) {
+  push();
+  stroke(color || "black");
+  line(x1, y1, x2, y2);
+  pop();
+}
+
+function draw_point(x, y, labelPos, color, labelText) {
+  // Draw the dot.
+  
+  push();
+  stroke(color || "black");
+  strokeWeight(7 / d);
+  point(x, y);
+  pop();
+
+  // Draw the label.
+  
+  push();
+  fill(0);
+  const label = labelText || `(${x}, ${y})`;
+  switch (labelPos) {
+    case LEFT:
+      textAlign(RIGHT, CENTER);
+      text(label, x - 8/d, y);
+      break;
+    case RIGHT:
+      textAlign(LEFT, CENTER);
+      text(label, x + 8/d, y);
+      break;
+    case TOP:
+      textAlign(CENTER, BOTTOM);
+      text(label, x, y - 8/d);
+      break;
+    case BOTTOM:
+      textAlign(CENTER, TOP);
+      text(label, x, y + 8/d);
+      break;
+    default:
+      // do nothing
+  }
+  pop();
+}

@@ -1,0 +1,98 @@
+---
+import P5PageLayout from '@layouts/P5PageLayout.astro';
+
+const title = "P5 - Reference";
+const heading = "P5 library - Reference";
+---
+
+<P5PageLayout title={title} heading={heading} showToc={false} showP5={false}>
+    <h2>CONST-FLOAT (7)</h2>
+
+    <pre><code class="language-python">DEG_TO_RAD = 0.0174532925199433
+RAD_TO_DEG = 57.29577951308232
+QUARTER_PI = 0.7853981633974483
+HALF_PI = 1.570796326794897
+PI = 3.141592653589793
+TWO_PI = 6.283185307179586
+TAU = 6.283185307179586</code></pre>
+
+    <h2>CONST-INT (21)</h2>
+
+    <pre><code class="language-python">A: ALT
+B: BACKSPACE
+C: CONTROL
+D: DELETE, DOWN_ARROW
+E: ENTER, ESCAPE
+L: LEFT_ARROW, LINES, LINE_LOOP, LINE_STRIP
+O: OPTION
+P: POINTS
+R: RETURN, RIGHT_ARROW
+S: SHIFT
+T: TAB, TRIANGLES, TRIANGLE_FAN, TRIANGLE_STRIP
+U: UP_ARROW</code></pre>
+
+    <h2>CONST-STR (83)</h2>
+
+    <pre><code class="language-python">A: ADD, ARROW, AUTO, AXES
+B: BASELINE, BEVEL, BEZIER, BLEND, BLUR, BOLD, BOLDITALIC, BOTTOM, BURN
+C: CENTER, CHORD, CLAMP, CLOSE, CORNER, CORNERS, CROSS, CURVE
+D: DARKEST, DEGREES, DIFFERENCE, DILATE, DODGE
+E: ERODE, EXCLUSION
+F: FALLBACK, FILL
+G: GRAY, GRID
+H: HAND, HARD_LIGHT, HSB, HSL
+I: IMAGE, IMMEDIATE, INVERT, ITALIC
+L: LABEL, LANDSCAPE, LEFT, LIGHTEST, LINEAR
+M: MIRROR, MITER, MOVE, MULTIPLY
+N: NEAREST, NORMAL
+O: OPAQUE, OPEN, OVERLAY
+P: P2D, PIE, PORTRAIT, POSTERIZE, PROJECT
+Q: QUADRATIC, QUADS, QUAD_STRIP
+R: RADIANS, RADIUS, REMOVE, REPEAT, REPLACE, RGB, RIGHT, ROUND
+S: SCREEN, SOFT_LIGHT, SQUARE, STROKE, SUBTRACT
+T: TESS, TEXT, TEXTURE, THRESHOLD, TOP
+W: WAIT, WEBGL
+R: renderMode</code></pre>
+
+    <h2>FUNCTION (160)</h2>
+
+    <pre><code class="language-python">A: ambient, ambient_light, apply_matrix, arc
+B: background, begin_camera, begin_contour, begin_shape, bezier, bezier_detail, bezier_point, bezier_tangent, bezier_vertex, blend, blend_color, box
+C: camera, circle, clear, color_mode, cone, constrain, copy, create_font, create_graphics, create_image, cursor, curve, curve_detail, curve_point, curve_tangent, curve_tightness, curve_vertex, cylinder
+D: day, degrees, directional_light, dist
+E: ellipse, ellipse_mode, ellipsoid, emissive, end_camera, end_contour, end_shape, erase, exitp
+F: fill, filter, frustum
+G: get
+H: hint, hour
+I: image, image_mode
+L: lerp, lerp_color, light_falloff, light_specular, lights, line, load_bytes, load_font, load_image, load_pixels, load_shape, load_strings, loop
+M: mag, map, millis, minute, model_x, model_y, model_z, month
+N: no_cursor, no_erase, no_fill, no_lights, no_loop, no_smooth, no_stroke, no_tint, noise, noise_detail, noise_seed, norm, normal
+O: ortho
+P: perspective, plane, pmouse_x, pmouse_y, point, point_light, pop_matrix, pop_style, print_camera, print_matrix, print_projection, println, push_matrix, push_style
+Q: quad, quadratic_vertex
+R: radians, random, random_seed, rect, rect_mode, request_image, reset_matrix, rotate, rotate_x, rotate_y, rotate_z, run
+S: save, save_frame, save_strings, scale, screen_x, screen_y, screen_z, second, shape, shape_mode, shininess, size, smooth, specular, sphere, spot_light, sq, square, status, stroke, stroke_cap, stroke_join, stroke_weight
+T: text, text_align, text_ascent, text_descent, text_font, text_leading, text_mode, text_size, text_style, text_width, texture, texture_mode, tint, torus, translate, triangle
+U: update_pixels
+V: vertex
+Y: year</code></pre>
+
+    <h2>OBJECT (4)</h2>
+
+    <pre><code class="language-python">environment = &lt;p5.Environment object&gt;
+keyboard = &lt;p5.Keyboard object&gt;
+mouse = &lt;p5.Mouse object&gt;
+screen = &lt;p5.Screen object&gt;</code></pre>
+
+    <h2>TYPE (8)</h2>
+
+    <pre><code class="language-python">Color = &lt;class 'p5.Color'&gt;
+Environment = &lt;class 'p5.Environment'&gt;
+Keyboard = &lt;class 'p5.Keyboard'&gt;
+Mouse = &lt;class 'p5.Mouse'&gt;
+PFont = &lt;class 'p5.PFont'&gt;
+PImage = &lt;class 'p5.PImage'&gt;
+PVector = &lt;class 'p5.PVector'&gt;
+Screen = &lt;class 'p5.Screen'&gt;</code></pre>
+</P5PageLayout>

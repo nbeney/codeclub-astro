@@ -1,0 +1,496 @@
+---
+import P5PageLayout from '@layouts/P5PageLayout.astro';
+
+const title = "P5 - Math tidbits";
+const heading = "P5 library - Math tidbits";
+---
+
+<P5PageLayout title={title} heading={heading}>
+    <h2 id="abs-vs-rel">Use proportional values</h2>
+
+    <section>
+        <p>...</p>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <pre><code class="language-python"># GOOD - Will adjust to the canvas size
+
+from p5 import *
+
+# Change the width here and see what happens.
+WIDTH = 300
+
+def setup():
+    size(WIDTH, WIDTH/1.6)
+    no_loop()
+
+def draw():
+    background("grey")
+    no_stroke()
+    fill("red")
+    rect(0, 0, width/3, height)
+    fill("white")
+    rect(1/3*width, 0, width/3, height)
+    fill("blue")
+    rect(2/3*width, 0, width/3, height)
+
+run()</code></pre>
+                    <div id="p5-good-relative"></div>
+                </div>
+                <div class="col">
+                    <pre><code class="language-python"># BAD - Will NOT adjust to the canvas size
+
+from p5 import *
+
+# Change the width here and see what happens.
+WIDTH = 300
+
+def setup():
+    size(WIDTH, WIDTH/1.6)
+    no_loop()
+
+def draw():
+    background("grey")
+    no_stroke()
+    fill("red")
+    rect(0, 0, 100, 188)
+    fill("white")
+    rect(100, 0, 100, 188)
+    fill("blue")
+    rect(200, 0, 100, 188)
+
+run()</code></pre>
+                    <div id="p5-bad-absolute"></div>
+                </div>
+            </div>
+        </div>
+        <script is:inline src="/activities/python-libraries/p5js-scripts/p5-abs-vs-rel.js"></script>
+    </section>
+    
+    <h2 id="constrain">Constrain a value to a range</h2>
+
+    <section>
+        <p><code>constrain(<em>value</em>, <em>start</em>, <em>stop</em>)</code> returns a value which is guaranteed to be in the <code>[<em>start</em>..<em>stop</em>]</code> range.</p>
+        <pre><code class="language-python">constrain(1, 3, 7)  # returns 3.0 (because 1 is below 3)
+constrain(2, 3, 7)  # returns 3.0 (because 2 is below 3)
+constrain(3, 3, 7)  # returns 3.0 (because 3 is in the range)
+constrain(4, 3, 7)  # returns 4.0 (because 4 is in the range)
+constrain(5, 3, 7)  # returns 5.0 (because 5 is in the range)
+constrain(6, 3, 7)  # returns 6.0 (because 6 is in the range)
+constrain(7, 3, 7)  # returns 7.0 (because 7 is in the range)
+constrain(8, 3, 7)  # returns 7.0 (because 8 is above 7)
+constrain(9, 3, 7)  # returns 7.0 (because 9 is above 7)</code></pre>
+        <p>Here is a program that draws a red dot at the mouse position constrained to the white area:</p>
+        <pre><code class="language-python">from p5 import *
+
+def setup():
+    size(200, 200)
+    rect_mode(CORNERS)
+
+def draw():
+    x1 = width * 0.2
+    y1 = height * 0.2
+    x2 = width * 0.8
+    y2 = height * 0.8
+    mx = constrain(mouse_x, x1, x2)  # constrain horizontally
+    my = constrain(mouse_y, y1, y2)  # constrain vertically
+
+    push_style()
+    background(240)
+    text(f"mouse_x: &#123;mouse_x:.0f&#125; => mx: &#123;mx:.0f&#125;\nmouse_y: &#123;mouse_y:.0f&#125; => my: &#123;my:.0f&#125;", 10, 10)
+    rect(x1, y1, x2, y2)
+    stroke("red")
+    stroke_weight(10)
+    point(mx, my)
+    pop_style()
+    
+run()</code></pre>
+        <div id="p5-constrain"></div>
+        <script is:inline>
+            new p5(p => {
+                p.setup = function() {
+                    p.createCanvas(200, 200);
+                    p.rectMode(p.CORNERS);
+                }
+
+                p.draw = function() {
+                    if (p.mouseX < 0 || p.mouseX > p.width || p.mouseY < 0 || p.mouseY > p.height) {
+                        return;
+                    }
+
+                    const x1 = p.width * 0.2;
+                    const y1 = p.height * 0.2;
+                    const x2 = p.width * 0.8;
+                    const y2 = p.height * 0.8;
+                    const mx = Math.round(p.constrain(p.mouseX, x1, x2));
+                    const my = Math.round(p.constrain(p.mouseY, y1, y2));
+
+                    p.push();
+                    p.background(240);
+                    p.text(`mouseX: ${Math.round(p.mouseX)} => mx: ${mx}\nmouseY: ${Math.round(p.mouseY)} => my: ${my}`, 10, 10);
+                    p.rect(x1, y1, x2, y2);
+                    p.stroke("red");
+                    p.strokeWeight(10);
+                    p.point(mx, my);
+                    p.pop();
+                }
+            }, "p5-constrain")
+        </script>
+    </section>
+
+    <h2 id="norm">Normalize a value</h2>
+
+    <section>
+        <p><code>norm(<em>value</em>, <em>start</em>, <em>stop</em>)</code> returns a value which represents where <code>value</code> is relatively to the <code>[<em>start</em>..<em>stop</em>]</code> range.</p>
+        <ul>
+            <li>equal to <code>start</code>: returns 0.0</li>
+            <li>equal to <code>stop</code>: returns 1.0</li>
+            <li>in the middle: returns a value between 0 and 1</li>
+            <li>below <code>start</code>: returns a negative value</li>
+            <li>above <code>stop</code>: returns a value greater than 1</li>
+        </ul>
+        <pre><code class="language-python">norm(1, 3, 7)  # returns -0.5 (because 1 is below 3)
+norm(2, 3, 7)  # returns -0.25 (because 2 is below 3)
+norm(3, 3, 7)  # returns 0.0 (because 3 is the start)
+norm(4, 3, 7)  # returns 0.25 (because 4 is in the middle)
+norm(5, 3, 7)  # returns 0.5 (because 5 is exactly in the middle)
+norm(6, 3, 7)  # returns 0.75 (because 6 is in the middle)
+norm(7, 3, 7)  # returns 1.0 (because 7 is the stop)
+norm(8, 3, 7)  # returns 1.25 (because 8 is above 7)
+norm(9, 3, 7)  # returns 1.5 (because 9 is above 7)</code></pre>
+    </section>
+
+    <h2 id="map">Map a value from one range to another</h2>
+
+    <section>
+        <p><code>map(<em>value</em>, <em>start1</em>, <em>stop1</em>, <em>start2</em>, <em>stop2</em>)</code> converts a value from the <code>[<em>start1</em>..<em>stop1</em>]</code> range into the <code>[<em>start2</em>..<em>stop2</em>]</code> range.</p>
+        <pre><code class="language-python">map(1, 3, 7, 10, 50)  # returns -10.0
+map(2, 3, 7, 10, 50)  # returns 0.0
+map(3, 3, 7, 10, 50)  # returns 10.0
+map(4, 3, 7, 10, 50)  # returns 20.0
+map(5, 3, 7, 10, 50)  # returns 30.0
+map(6, 3, 7, 10, 50)  # returns 40.0
+map(7, 3, 7, 10, 50)  # returns 50.0
+map(8, 3, 7, 10, 50)  # returns 60.0
+map(9, 3, 7, 10, 50)  # returns 70.0</code></pre>
+        <p>Here is a program that changes the background color according to the x-coordinate of the mouse:</p>
+        <pre><code class="language-python">from p5 import *
+
+def setup():
+    size(400, 400)
+
+def draw():
+    hue = map(mouse_x, 0, width, 0, 255)  # map mouse_x from [0..width] to [0..255]
+    diameter = map(mouse_y, 0, height, 10, height * 0.8)  # map mouse_y from [0..height] to [10..height*0.8]
+
+    push_style()
+    background(240)
+    fill(0)
+    text(f"mouse_x: &#123;mouse_x:.0f&#125; => hue: &#123;hue:.0f&#125;\nmouse_y: &#123;mouse_y:.0f&#125; => diameter: &#123;diameter:.0f&#125;", 10, 10)
+    color_mode(HSB)
+    fill(hue, 255, 255)
+    no_stroke()
+    circle(width / 2, height / 2, diameter)
+    pop_style()
+
+run()</code></pre>
+        <div id="p5-map"></div>
+        <script is:inline>
+            new p5(p => {
+                p.setup = function() {
+                    p.createCanvas(200, 200);
+                }
+
+                p.draw = function() {
+                    if (p.mouseX < 0 || p.mouseX > p.width || p.mouseY < 0 || p.mouseY > p.height) {
+                        return;
+                    }
+
+                    const x = p.constrain(Math.round(p.mouseX), 0, p.width);
+                    const y = p.constrain(Math.round(p.mouseY), 0, p.height);
+                    const hue = Math.round(p.map(x, 0, p.width, 0, 255));
+                    const diameter = Math.round(p.map(y, 0, p.height, 10, p.height * 0.8));
+
+                    p.push();
+                    p.background(240);
+                    p.fill(0);
+                    p.text(`mouseX: ${x} => hue: ${hue}\nmouseY: ${y} => diameter: ${diameter}`, 10, 10);
+                    p.colorMode(p.HSB);
+                    p.fill(hue, 255, 255);
+                    p.noStroke();
+                    p.circle(p.width/2, p.height/2, diameter);
+                    p.pop();
+                }
+            }, "p5-map")
+        </script>
+    </section>
+
+    <h2 id="dist-mag">Calculate the distance between two points</h2>
+
+    <section>
+        <p><code>dist(<em>x1</em>, <em>y1</em>, <em>x2</em>, <em>y2</em>)</code> calculates the distance between two points <code>(<em>x1</em>,<em>y1</em>)</code> and <code>(<em>x2</em>,<em>y2</em>)</code>.</p>
+        <pre><code class="language-python">dist(1, 2, 4, 6)  # returns 5.0</code></pre>
+        <img src="/activities/python-libraries/p5-images/p5-math-dist.png" alt="dist">
+        <p><code>mag(<em>x</em>, <em>y</em>)</code> is a shortcut for <code>dist(0, 0, <em>x</em>, <em>y</em>)</code>, the distance between the origin <code>(0,0)</code> and point <code>(<em>x</em>,<em>y</em>)</code>.</p>
+        <p>Here is a program that shows the distance from the canvas center to the mouse:</p>
+        <pre><code class="language-python">from p5 import *
+
+def setup():
+    size(200, 200)
+
+def draw():
+    cx = width / 2
+    cy = height / 2
+    d = dist(cx, cy, mouse_x, mouse_y)
+    
+    background(240)
+    line(cx, cy, mouse_x, mouse_y)
+    text(f"Distance: &#123;d:.0f&#125;", 10, 10)
+    
+run()</code></pre>
+        <div id="p5-dist"></div>
+        <script is:inline>
+            new p5(p => {
+                p.setup = function() {
+                    p.createCanvas(200, 200);
+                }
+
+                p.draw = function() {
+                    if (p.mouseX < 0 || p.mouseX > p.width || p.mouseY < 0 || p.mouseY > p.height) {
+                        return;
+                    }
+
+                    const cx = p.width/2;
+                    const cy = p.height/2;
+                    const d = Math.round(p.dist(cx, cy, p.mouseX, p.mouseY));
+                    
+                    p.background(240);
+                    p.line(cx, cy, p.mouseX, p.mouseY);
+                    p.text(`distance: ${d}`, 10, 10);
+                }
+            }, "p5-dist")
+        </script>
+    </section>
+
+    <h2 id="lerp">Calculate a value between two other values</h2>
+
+    <section>
+        <p>
+            <code>lerp</code> is an abbreviation for <em>linear interpolation</em> and is used for <strong>easing</strong> (= changing progressively) from a start value into a stop value.
+            It is convenient for creating motion along a straight path and for drawing dotted lines.
+        </p>
+        <p><code>lerp(<em>start</em>, <em>stop</em>, <em>amt</em>)</code> calculates <code><em>start</em> + (<em>stop</em> - <em>start</em>) * <em>amt</em></code>.</p>
+        <ul>
+            <li>when <code><em>amt</em></code> is 0: returns <code><em>start</em></code></li>
+            <li>when <code><em>amt</em></code> is 0.1: returns a little bit more than <code><em>start</em></code>, etc</li>
+            <li>when <code><em>amt</em></code> is 0.5: returns the average of <code><em>start</em></code> and <code><em>stop</em></code></li>
+            <li>when <code><em>amt</em></code> is 0.9: returns a little bit less than <code><em>stop</em></code>, etc</li>
+            <li>when <code><em>amt</em></code> is 1: returns <code><em>stop</em></code></li>
+        </ul>
+        <pre><code class="language-python">lerp(1, 5, 0)    # returns 1.0 - the start value
+lerp(1, 5, 0.1)  # returns 1.4
+lerp(1, 5, 0.2)  # returns 1.8
+lerp(1, 5, 0.3)  # returns 2.2
+lerp(1, 5, 0.4)  # returns 2.6
+lerp(1, 5, 0.5)  # returns 3.0 - the middle (average)
+lerp(1, 5, 0.6)  # returns 3.4
+lerp(1, 5, 0.7)  # returns 3.8
+lerp(1, 5, 0.8)  # returns 4.2
+lerp(1, 5, 0.9)  # returns 4.6
+lerp(1, 5, 1)    # returns 5.0 - the stop value</code></pre>
+        <p>Here is a program that draws a dotted line:</p>
+        <pre><code class="language-python">from p5 import *
+
+def setup():
+    size(100, 100)
+    no_loop()
+
+def draw():
+    x1, y1 = 10, 10
+    x2, y2 = 60, 60
+    n = 20
+    
+    stroke("red")
+    for i in range(0, n, 2):    # the step of 2 is what makes the line dotted
+        amt1 = i * 1 / n        # dash start amount
+        amt2 = (i + 1) * 1 / n  # dash stop amount
+        line(
+            lerp(x1, x2, amt1), lerp(y1, y2, amt1), 
+            lerp(x1, x2, amt2), lerp(y1, y2, amt2) 
+        )
+        
+run()</code></pre>
+        <img src="/activities/python-libraries/p5-images/p5-math-lerp-dotted.png" alt="lerp-dotted">
+    </section>
+
+    <h2 id="angles">Angles</h2>
+
+    <section>
+        <p>
+            P5 uses <strong>radians</strong> instead of degrees. 
+            One full turn is 2&pi; (= 360&deg;). 
+            The angles are measured <strong>clockwise</strong> with zero being east.
+            You can convert degrees to radians with <code>radians(<em>degrees</em>)</code> and radians to degrees with <code>degrees(<em>radians</em>)</code>.
+            Besides the usual <code>PI</code>, P5 also defines <code>TWO_PI</code>, <code>HALF_PI</code>, <code>QUARTER_PI</code>, and <code>TAU</code> which is 2&pi;.
+        </p>
+        <div class="container text-center">
+            <div class="row align-items-center">
+                <div class="col">
+                    <div id="p5-angles"></div>
+                    <script is:inline src="/activities/python-libraries/p5js-scripts/p5-angles.js"></script>
+                </div>
+                <div class="col">
+                    <table class="table table-sm table-striped">
+                        <thead>
+                            <tr><th>Degrees</th><th>Radians</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>0&deg;</td><td>0</td></tr>
+                            <tr><td>45&deg;</td><td>PI/4 = QUARTER_PI</td></tr>
+                            <tr><td>90&deg;</td><td>PI/2 = HALF_PI</td></tr>
+                            <tr><td>135&deg;</td><td>3*PI/4 = 3*QUARTER_PI</td></tr>
+                            <tr><td>180&deg;</td><td>PI</td></tr>
+                            <tr><td>225&deg;</td><td>5*PI/4 = 5*QUARTER_PI</td></tr>
+                            <tr><td>270&deg;</td><td>3*PI/2 = 3*HALF_PI</td></tr>
+                            <tr><td>315&deg;</td><td>7*PI/4 = 7*QUARTER_PI</td></tr>
+                            <tr><td>360&deg;</td><td>2*PI = TWO_PI = TAU</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <h2 id="cos-sin">Calculate the coordinates from an angle</h2>
+
+    <section>
+        <p>...</p>
+        <div id="p5-trigo"></div>
+        <script is:inline src="/activities/python-libraries/p5js-scripts/p5-math-trigo.js"></script>
+        <p>...</p>
+        <div id="p5-cos-sin"></div>
+        <script is:inline src="/activities/python-libraries/p5js-scripts/p5-math-cos-sin.js"></script>
+        <p></p>
+        <h3>Example #1 - Polygons</h3>
+        <p>Here is a program that draws a regular polygon for a given number of sides and radius.</p>
+        <pre><code class="language-python">from p5 import *
+from math import cos, sin
+
+NPOINTS = 5  # this is the same as the number of sides
+RADIUS = 120
+
+def setup():
+    size(300, 300)
+    no_loop()
+
+def draw():
+    background(240)  # light grey
+    translate(width/2, height/2)
+    fill(200, 255, 200)  # light green
+    stroke_weight(3)
+    begin_shape()
+    for i in range(NPOINTS):
+        x = RADIUS * cos(radians(i * 360 / NPOINTS))
+        y = RADIUS * sin(radians(i * 360 / NPOINTS))
+        vertex(x, y)
+    end_shape(CLOSE)
+
+run()</code></pre>
+        <div id="p5-polygon"></div>
+        <script is:inline src="/activities/python-libraries/p5js-scripts/p5-polygon.js"></script>
+        <p><br><strong>Challenge #1</strong>: Modify the code to start drawing from the top (North) instead of from the right (East).</p>
+        <p><strong>Challenge #2</strong>: Modify the code to draw stars instead of polygons.</p>
+
+        <h3>Example #2 - Pulsating circle</h3>
+        <p>Here is a program that draws a pulsating circle with changing color.</p>
+        <pre><code class="language-python">from p5 import *
+from math import cos, sin
+
+def setup():
+    size(300, 300)
+
+def draw():
+    # frame_count increases by one every time
+    angle_rad = radians(frame_count)
+
+    # Calculate the new diameter.
+    freq = 1  # change to adjust the speed
+    diameter = map(sin(freq * angle_rad), -1, 1, height*0.1, height*0.9)
+    
+    # Calculate the new color.
+    freq = 0.2  # change to adjust the speed
+    hue = map(cos(freq * angle_rad), -1, 1, 0, 255)
+
+    # Update the canvas.
+    color_mode(RGB)
+    background(240)  # lightgrey
+    translate(width/2, height/2)
+    color_mode(HSB)
+    fill(hue, 255, 255)
+    stroke_weight(3)
+    circle(0, 0, diameter)
+
+run()</code></pre>
+        <div id="p5-pulse"></div>
+        <script is:inline src="/activities/python-libraries/p5js-scripts/p5-pulse.js"></script>
+    </section>
+
+    <h2 id="atan2">Calculate the angle from some coordinates</h2>
+
+    <section>
+        <p>...</p>
+        <pre><code class="language-python">from p5 import *
+from math import atan2
+
+def setup():
+    size(300, 300)
+
+def draw():
+    length = 1.8 * dist(width/2, height/2, mouse_x, mouse_y)
+    dx = mouse_x - width/2
+    dy = mouse_y - height/2
+    angle_rad = atan2(dy, dx)
+
+    background(240)
+    push_matrix()
+    translate(width/2, height/2)
+    rotate(angle_rad)
+    line(-length/2, 0, length/2, 0)
+    translate(length/2, 0)
+    triangle(0, 0, -15, -10, -15, 10)
+    pop_matrix()
+
+run()</code></pre>
+        <div id="p5-arrow"></div>
+        <script is:inline>
+            new p5(p => {
+                p.setup = function() {
+                    p.createCanvas(300, 300);
+                }
+
+                p.draw = function() {
+                    if (p.mouseX < 0 || p.mouseX > p.width || p.mouseY < 0 || p.mouseY > p.height) {
+                        return;
+                    }
+
+                    const length = 1.8 * p.dist(p.width/2, p.height/2, p.mouseX, p.mouseY);
+                    const dx = p.mouseX - p.width/2;
+                    const dy = p.mouseY - p.height/2;
+                    const angle_rad = p.atan2(dy, dx);
+                    const angle_deg = p.degrees(angle_rad).toFixed(0);
+
+                    p.background(240);
+                    p.text(`Angle: ${angle_deg}\u00B0 = ${angle_rad.toFixed(2)} rads`, 10, 10);
+                    p.push();
+                    p.translate(p.width/2, p.height/2);
+                    p.rotate(angle_rad);
+                    p.strokeWeight(2);
+                    p.line(-length/2, 0, length/2, 0);
+                    p.translate(length/2, 0);
+                    p.triangle(0, 0, -15, -10, -15, 10);
+                    p.pop();
+                }
+            }, "p5-arrow");
+        </script>
+    </section>
+</P5PageLayout>
