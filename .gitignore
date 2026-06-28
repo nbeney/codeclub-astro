@@ -35,3 +35,5 @@ __pycache__/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+linkchecker-dev.log
+linkchecker-preview.log
