@@ -3,7 +3,7 @@ function defineWidgetLinkElement(tag, widget) {
         tag,
         class extends HTMLElement {
             connectedCallback() {
-                this.innerHTML = `<code><a href="/codeclub-astro/offline/lawsie.github.io/guizero/${widget.toLowerCase()}/index.html">${widget}</a></code>`;
+                this.innerHTML = `<code><a href="https://lawsie.github.io/guizero/${widget.toLowerCase()}/index.html">${widget}</a></code>`;
             }
         });
 }
